@@ -12,6 +12,21 @@ autoA11y will support lightweight, opt-in plugins that extend the behavior of co
 
 ---
 
+## v0.1 — Announce (Cross-cutting)
+
+### Description
+
+Shared live region that centralizes screen reader announcements for any pattern that emits `autoa11y:*` events.
+
+### Features
+
+- Singleton polite live region (assertive opt-in via `data-autoa11y-announce="assertive"`)
+- Consumes trigger data attributes for custom messages
+- Generates sensible defaults from accessible names
+- Suppresses duplicate messages and skips redundant focused updates
+
+---
+
 ## Planned Plugins
 
 ### 1. Persist Plugin
