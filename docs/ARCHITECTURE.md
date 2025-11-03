@@ -28,6 +28,7 @@ The **registry** is the backbone that keeps patterns independent but coordinated
 ```ts
 registerPattern(name: string, selector: string, initFn: (el: Element) => void)
 ```
+
 - Each pattern registers itself with a name and a selector (e.g., `[data-autoa11y-toggle]`).
 - `initAllPatterns()` runs through the registry and initializes all registered selectors in the document or given root.
 
@@ -38,6 +39,7 @@ This allows you to dynamically load only the patterns you want, or initialize sp
 ## Helpers
 
 ### `classes.ts`
+
 Handles class toggling and **truthiness mapping**.
 
 - Reads `data-autoa11y-[trigger|target]-class-[action]` attributes.
@@ -45,6 +47,7 @@ Handles class toggling and **truthiness mapping**.
 - Applies/removes appropriate classes from both trigger and target.
 
 ### `aria.ts`
+
 Provides utilities for applying and managing ARIA attributes safely.
 Example:
 
@@ -53,6 +56,7 @@ setIfAbsent(el, "role", "button");
 ```
 
 ### `keyboard.ts`
+
 Provides utilities for managing keyboard interactions.
 Example:
 
@@ -61,6 +65,7 @@ if (isActivateKey(e)) toggle();
 ```
 
 ### `events.ts`
+
 Centralized event dispatch helpers for uniform custom event handling.
 
 ---
@@ -89,9 +94,11 @@ This ensures no collisions and predictable initialization order.
 1. Create a new folder under `src/patterns/` (e.g., `menu/`).
 2. Create a pattern init function: `initMenu(trigger: HTMLElement)`.
 3. Register it in `src/patterns/index.ts`:
+
    ```ts
    registerPattern("menu", "[data-autoa11y-menu]", initMenu);
    ```
+
 4. Use shared helpers (e.g., `getClassConfig()`, `applyClasses()`).
 5. Add examples and tests.
 6. Done.

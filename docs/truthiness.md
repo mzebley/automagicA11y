@@ -25,6 +25,7 @@ const falsy  = new Set(["closed","collapsed","hidden","inactive","unpressed","fa
 ```
 
 ### Parsing Flow
+
 1. Scan all attributes matching `data-autoa11y-[trigger|target]-class-[state]`.
 2. Split the `state` segment (`open`, `collapsed`, `active`, etc.).
 3. Determine if the keyword is **truthy** or **falsy**.

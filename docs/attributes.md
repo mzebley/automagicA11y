@@ -37,6 +37,7 @@ data-autoa11y-[element]-[affordance]-[action]
 ---
 
 ## Grammar Benefits
+
 - **Consistency** — one pattern for all features
 - **Discoverability** — developers can infer attributes by name
 - **Scalability** — easy to extend with `-attr-` or `-style-` affordances later
