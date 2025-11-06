@@ -8,7 +8,7 @@ describe("toggle pattern", () => {
 
   it("initializes ARIA relationships and default classes", () => {
     document.body.innerHTML = `
-      <button id="trigger" data-autoa11y-toggle="#panel"></button>
+      <button id="trigger" data-automagica11y-toggle="#panel"></button>
       <div id="panel">Hidden content</div>
     `;
 
@@ -21,20 +21,20 @@ describe("toggle pattern", () => {
     expect(trigger.getAttribute("aria-expanded")).toBe("false");
     expect(target.getAttribute("aria-labelledby")).toBe(trigger.id);
     expect(target.hidden).toBe(true);
-    expect(trigger.classList.contains("a11y-toggled-closed")).toBe(true);
+    expect(trigger.classList.contains("automagic-toggle-closed")).toBe(true);
   });
 
-  it("toggles state on click and dispatches autoa11y events", () => {
+  it("toggles state on click and dispatches automagica11y events", () => {
     document.body.innerHTML = `
-      <button data-autoa11y-toggle="#panel"></button>
+      <button data-automagica11y-toggle="#panel"></button>
       <div id="panel">Hidden content</div>
     `;
 
-    const trigger = document.querySelector("[data-autoa11y-toggle]") as HTMLElement;
+    const trigger = document.querySelector("[data-automagica11y-toggle]") as HTMLElement;
     const target = document.getElementById("panel") as HTMLElement;
 
     const listener = vi.fn();
-    trigger.addEventListener("autoa11y:toggle", listener);
+    trigger.addEventListener("automagica11y:toggle", listener);
 
     initToggle(trigger);
 
@@ -52,7 +52,7 @@ describe("toggle pattern", () => {
 
   it("adds button semantics for non-button triggers", () => {
     document.body.innerHTML = `
-      <div id="toggle" data-autoa11y-toggle="#panel"></div>
+      <div id="toggle" data-automagica11y-toggle="#panel"></div>
       <div id="panel">Hidden content</div>
     `;
 

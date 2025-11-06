@@ -1,11 +1,11 @@
 {
-  "name": "autoa11y",
+  "name": "automagicA11y",
   "version": "0.1.0",
-  "description": "A lightweight, framework-agnostic accessibility utility for declarative ARIA automation.",
+  "description": "A lightweight, framework-agnostic accessibility utility for declarative ARIA and a11y automation.",
   "type": "module",
-  "main": "dist/autoa11y.cjs.js",
-  "module": "dist/autoa11y.esm.js",
-  "browser": "dist/autoa11y.min.js",
+  "main": "dist/automagica11y.cjs.js",
+  "module": "dist/automagica11y.esm.js",
+  "browser": "dist/automagica11y.min.js",
   "types": "dist/types/index.d.ts",
   "scripts": {
     "build": "rollup -c",

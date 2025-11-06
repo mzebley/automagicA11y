@@ -1,6 +1,6 @@
 # Plugin System (Future)
 
-autoA11y will support lightweight, opt-in plugins that extend the behavior of core patterns.
+automagicA11y will support lightweight, opt-in plugins that extend the behavior of core patterns.
 
 ---
 
@@ -16,11 +16,11 @@ autoA11y will support lightweight, opt-in plugins that extend the behavior of co
 
 ### Description
 
-Shared live region that centralizes screen reader announcements for any pattern that emits `autoa11y:*` events.
+Shared live region that centralizes screen reader announcements for any pattern that emits `automagica11y:*` events.
 
 ### Features
 
-- Singleton polite live region (assertive opt-in via `data-autoa11y-announce="assertive"`)
+- Singleton polite live region (assertive opt-in via `data-automagica11y-announce="assertive"`)
 - Consumes trigger data attributes for custom messages
 - Generates sensible defaults from accessible names
 - Suppresses duplicate messages and skips redundant focused updates
@@ -34,7 +34,7 @@ Shared live region that centralizes screen reader announcements for any pattern 
 Remembers open state using localStorage or sessionStorage.
 
 ```html
-data-autoa11y-persist="local"
+data-automagica11y-persist="local"
 ```
 
 ### 2. Hash Plugin

@@ -46,7 +46,7 @@ export function getClassConfig(el: HTMLElement): A11yClassConfig {
   const cfg: A11yClassConfig = { trigger: { true: [], false: [] }, target: { true: [], false: [] } };
   sides.forEach((side: Side) => {
     stateKeywords.forEach((state: StateKeyword) => {
-      const attr = el.getAttribute(`data-autoa11y-${side}-class-${state}`);
+      const attr = el.getAttribute(`data-automagica11y-${side}-class-${state}`);
       if (!attr) return;
       const list = parseClassList(attr);
       if (truthy.has(state)) cfg[side].true.push(...list);
@@ -55,8 +55,8 @@ export function getClassConfig(el: HTMLElement): A11yClassConfig {
   });
   // defaults on trigger if nothing provided
   if (!cfg.trigger.true.length && !cfg.trigger.false.length) {
-    cfg.trigger.true = ["a11y-toggled-open"];
-    cfg.trigger.false = ["a11y-toggled-closed"];
+    cfg.trigger.true = ["automagic-toggle-open"];
+    cfg.trigger.false = ["automagic-toggle-closed"];
   }
   return cfg;
 }

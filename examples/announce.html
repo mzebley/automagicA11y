@@ -3,47 +3,47 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>autoA11y – Announce Pattern</title>
+  <title>automagicA11y – Announce Pattern</title>
   <style>
     body { font-family: system-ui, sans-serif; line-height: 1.5; padding: 2rem; max-width: 40rem; margin: 0 auto; }
     [hidden] { display: none !important; }
     .card { border: 1px solid #e0e0ef; border-radius: 8px; padding: 1rem; margin-bottom: 1rem; background: #f9faff; }
     .card button { padding: .5rem .75rem; border-radius: 6px; border: 1px solid #ccd; background: #fff; cursor: pointer; }
-    .card button.a11y-toggled-open { background: #e6f0ff; border-color: #99b; }
-    .card button.a11y-toggled-closed { background: #f8f9ff; color: #475; }
+    .card button.automagic-toggle-open { background: #e6f0ff; border-color: #99b; }
+    .card button.automagic-toggle-closed { background: #f8f9ff; color: #475; }
     .panel { margin-top: .75rem; padding: .75rem; border-left: 4px solid #94b3ff; background: #fff; }
   </style>
 </head>
 <body>
   <h1>Announce Pattern</h1>
   <p>
-    These disclosures opt into autoa11y's shared live region, so screen readers receive clear status updates even when focus is elsewhere.
+    These disclosures opt into automagica11y's shared live region, so screen readers receive clear status updates even when focus is elsewhere.
   </p>
 
   <section class="card">
     <h2 id="faq-heading">FAQ</h2>
     <button
-      class="a11y-toggled-closed"
+      class="automagic-toggle-closed"
       aria-labelledby="faq-heading"
-      data-autoa11y-toggle="#faq-answer"
-      data-autoa11y-announce="polite"
-      data-autoa11y-announce-open="FAQ expanded"
-      data-autoa11y-announce-closed="FAQ collapsed">
+      data-automagica11y-toggle="#faq-answer"
+      data-automagica11y-announce="polite"
+      data-automagica11y-announce-open="FAQ expanded"
+      data-automagica11y-announce-closed="FAQ collapsed">
       Toggle FAQ
     </button>
     <div id="faq-answer" class="panel">
       <p><strong>Q:</strong> Does the announce pattern work with any toggle?</p>
-      <p><strong>A:</strong> Yes. As long as the trigger emits <code>autoa11y:toggle</code>, announcements are centralized.</p>
+      <p><strong>A:</strong> Yes. As long as the trigger emits <code>automagica11y:toggle</code>, announcements are centralized.</p>
     </div>
   </section>
 
   <section class="card">
     <h2 id="policy-heading">Policy Details</h2>
     <button
-      class="a11y-toggled-closed"
+      class="automagic-toggle-closed"
       aria-labelledby="policy-heading"
-      data-autoa11y-toggle="#policy-body"
-      data-autoa11y-announce="assertive">
+      data-automagica11y-toggle="#policy-body"
+      data-automagica11y-announce="assertive">
       View policy summary
     </button>
     <div id="policy-body" class="panel">
@@ -52,7 +52,7 @@
   </section>
 
   <script type="module">
-    import { registerAnnouncePlugin } from "../dist/autoa11y.esm.js";
+    import { registerAnnouncePlugin } from "../dist/automagica11y.esm.js";
 
     registerAnnouncePlugin();
   </script>

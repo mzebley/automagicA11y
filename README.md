@@ -1,4 +1,4 @@
-# autoA11y
+# automagicA11y
 
 Licensed under the MIT License
 
@@ -10,30 +10,30 @@ _Tagline: Drop an attribute. Get the ARIA._
 
 ## Overview
 
-autoA11y is a lightweight, framework-agnostic accessibility utility that automates ARIA attributes, accessibility states, and related classes for common interactive components such as toggles, tooltips, dialogs, and menus.
+automagicA11y is a lightweight, framework-agnostic accessibility utility that automates ARIA attributes, accessibility states, and related classes for common interactive components such as toggles, tooltips, dialogs, and menus.
 
-Built for simplicity and scalability, it uses a consistent declarative syntax via `data-autoa11y-*` attributes to handle open or closed states, ARIA bindings, and accessibility affordances automatically.
+Built for simplicity and scalability, it uses a consistent declarative syntax via `data-automagica11y-*` attributes to handle open or closed states, ARIA bindings, and accessibility affordances automatically.
 
 ---
 
 ## Design Philosophy
 
-The guiding principle of autoA11y is to make accessibility effortless and predictable.
+The guiding principle of automagicA11y is to make accessibility effortless and predictable.
 
 1. **Declarative, not prescriptive**  
-   Add a single `data-autoa11y-*` attribute. The library handles ARIA, keyboard bindings, and state reflection automatically.
+   Add a single `data-automagica11y-*` attribute. The library handles ARIA, keyboard bindings, and state reflection automatically.
 
 2. **Universal grammar**  
    Every interactive pattern (toggle, tooltip, dialog, etc.) follows the same mental model:
 
    `element -> affordance -> action`
 
-   `data-autoa11y-[element]-[affordance]-[action]`
+   `data-automagica11y-[element]-[affordance]-[action]`
 
    | Element  | Description                                    | Example                                |
    | -------- | ---------------------------------------------- | -------------------------------------- |
-   | trigger  | Interactive element that initiates the change  | `data-autoa11y-trigger-class-open`     |
-   | target   | Element that responds to the trigger           | `data-autoa11y-target-class-open`      |
+   | trigger  | Interactive element that initiates the change  | `data-automagica11y-trigger-class-open`     |
+   | target   | Element that responds to the trigger           | `data-automagica11y-target-class-open`      |
    | affordance | Type of thing being manipulated (class, attr, style) | `class`                       |
    | action   | Current or resulting state (open, closed, etc.) | `open`, `closed`                       |
 
@@ -43,28 +43,28 @@ The guiding principle of autoA11y is to make accessibility effortless and predic
    Each module (toggle, tooltip, dialog) is a standalone ~2-3 kB file. No dependencies and no framework lock-in.
 
 4. **ARIA handled for you**  
-   autoA11y automatically applies and maintains required ARIA attributes (`aria-expanded`, `aria-controls`, `aria-labelledby`, etc.) and accessible keyboard behaviors.
+   automagicA11y automatically applies and maintains required ARIA attributes (`aria-expanded`, `aria-controls`, `aria-labelledby`, etc.) and accessible keyboard behaviors.
 
 5. **Predictable class hooks**  
    Trigger and target classes reflect open or closed state using customizable attributes:
 
    ```html
    <button
-     data-autoa11y-toggle="#details"
-     data-autoa11y-trigger-class-open="active"
-     data-autoa11y-trigger-class-closed="inactive"
-     data-autoa11y-target-class-open="visible"
-     data-autoa11y-target-class-closed="hidden">
+     data-automagica11y-toggle="#details"
+     data-automagica11y-trigger-class-open="active"
+     data-automagica11y-trigger-class-closed="inactive"
+     data-automagica11y-target-class-open="visible"
+     data-automagica11y-target-class-closed="hidden">
      More details
    </button>
 
    <div id="details">Hidden content</div>
    ```
 
-   If no custom classes are defined, autoA11y defaults to:
+   If no custom classes are defined, automagicA11y defaults to:
 
-   - Trigger: `a11y-toggled-open` / `a11y-toggled-closed`
-   - Target: `a11y-target-open` / `a11y-target-closed`
+   - Trigger: `automagic-toggle-open` / `automagic-toggle-closed`
+   - Target: `automagic-target-open` / `automagic-target-closed`
 
 ---
 
@@ -75,7 +75,7 @@ The guiding principle of autoA11y is to make accessibility effortless and predic
 #### Minimum viable example
 
 ```html
-<button data-autoa11y-toggle="#faq1">More details</button>
+<button data-automagica11y-toggle="#faq1">More details</button>
 <div id="faq1">Hidden content</div>
 ```
 
@@ -91,15 +91,15 @@ The guiding principle of autoA11y is to make accessibility effortless and predic
 
 | Attribute                          | Description                               |
 | ---------------------------------- | ----------------------------------------- |
-| `data-autoa11y-trigger-class-open` | Classes to add when open                  |
-| `data-autoa11y-trigger-class-closed` | Classes to add when closed              |
-| `data-autoa11y-target-class-open` | Classes to add when target is visible     |
-| `data-autoa11y-target-class-closed` | Classes to add when target is hidden    |
-| `data-autoa11y-group`             | Treat multiple toggles as an accordion    |
-| `data-autoa11y-inert`             | Apply or remove the `inert` attribute when closed |
-| `data-autoa11y-persist`           | Remember open state (local or session)    |
-| `data-autoa11y-hash`              | Sync state with the URL hash              |
-| `data-autoa11y-animate`           | Delay hiding to support transitions       |
+| `data-automagica11y-trigger-class-open` | Classes to add when open                  |
+| `data-automagica11y-trigger-class-closed` | Classes to add when closed              |
+| `data-automagica11y-target-class-open` | Classes to add when target is visible     |
+| `data-automagica11y-target-class-closed` | Classes to add when target is hidden    |
+| `data-automagica11y-group`             | Treat multiple toggles as an accordion    |
+| `data-automagica11y-inert`             | Apply or remove the `inert` attribute when closed |
+| `data-automagica11y-persist`           | Remember open state (local or session)    |
+| `data-automagica11y-hash`              | Sync state with the URL hash              |
+| `data-automagica11y-animate`           | Delay hiding to support transitions       |
 
 ### Tooltip (planned)
 
@@ -107,9 +107,9 @@ Reuses the same attribute syntax but maps to `aria-describedby` and `role="toolt
 
 ```html
 <button
-  data-autoa11y-tooltip="#tip1"
-  data-autoa11y-trigger-class-open="tooltip-active"
-  data-autoa11y-target-class-open="tooltip-visible">
+  data-automagica11y-tooltip="#tip1"
+  data-automagica11y-trigger-class-open="tooltip-active"
+  data-automagica11y-target-class-open="tooltip-visible">
   ?
 </button>
 <span id="tip1" role="tooltip" hidden>Helpful tip...</span>
@@ -121,8 +121,8 @@ Manages focus trap, `aria-modal`, and background `inert` state automatically.
 
 ```html
 <button
-  data-autoa11y-dialog="#login"
-  data-autoa11y-trigger-class-open="pressed">
+  data-automagica11y-dialog="#login"
+  data-automagica11y-trigger-class-open="pressed">
   Login
 </button>
 <div id="login" role="dialog" hidden>Dialog content...</div>
@@ -134,14 +134,14 @@ Manages focus trap, `aria-modal`, and background `inert` state automatically.
 
 The announce pattern provides a shared live region for screen reader updates so individual components stay declarative.
 
-Add `data-autoa11y-announce` to any pattern trigger to opt in:
+Add `data-automagica11y-announce` to any pattern trigger to opt in:
 
 ```html
 <button
-  data-autoa11y-toggle="#faq1"
-  data-autoa11y-announce="polite"
-  data-autoa11y-announce-open="FAQ expanded"
-  data-autoa11y-announce-closed="FAQ collapsed">
+  data-automagica11y-toggle="#faq1"
+  data-automagica11y-announce="polite"
+  data-automagica11y-announce-open="FAQ expanded"
+  data-automagica11y-announce-closed="FAQ collapsed">
   FAQ
 </button>
 ```
@@ -151,12 +151,12 @@ Behavior:
 - Defaults to polite announcements (use `assertive` to override).
 - Skips redundant announcements when focus remains on the control.
 - Falls back to the trigger's accessible name (`aria-label`, `aria-labelledby`, or text content).
-- Automatically listens for events like `autoa11y:toggle`.
+- Automatically listens for events like `automagica11y:toggle`.
 
 Register once on boot:
 
 ```ts
-import { registerAnnouncePlugin } from "autoa11y";
+import { registerAnnouncePlugin } from "automagica11y";
 
 registerAnnouncePlugin();
 ```
@@ -165,7 +165,7 @@ registerAnnouncePlugin();
 
 ## Attribute Synonyms
 
-autoA11y recognizes several synonyms for open or closed states to improve author ergonomics.
+automagicA11y recognizes several synonyms for open or closed states to improve author ergonomics.
 
 | True states                   | False states                           |
 | ----------------------------- | -------------------------------------- |
@@ -177,7 +177,7 @@ Internally, all map to a boolean expanded state.
 
 ## Truthiness Mapping System
 
-autoA11y uses a truthiness mapping mechanism to normalize synonyms for open or closed (or true or false) states. This allows developers to use whichever terms make sense in their project while keeping the logic consistent internally.
+automagicA11y uses a truthiness mapping mechanism to normalize synonyms for open or closed (or true or false) states. This allows developers to use whichever terms make sense in their project while keeping the logic consistent internally.
 
 ### How it works
 
@@ -196,7 +196,7 @@ Each recognized action keyword is categorized into one of two groups:
 | true            | false          |
 | on              | off            |
 
-Internally, any `data-autoa11y-*-class-[keyword]` attribute is parsed through this table and resolved to either a true or false state. This lets authors mix terminology freely. For example, `data-autoa11y-target-class-expanded` and `data-autoa11y-target-class-active` both behave as the same truthy condition.
+Internally, any `data-automagica11y-*-class-[keyword]` attribute is parsed through this table and resolved to either a true or false state. This lets authors mix terminology freely. For example, `data-automagica11y-target-class-expanded` and `data-automagica11y-target-class-active` both behave as the same truthy condition.
 
 ### Benefits
 
@@ -208,30 +208,30 @@ Internally, any `data-autoa11y-*-class-[keyword]` attribute is parsed through th
 
 ```html
 <div
-  data-autoa11y-toggle="#panel"
-  data-autoa11y-trigger-class-active="btn--active"
-  data-autoa11y-trigger-class-inactive="btn--ghost"
-  data-autoa11y-target-class-expanded="panel--visible"
-  data-autoa11y-target-class-collapsed="panel--hidden">
+  data-automagica11y-toggle="#panel"
+  data-automagica11y-trigger-class-active="btn--active"
+  data-automagica11y-trigger-class-inactive="btn--ghost"
+  data-automagica11y-target-class-expanded="panel--visible"
+  data-automagica11y-target-class-collapsed="panel--hidden">
   Toggle Content
 </div>
 <div id="panel">...</div>
 ```
 
-Both the trigger and target use synonym terms, but autoA11y resolves them through the truthiness mapping system.
+Both the trigger and target use synonym terms, but automagicA11y resolves them through the truthiness mapping system.
 
 ---
 
 ## Event Model
 
-autoA11y dispatches custom events for integration:
+automagicA11y dispatches custom events for integration:
 
-- `autoa11y:ready` — when a component is initialized
-- `autoa11y:toggle` — when a toggle or disclosure changes state
-- `autoa11y:open` / `autoa11y:close` — convenience events for state transitions
+- `automagica11y:ready` — when a component is initialized
+- `automagica11y:toggle` — when a toggle or disclosure changes state
+- `automagica11y:open` / `automagica11y:close` — convenience events for state transitions
 
 ```js
-document.addEventListener('autoa11y:toggle', (event) => {
+document.addEventListener('automagica11y:toggle', (event) => {
   console.log(event.detail.expanded ? 'opened' : 'closed');
 });
 ```
@@ -257,8 +257,8 @@ This helper is shared across all patterns to keep class handling consistent.
 ### Pattern registration example
 
 ```js
-registerPattern('toggle', '[data-autoa11y-toggle]', initToggle);
-registerPattern('tooltip', '[data-autoa11y-tooltip]', initTooltip);
+registerPattern('toggle', '[data-automagica11y-toggle]', initToggle);
+registerPattern('tooltip', '[data-automagica11y-tooltip]', initTooltip);
 ```
 
 Each pattern initializes independently, avoiding collisions while sharing helpers.
@@ -271,10 +271,10 @@ Each pattern initializes independently, avoiding collisions while sharing helper
 [hidden] {
   display: none !important;
 }
-.a11y-toggled-open {}
-.a11y-toggled-closed {}
-.a11y-target-open {}
-.a11y-target-closed {}
+.automagic-toggle-open {}
+.automagic-toggle-closed {}
+.automagic-target-open {}
+.automagic-target-closed {}
 ```
 
 Authors can override these defaults or disable automatic classes.
@@ -324,10 +324,10 @@ MIT License (planned)
 | Topic | Description |
 |-------|--------------|
 | [Architecture](./docs/ARCHITECTURE.md) | Deep dive into the internal registry, helper modules, and event lifecycle. |
-| [Truthiness Mapping](./docs/truthiness.md) | How autoA11y normalizes open/closed and active/inactive states into boolean logic. |
+| [Truthiness Mapping](./docs/truthiness.md) | How automagicA11y normalizes open/closed and active/inactive states into boolean logic. |
 | [Patterns Roadmap](./docs/patterns.md) | Current and planned interactive patterns (toggle, tooltip, dialog, etc.). |
 | [Plugins](./docs/plugins.md) | Optional future enhancements (persist, animate, hash-sync, announce, inert). |
-| [Attribute Grammar](./docs/attributes.md) | Explains the `data-autoa11y-[element]-[affordance]-[action]` syntax and philosophy. |
+| [Attribute Grammar](./docs/attributes.md) | Explains the `data-automagica11y-[element]-[affordance]-[action]` syntax and philosophy. |
 | [Contributing Guide](./docs/CONTRIBUTING.md) | How to build, test, and contribute new patterns or fixes. |
 | [Branding & Voice](./docs/branding.md) | Taglines, tone, and visual direction for the project identity. |
 

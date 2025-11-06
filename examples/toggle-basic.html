@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>autoA11y – Toggle Example</title>
+  <title>automagicA11y – Toggle Example</title>
   <style>
         body { font-family: system-ui, sans-serif; line-height: 1.5; padding: 2rem; max-width: 40rem; margin: 0 auto; }
     [hidden] { display: none !important; }
     .btn { padding: .5rem .75rem; border: 1px solid #ccc; border-radius: 6px; }
-    .a11y-toggled-open { background: #eef; }
-    .a11y-toggled-closed { background: #f6f6f6; }
+    .automagic-toggle-open { background: #eef; }
+    .automagic-toggle-closed { background: #f6f6f6; }
     .panel { padding: .75rem; border-left: 4px solid #99c; margin-top: .5rem; }
   </style>
 </head>
@@ -17,7 +17,7 @@
   <h1>Toggle / Disclosure</h1>
 
   <button class="btn"
-    data-autoa11y-toggle="#details"
+    data-automagica11y-toggle="#details"
   >
     More details
   </button>
@@ -26,7 +26,7 @@
     <p>This content is revealed when the disclosure is open.</p>
   </div>
 
-  <!-- Built bundle expected at dist/autoa11y.min.js -->
-  <script src="../dist/autoa11y.min.js"></script>
+  <!-- Built bundle expected at dist/automagica11y.min.js -->
+  <script src="../dist/automagica11y.min.js"></script>
 </body>
 </html>

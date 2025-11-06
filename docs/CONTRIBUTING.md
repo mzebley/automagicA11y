@@ -1,6 +1,6 @@
-# Contributing to autoA11y
+# Contributing to automagicA11y
 
-Thank you for helping improve autoA11y! This guide explains how to contribute new patterns, fix bugs, or propose enhancements.
+Thank you for helping improve automagicA11y! This guide explains how to contribute new patterns, fix bugs, or propose enhancements.
 
 ---
 

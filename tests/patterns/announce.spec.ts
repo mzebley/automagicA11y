@@ -4,7 +4,7 @@ const loadAnnounce = async () => import("../../src/patterns/announce/announce");
 
 const dispatchToggle = (trigger: HTMLElement, detail: Record<string, unknown>) => {
   trigger.dispatchEvent(
-    new CustomEvent("autoa11y:toggle", {
+    new CustomEvent("automagica11y:toggle", {
       bubbles: true,
       detail
     })
@@ -16,17 +16,17 @@ describe("announce pattern", () => {
     vi.resetModules();
     vi.useRealTimers();
     document.body.innerHTML = "";
-    const liveRegion = document.getElementById("autoa11y-live");
+    const liveRegion = document.getElementById("automagica11y-live");
     liveRegion?.remove();
   });
 
   it("creates a singleton live region on registration", async () => {
     const { registerAnnouncePlugin } = await loadAnnounce();
-    expect(document.getElementById("autoa11y-live")).toBeNull();
+    expect(document.getElementById("automagica11y-live")).toBeNull();
 
     registerAnnouncePlugin();
 
-    const region = document.getElementById("autoa11y-live");
+    const region = document.getElementById("automagica11y-live");
     expect(region).toBeTruthy();
     expect(region?.getAttribute("role")).toBe("status");
     expect(region?.getAttribute("aria-live")).toBe("polite");
@@ -35,10 +35,10 @@ describe("announce pattern", () => {
   it("announces custom open text when provided", async () => {
     document.body.innerHTML = `
       <button
-        data-autoa11y-toggle="#panel"
-        data-autoa11y-announce="polite"
-        data-autoa11y-announce-open="FAQ expanded"
-        data-autoa11y-announce-closed="FAQ collapsed">
+        data-automagica11y-toggle="#panel"
+        data-automagica11y-announce="polite"
+        data-automagica11y-announce-open="FAQ expanded"
+        data-automagica11y-announce-closed="FAQ collapsed">
         FAQ
       </button>
       <div id="panel"></div>
@@ -47,14 +47,14 @@ describe("announce pattern", () => {
     const { registerAnnouncePlugin } = await loadAnnounce();
     registerAnnouncePlugin();
 
-    const trigger = document.querySelector("[data-autoa11y-announce]") as HTMLElement;
+    const trigger = document.querySelector("[data-automagica11y-announce]") as HTMLElement;
     const target = document.getElementById("panel") as HTMLElement;
 
     vi.useFakeTimers();
     dispatchToggle(trigger, { expanded: true, trigger, target });
     vi.advanceTimersByTime(50);
 
-    const region = document.getElementById("autoa11y-live");
+    const region = document.getElementById("automagica11y-live");
     expect(region?.textContent).toBe("FAQ expanded");
   });
 
@@ -62,8 +62,8 @@ describe("announce pattern", () => {
     document.body.innerHTML = `
       <button
         aria-label="Primary panel"
-        data-autoa11y-toggle="#panel"
-        data-autoa11y-announce="assertive">
+        data-automagica11y-toggle="#panel"
+        data-automagica11y-announce="assertive">
         Hidden text
       </button>
       <div id="panel"></div>
@@ -72,14 +72,14 @@ describe("announce pattern", () => {
     const { registerAnnouncePlugin } = await loadAnnounce();
     registerAnnouncePlugin();
 
-    const trigger = document.querySelector("[data-autoa11y-announce]") as HTMLElement;
+    const trigger = document.querySelector("[data-automagica11y-announce]") as HTMLElement;
     const target = document.getElementById("panel") as HTMLElement;
 
     vi.useFakeTimers();
     dispatchToggle(trigger, { expanded: false, trigger, target });
     vi.advanceTimersByTime(50);
 
-    const region = document.getElementById("autoa11y-live");
+    const region = document.getElementById("automagica11y-live");
     expect(region?.textContent).toBe("Primary panel collapsed");
     expect(region?.getAttribute("aria-live")).toBe("assertive");
     expect(region?.getAttribute("role")).toBe("alert");
@@ -88,8 +88,8 @@ describe("announce pattern", () => {
   it("skips announcements when the trigger retains focus", async () => {
     const trigger = document.createElement("button");
     trigger.textContent = "Focusable";
-    trigger.setAttribute("data-autoa11y-announce", "polite");
-    trigger.setAttribute("data-autoa11y-toggle", "#panel");
+    trigger.setAttribute("data-automagica11y-announce", "polite");
+    trigger.setAttribute("data-automagica11y-toggle", "#panel");
     document.body.appendChild(trigger);
     const target = document.createElement("div");
     target.id = "panel";
@@ -105,7 +105,7 @@ describe("announce pattern", () => {
     dispatchToggle(trigger, { expanded: true, trigger, target });
     vi.advanceTimersByTime(50);
 
-    const region = document.getElementById("autoa11y-live");
+    const region = document.getElementById("automagica11y-live");
     expect(region?.textContent).toBe("");
   });
 });

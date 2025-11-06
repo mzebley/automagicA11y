@@ -1,12 +1,12 @@
-# autoA11y Architecture
+# automagicA11y Architecture
 
-This document explains how **autoA11y** is structured internally and how its modular registry and helper systems work.
+This document explains how **automagicA11y** is structured internally and how its modular registry and helper systems work.
 
 ---
 
 ## Overview
 
-autoA11y follows a modular design where each **pattern** (toggle, tooltip, dialog, etc.) is self-contained but shares core utilities for:
+automagicA11y follows a modular design where each **pattern** (toggle, tooltip, dialog, etc.) is self-contained but shares core utilities for:
 
 - Class management
 - ARIA attribute wiring
@@ -29,7 +29,7 @@ The **registry** is the backbone that keeps patterns independent but coordinated
 registerPattern(name: string, selector: string, initFn: (el: Element) => void)
 ```
 
-- Each pattern registers itself with a name and a selector (e.g., `[data-autoa11y-toggle]`).
+- Each pattern registers itself with a name and a selector (e.g., `[data-automagica11y-toggle]`).
 - `initAllPatterns()` runs through the registry and initializes all registered selectors in the document or given root.
 
 This allows you to dynamically load only the patterns you want, or initialize specific sections of a page.
@@ -42,7 +42,7 @@ This allows you to dynamically load only the patterns you want, or initialize sp
 
 Handles class toggling and **truthiness mapping**.
 
-- Reads `data-autoa11y-[trigger|target]-class-[action]` attributes.
+- Reads `data-automagica11y-[trigger|target]-class-[action]` attributes.
 - Maps synonyms (`open`, `expanded`, `active`, etc.) to true/false.
 - Applies/removes appropriate classes from both trigger and target.
 
@@ -74,11 +74,11 @@ Centralized event dispatch helpers for uniform custom event handling.
 
 Every component dispatches consistent lifecycle events:
 
-- `autoa11y:ready` — after setup
-- `autoa11y:toggle` — whenever state changes
-- `autoa11y:open` / `autoa11y:close` — for convenience and custom logic
+- `automagica11y:ready` — after setup
+- `automagica11y:toggle` — whenever state changes
+- `automagica11y:open` / `automagica11y:close` — for convenience and custom logic
 
-The announce pattern is the canonical listener for these events. Once `registerAnnouncePlugin()` runs, a shared live region responds to hooks like `autoa11y:toggle`, so future patterns (dialogs, accordions, menus) emit events and rely on announce for ARIA live messaging instead of creating their own regions.
+The announce pattern is the canonical listener for these events. Once `registerAnnouncePlugin()` runs, a shared live region responds to hooks like `automagica11y:toggle`, so future patterns (dialogs, accordions, menus) emit events and rely on announce for ARIA live messaging instead of creating their own regions.
 
 ---
 
@@ -98,7 +98,7 @@ This ensures no collisions and predictable initialization order.
 3. Register it in `src/patterns/index.ts`:
 
    ```ts
-   registerPattern("menu", "[data-autoa11y-menu]", initMenu);
+   registerPattern("menu", "[data-automagica11y-menu]", initMenu);
    ```
 
 4. Use shared helpers (e.g., `getClassConfig()`, `applyClasses()`).

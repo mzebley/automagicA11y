@@ -1,6 +1,6 @@
 # Branding & Voice
 
-autoA11y represents accessibility made *effortless* and *predictable*.
+automagicA11y represents accessibility made *effortless* and *predictable*.
 
 ---
 

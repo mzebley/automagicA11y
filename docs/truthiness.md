@@ -1,6 +1,6 @@
 # Truthiness Mapping System
 
-autoA11y introduces a **truthiness mapping** to normalize state terms (like `open`, `expanded`, or `active`) into a boolean model internally.
+automagicA11y introduces a **truthiness mapping** to normalize state terms (like `open`, `expanded`, or `active`) into a boolean model internally.
 
 ---
 
@@ -8,8 +8,8 @@ autoA11y introduces a **truthiness mapping** to normalize state terms (like `ope
 
 Different developers use different terms for describing states. For example:
 
-- Some write `data-autoa11y-trigger-class-open`.
-- Others prefer `data-autoa11y-trigger-class-active`.
+- Some write `data-automagica11y-trigger-class-open`.
+- Others prefer `data-automagica11y-trigger-class-active`.
 
 Truthiness mapping makes these interchangeable by interpreting the meaning of the term.
 
@@ -26,7 +26,7 @@ const falsy  = new Set(["closed","collapsed","hidden","inactive","unpressed","fa
 
 ### Parsing Flow
 
-1. Scan all attributes matching `data-autoa11y-[trigger|target]-class-[state]`.
+1. Scan all attributes matching `data-automagica11y-[trigger|target]-class-[state]`.
 2. Split the `state` segment (`open`, `collapsed`, `active`, etc.).
 3. Determine if the keyword is **truthy** or **falsy**.
 4. Store them in the config object under `.true` or `.false` arrays.
@@ -46,11 +46,11 @@ const falsy  = new Set(["closed","collapsed","hidden","inactive","unpressed","fa
 
 ```html
 <button
-  data-autoa11y-toggle="#info"
-  data-autoa11y-trigger-class-active="btn--active"
-  data-autoa11y-trigger-class-inactive="btn--ghost"
-  data-autoa11y-target-class-expanded="panel--visible"
-  data-autoa11y-target-class-collapsed="panel--hidden">
+  data-automagica11y-toggle="#info"
+  data-automagica11y-trigger-class-active="btn--active"
+  data-automagica11y-trigger-class-inactive="btn--ghost"
+  data-automagica11y-target-class-expanded="panel--visible"
+  data-automagica11y-target-class-collapsed="panel--hidden">
   Info
 </button>
 <div id="info" hidden>More information...</div>

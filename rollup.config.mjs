@@ -10,9 +10,9 @@ const projectRootDir = path.resolve(fileURLToPath(new URL(".", import.meta.url))
 export default {
   input: "src/index.ts",
   output: [
-    { file: "dist/autoa11y.esm.js", format: "esm", sourcemap: true },
-    { file: "dist/autoa11y.cjs.js", format: "cjs", sourcemap: true },
-    { file: "dist/autoa11y.min.js", format: "iife", name: "autoA11y", plugins: [terser()], sourcemap: true }
+    { file: "dist/automagica11y.esm.js", format: "esm", sourcemap: true },
+    { file: "dist/automagica11y.cjs.js", format: "cjs", sourcemap: true },
+    { file: "dist/automagica11y.min.js", format: "iife", name: "automagicA11y", plugins: [terser()], sourcemap: true }
   ],
   plugins: [
     alias({

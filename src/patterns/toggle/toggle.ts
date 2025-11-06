@@ -2,14 +2,14 @@ import { getClassConfig, applyClasses } from "@core/classes";
 
 /**
  * Hydrates a toggle trigger so it controls its target element with accessible defaults.
- * Expects the trigger to provide a `data-autoa11y-toggle` selector that resolves to a target.
+ * Expects the trigger to provide a `data-automagica11y-toggle` selector that resolves to a target.
  */
 export function initToggle(trigger: Element) {
   // Guard early: patterns only run against real HTMLElements.
   if (!(trigger instanceof HTMLElement)) return;
 
   // Read the selector for the companion target and resolve it in the document.
-  const targetSel = trigger.getAttribute("data-autoa11y-toggle");
+  const targetSel = trigger.getAttribute("data-automagica11y-toggle");
   if (!targetSel) return;
   const target = document.querySelector<HTMLElement>(targetSel);
   if (!target) return;
@@ -18,8 +18,8 @@ export function initToggle(trigger: Element) {
   const cfg = getClassConfig(trigger);
 
   // Ensure both trigger and target have IDs so ARIA relationships can be wired reliably.
-  if (!trigger.id) trigger.id = `autoa11y-t-${crypto.randomUUID()}`;
-  if (!target.id) target.id = `autoa11y-p-${crypto.randomUUID()}`;
+  if (!trigger.id) trigger.id = `automagica11y-t-${crypto.randomUUID()}`;
+  if (!target.id) target.id = `automagica11y-p-${crypto.randomUUID()}`;
 
   // Establish the baseline ARIA contract and initial collapsed state.
   trigger.setAttribute("aria-controls", target.id);
@@ -42,7 +42,7 @@ export function initToggle(trigger: Element) {
     trigger.setAttribute("aria-expanded", String(open));
     target.hidden = !open;
     applyClasses(cfg, open, trigger, target);
-    trigger.dispatchEvent(new CustomEvent("autoa11y:toggle", { detail: { expanded: open, trigger, target } }));
+    trigger.dispatchEvent(new CustomEvent("automagica11y:toggle", { detail: { expanded: open, trigger, target } }));
   };
 
   // Basic toggle helper reads existing ARIA state and flips it.
@@ -57,5 +57,5 @@ export function initToggle(trigger: Element) {
   });
 
   // Announce readiness so plugins or host applications can hook into initialized toggles.
-  trigger.dispatchEvent(new CustomEvent("autoa11y:ready", { detail: { trigger, target } }));
+  trigger.dispatchEvent(new CustomEvent("automagica11y:ready", { detail: { trigger, target } }));
 }

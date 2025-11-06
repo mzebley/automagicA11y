@@ -1,6 +1,6 @@
 # Patterns Roadmap
 
-autoA11y patterns are small, self-contained behaviors that automatically handle ARIA attributes, keyboard controls, and class/state reflection.
+automagicA11y patterns are small, self-contained behaviors that automatically handle ARIA attributes, keyboard controls, and class/state reflection.
 
 ---
 
@@ -13,9 +13,9 @@ The foundational component. Manages `aria-expanded`, `aria-controls`, and open/c
 ### Features
 
 - Handles buttons and non-button elements
-- Custom class support via `data-autoa11y-trigger-class-open`
+- Custom class support via `data-automagica11y-trigger-class-open`
 - Truthiness mapping for flexible naming
-- Emits lifecycle events (`autoa11y:toggle`)
+- Emits lifecycle events (`automagica11y:toggle`)
 
 ---
 
@@ -28,7 +28,7 @@ Handles hover/focus interactions using `aria-describedby` and `role="tooltip"`.
 ### Planned Features
 
 - Open on hover/focus, close on blur/leave
-- `data-autoa11y-tooltip` to point to tooltip element
+- `data-automagica11y-tooltip` to point to tooltip element
 - Automatic ARIA role assignment
 - Delay timers for better UX
 
@@ -42,7 +42,7 @@ Accessible modal system with `aria-modal`, focus trapping, and inert background.
 
 ### Planned Features
 
-- `data-autoa11y-dialog` for trigger/target pair
+- `data-automagica11y-dialog` for trigger/target pair
 - Adds/removes `aria-hidden` from background
 - Keyboard ESC close support
 - Focus restoration to trigger
@@ -57,7 +57,7 @@ A grouped toggle pattern using the same toggle behavior but with mutual exclusio
 
 ### Planned Features
 
-- `data-autoa11y-group` attribute
+- `data-automagica11y-group` attribute
 - Arrow key navigation between triggers
 - Only one open at a time (optional)
 

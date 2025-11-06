@@ -1,13 +1,13 @@
 /**
- * The announce pattern wires a shared ARIA live region to autoA11y events so controls
+ * The announce pattern wires a shared ARIA live region to automagicA11y events so controls
  * can opt in to screen reader messaging with simple data attributes.
  */
 // ID used for the shared live region node so we never duplicate it.
-const LIVE_REGION_ID = "autoa11y-live";
+const LIVE_REGION_ID = "automagica11y-live";
 // Prevent chattiness by ignoring identical announcements for a short window.
 const MESSAGE_DEBOUNCE_MS = 750;
 
-// Minimal detail payload we expect from `autoa11y:toggle` events.
+// Minimal detail payload we expect from `automagica11y:toggle` events.
 type ToggleEventDetail = {
   expanded?: boolean;
   trigger?: HTMLElement;
@@ -121,8 +121,8 @@ export function announce(message: string, assertive = false) {
 function announcementFor(detail: ToggleEventDetail, trigger: HTMLElement): string {
   const expanded = Boolean(detail.expanded);
   const attr = expanded
-    ? trigger.getAttribute("data-autoa11y-announce-open")
-    : trigger.getAttribute("data-autoa11y-announce-closed");
+    ? trigger.getAttribute("data-automagica11y-announce-open")
+    : trigger.getAttribute("data-automagica11y-announce-closed");
   if (attr && attr.trim()) return attr.trim();
 
   const controlName = nameOf(trigger);
@@ -131,7 +131,7 @@ function announcementFor(detail: ToggleEventDetail, trigger: HTMLElement): strin
 }
 
 /**
- * Respond to `autoa11y:toggle` events fired by patterns. We ignore controls that haven't opted in
+ * Respond to `automagica11y:toggle` events fired by patterns. We ignore controls that haven't opted in
  * and skip redundant announcements when the user still has focus on the trigger.
  */
 function handleToggle(event: Event) {
@@ -139,12 +139,12 @@ function handleToggle(event: Event) {
   const detail = event.detail as ToggleEventDetail | undefined;
   const trigger = detail?.trigger;
   if (!(trigger instanceof HTMLElement)) return;
-  if (!trigger.hasAttribute("data-autoa11y-announce")) return;
+  if (!trigger.hasAttribute("data-automagica11y-announce")) return;
 
   // When focus stays on the trigger, screen readers announce aria-expanded natively.
   if (trigger === document.activeElement) return;
 
-  const modeAttr = trigger.getAttribute("data-autoa11y-announce")?.toLowerCase() as AnnounceMode | null;
+  const modeAttr = trigger.getAttribute("data-automagica11y-announce")?.toLowerCase() as AnnounceMode | null;
   const mode: AnnounceMode = modeAttr === "assertive" ? "assertive" : "polite";
   const message = announcementFor(detail ?? {}, trigger);
   // Hand off to the live region with the requested politeness mode.
@@ -158,12 +158,5 @@ export function registerAnnouncePlugin() {
   if (registered || typeof document === "undefined") return;
   registered = true;
   ensureLiveRegion();
-  document.addEventListener("autoa11y:toggle", handleToggle, { capture: true });
+  document.addEventListener("automagica11y:toggle", handleToggle, { capture: true });
 }
-/**
- * The announce pattern wires a shared ARIA live region to autoA11y events so that any
- * control can opt in to screen reader messaging with a couple of data attributes.
- * The module exposes helpers that stay internal (ensureLiveRegion, announcementFor)
- * and a single public `registerAnnouncePlugin` entry point plus utility exports.
- */
- 
