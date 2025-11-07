@@ -21,7 +21,14 @@ const EXAMPLES = [
  * Adds aria-current to the active example and provides a Skip link.
  */
 function renderExamplesNav() {
-  const current = location.pathname.split("/").pop() || "index.html";
+  const path = location.pathname;
+  let current = path.split("/").pop() || "index.html";
+  // Normalize clean-URLs (e.g., /examples/tooltip-basic → tooltip-basic.html)
+  if (current && !current.includes(".")) current = `${current}.html`;
+
+  // If we're not inside /examples/, generate absolute links to that folder
+  const inExamples = path.includes("/examples/") || /\/examples$/.test(path);
+  const base = inExamples ? "./" : "/examples/";
   const header = document.createElement("header");
   header.className = "site-nav";
 
@@ -31,10 +38,10 @@ function renderExamplesNav() {
       <a class="brand" href="/">automagicA11y</a>
       <nav aria-label="Examples navigation">
         <ul class="site-nav__list">
-          <li><a href="./index.html" ${current === "index.html" ? 'aria-current="page"' : ''}>Examples</a></li>
+          <li><a href="${base}index.html" ${current === "index.html" ? 'aria-current="page"' : ''}>Examples</a></li>
           ${EXAMPLES.map(({ file, title }) => {
             const active = current === file ? ' aria-current="page"' : '';
-            return `<li><a href="./${file}"${active}>${title}</a></li>`;
+            return `<li><a href="${base}${file}"${active}>${title}</a></li>`;
           }).join("")}
         </ul>
       </nav>
@@ -54,4 +61,3 @@ document.addEventListener("DOMContentLoaded", renderExamplesNav);
 
 // Expose list for index page generation if needed
 window.__AUTOMAGIC_EXAMPLES__ = EXAMPLES;
-
