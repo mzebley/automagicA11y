@@ -57,8 +57,35 @@
     </section>
 
     <section class="card">
+      <h2 id="hooks-heading">Lifecycle hooks</h2>
+      <p>
+        Tooltips emit <code>automagica11y:tooltip:* </code> events so you can attach analytics, announcements, or custom logic.
+        Try interacting with the sample trigger and watch the log update.
+      </p>
+
+      <div class="tooltip-wrapper" aria-labelledby="hooks-heading">
+        <button
+          class="btn"
+          type="button"
+          data-automagica11y-tooltip="#tip-hooks"
+          data-automagica11y-trigger-class-active="is-armed"
+          data-automagica11y-target-class-open="tooltip-bubble--visible">
+          Inspect lifecycle
+        </button>
+        <span id="tip-hooks" class="tooltip-bubble" role="tooltip" hidden>
+          These events bubble: <code>tooltip:ready</code>, <code>tooltip:shown</code>, <code>tooltip:hidden</code>.
+        </span>
+      </div>
+
+      <div class="log" aria-live="polite">
+        <p class="log__title">Event log</p>
+        <ul id="tooltip-log"></ul>
+      </div>
+    </section>
+
+    <section class="card">
       <h2>Implementation</h2>
-      <p>Reference the tooltip element via `data-automagica11y-tooltip` and optionally define class hooks for open/closed states.</p>
+      <p>Reference the tooltip element via <code>data-automagica11y-tooltip</code> and optionally define class hooks for open/closed states.</p>
 
       <pre><code class="language-html">&lt;div class="tooltip-wrapper">
   &lt;button
@@ -81,5 +108,30 @@
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markup.min.js"></script>
   <script src="../dist/automagica11y.min.js"></script>
+  <script>
+    const logList = document.getElementById("tooltip-log");
+    const appendLog = (message) => {
+      if (!logList) return;
+      const item = document.createElement("li");
+      const time = new Date().toLocaleTimeString();
+      item.textContent = `[${time}] ${message}`;
+      logList.prepend(item);
+      const entries = Array.from(logList.children);
+      entries.slice(5).forEach((node) => node.remove());
+    };
+
+    document.addEventListener("automagica11y:tooltip:ready", (event) => {
+      const id = event.detail.target.id;
+      appendLog(`Tooltip #${id} ready`);
+    });
+
+    document.addEventListener("automagica11y:tooltip:shown", (event) => {
+      appendLog(`Shown: #${event.detail.target.id}`);
+    });
+
+    document.addEventListener("automagica11y:tooltip:hidden", (event) => {
+      appendLog(`Hidden: #${event.detail.target.id}`);
+    });
+  </script>
 </body>
 </html>

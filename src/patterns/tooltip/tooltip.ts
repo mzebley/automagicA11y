@@ -31,6 +31,8 @@ export function initTooltip(trigger: Element) {
   // Snapshot class mappings. Tooltip does not apply default toggle classes.
   const toggleClasses = createClassToggler(trigger, { applyTriggerFallback: false });
 
+  const readyDetail = { trigger, target };
+
   let expanded = false;
   let pointerActive = false;
   let focusActive = false;
@@ -43,12 +45,28 @@ export function initTooltip(trigger: Element) {
     }
   };
 
+  const emitToggle = (open: boolean) => {
+    const detail = { expanded: open, trigger, target };
+    dispatch(trigger, "automagica11y:tooltip:toggle", detail);
+    // Legacy event for backwards compatibility with early adopters and shared plugins.
+    dispatch(trigger, "automagica11y:toggle", detail);
+  };
+
+  const emitVisibility = (open: boolean) => {
+    const detail = { trigger, target };
+    const type = open
+      ? "automagica11y:tooltip:shown"
+      : "automagica11y:tooltip:hidden";
+    dispatch(trigger, type, detail);
+  };
+
   const setState = (open: boolean) => {
     if (expanded === open) return;
     expanded = open;
     setHiddenState(target, !open);
     toggleClasses(open, target);
-    dispatch(trigger, "automagica11y:toggle", { expanded: open, trigger, target });
+    emitToggle(open);
+    emitVisibility(open);
   };
 
   const show = () => {
@@ -99,5 +117,7 @@ export function initTooltip(trigger: Element) {
     }
   });
 
-  dispatch(trigger, "automagica11y:ready", { trigger, target });
+  dispatch(trigger, "automagica11y:tooltip:ready", readyDetail);
+  // Emit the legacy ready event to avoid breaking consumers on older namespaces.
+  dispatch(trigger, "automagica11y:ready", readyDetail);
 }

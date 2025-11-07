@@ -19,7 +19,9 @@ describe("tooltip pattern", () => {
     const tooltip = document.getElementById("tip") as HTMLElement;
 
     const ready = vi.fn();
-    trigger.addEventListener("automagica11y:ready", ready);
+    const legacyReady = vi.fn();
+    trigger.addEventListener("automagica11y:tooltip:ready", ready);
+    trigger.addEventListener("automagica11y:ready", legacyReady);
 
     initTooltip(trigger);
 
@@ -31,6 +33,7 @@ describe("tooltip pattern", () => {
     const readyEvent = ready.mock.calls[0][0] as CustomEvent;
     expect(readyEvent.detail.trigger).toBe(trigger);
     expect(readyEvent.detail.target).toBe(tooltip);
+    expect(legacyReady).toHaveBeenCalledTimes(1);
   });
 
   it("shows on focus and hides on blur while emitting lifecycle events", () => {
@@ -38,8 +41,14 @@ describe("tooltip pattern", () => {
 
     const trigger = document.getElementById("trigger") as HTMLElement;
     const tooltip = document.getElementById("tip") as HTMLElement;
-    const listener = vi.fn();
-    trigger.addEventListener("automagica11y:toggle", listener);
+    const toggleListener = vi.fn();
+    const legacyToggleListener = vi.fn();
+    const shownListener = vi.fn();
+    const hiddenListener = vi.fn();
+    trigger.addEventListener("automagica11y:tooltip:toggle", toggleListener);
+    trigger.addEventListener("automagica11y:toggle", legacyToggleListener);
+    trigger.addEventListener("automagica11y:tooltip:shown", shownListener);
+    trigger.addEventListener("automagica11y:tooltip:hidden", hiddenListener);
 
     vi.useFakeTimers();
     initTooltip(trigger);
@@ -51,10 +60,13 @@ describe("tooltip pattern", () => {
     vi.advanceTimersByTime(150);
     expect(tooltip.hidden).toBe(true);
 
-    expect(listener).toHaveBeenCalledTimes(2);
-    const [showEvt, hideEvt] = listener.mock.calls.map(call => call[0] as CustomEvent);
+    expect(toggleListener).toHaveBeenCalledTimes(2);
+    expect(legacyToggleListener).toHaveBeenCalledTimes(2);
+    const [showEvt, hideEvt] = toggleListener.mock.calls.map(call => call[0] as CustomEvent);
     expect(showEvt.detail.expanded).toBe(true);
     expect(hideEvt.detail.expanded).toBe(false);
+    expect(shownListener).toHaveBeenCalledTimes(1);
+    expect(hiddenListener).toHaveBeenCalledTimes(1);
     vi.useRealTimers();
   });
 
