@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>automagicA11y – Popover Example</title>
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+  <main>
+    <h1>Popover</h1>
+    <p>
+      Popovers turn any control into a floating surface for quick actions, menus, or context inspectors. They share the tooltip
+      placement engine, so the panel automatically flips when it would overflow the viewport.
+    </p>
+    <p>
+      Use <code>data-automagica11y-popover</code> to declare the relationship, then opt-in to outside click or scroll dismissal,
+      custom dismiss controls, and lifecycle events without writing imperative glue code.
+    </p>
+
+    <section class="card">
+      <h2 id="profile-heading">Profile actions</h2>
+      <p>Click the trigger to open a popover that stays pinned to its button and exposes a custom dismiss control.</p>
+
+      <div class="popover-demo" aria-labelledby="profile-heading">
+        <button
+          class="btn"
+          data-automagica11y-popover="#profile-popover"
+          data-automagica11y-trigger-class-active="is-armed"
+          data-automagica11y-target-class-open="popover-panel--visible">
+          Manage profile
+        </button>
+        <div id="profile-popover" class="popover-panel" hidden>
+          <p class="popover-panel__title">Profile</p>
+          <ul>
+            <li><a href="#">View account</a></li>
+            <li><a href="#">Security settings</a></li>
+            <li><a href="#">Notification preferences</a></li>
+          </ul>
+          <button class="btn btn--secondary" data-automagica11y-popover-dismiss>Done</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 id="options-heading">Dismissal controls</h2>
+      <p>
+        Configure dismissal without JavaScript: disable outside click, require 120&nbsp;px of scroll before closing, or flip the
+        placement to stay on screen.
+      </p>
+
+      <div class="grid" aria-labelledby="options-heading">
+        <div>
+          <h3>Outside click disabled</h3>
+          <button
+            class="btn"
+            data-automagica11y-popover="#sticky-popover"
+            data-automagica11y-popover-outside-dismiss="false"
+            data-automagica11y-target-class-open="popover-panel--visible">
+            Sticky panel
+          </button>
+          <div id="sticky-popover" class="popover-panel" hidden>
+            <p>This popover stays open until you press Escape or use the dismiss link.</p>
+            <a href="#" data-automagica11y-popover-dismiss>Close</a>
+          </div>
+        </div>
+
+        <div>
+          <h3>Scroll threshold</h3>
+          <button
+            class="btn"
+            data-automagica11y-popover="#scroll-popover"
+            data-automagica11y-popover-scroll-distance="120"
+            data-automagica11y-popover-position="right"
+            data-automagica11y-target-class-open="popover-panel--visible">
+            Show updates
+          </button>
+          <div id="scroll-popover" class="popover-panel" hidden>
+            <p>Scroll more than 120px and the panel closes automatically.</p>
+            <button class="btn btn--secondary" data-automagica11y-popover-dismiss>Dismiss</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 id="events-heading">Lifecycle events</h2>
+      <p>
+        Popovers emit namespaced events for analytics, announcements, or other integrations. Interact with the trigger to see the
+        stream of events and dismissal reasons.
+      </p>
+
+      <div class="popover-demo" aria-labelledby="events-heading">
+        <button
+          class="btn"
+          type="button"
+          data-automagica11y-popover="#events-popover"
+          data-automagica11y-trigger-class-active="is-armed"
+          data-automagica11y-target-class-open="popover-panel--visible">
+          Inspect lifecycle
+        </button>
+        <div id="events-popover" class="popover-panel" hidden>
+          <p>Every action emits <code>automagica11y:popover:* </code> events.</p>
+          <button class="btn btn--secondary" data-automagica11y-popover-dismiss>Close</button>
+        </div>
+      </div>
+
+      <div class="log" aria-live="polite">
+        <p class="log__title">Event log</p>
+        <ul id="popover-log"></ul>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Implementation</h2>
+      <p>
+        Declare the relationship with <code>data-automagica11y-popover</code>, then opt into additional behaviors with
+        data attributes. The placement attribute updates automatically when the panel flips.
+      </p>
+
+      <pre><code class="language-html">&lt;button
+  data-automagica11y-popover="#profile-popover"
+  data-automagica11y-popover-scroll-distance="120"
+  data-automagica11y-popover-outside-dismiss="false"
+  data-automagica11y-target-class-open="popover-panel--visible">
+  Manage profile
+&lt;/button>
+&lt;div id="profile-popover" hidden>
+  &lt;p>Actions&lt;/p>
+  &lt;button data-automagica11y-popover-dismiss>Done&lt;/button>
+&lt;/div></code></pre>
+
+      <p>Include the compiled bundle once to hydrate every popover:</p>
+      <pre><code class="language-html">&lt;script src="../dist/automagica11y.min.js">&lt;/script></code></pre>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markup.min.js"></script>
+  <script src="../dist/automagica11y.min.js"></script>
+  <script>
+    const log = document.getElementById("popover-log");
+    const addLog = (message) => {
+      if (!log) return;
+      const item = document.createElement("li");
+      const time = new Date().toLocaleTimeString();
+      item.textContent = `[${time}] ${message}`;
+      log.prepend(item);
+      const entries = Array.from(log.children);
+      entries.slice(6).forEach((node) => node.remove());
+    };
+
+    document.addEventListener("automagica11y:popover:toggle", (event) => {
+      const { expanded, reason, target } = event.detail;
+      addLog(`${expanded ? "Opened" : "Closed"} (${reason}) → #${target.id}`);
+    });
+
+    document.addEventListener("automagica11y:popover:dismissed", (event) => {
+      const { reason, target } = event.detail;
+      addLog(`Dismissed (${reason}) → #${target.id}`);
+    });
+
+    document.addEventListener("automagica11y:popover:placement", (event) => {
+      const { placement, target } = event.detail;
+      addLog(`Placement resolved to “${placement}” for #${target.id}`);
+    });
+  </script>
+</body>
+</html>

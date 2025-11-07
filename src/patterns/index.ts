@@ -1,6 +1,7 @@
 import { registerPattern } from "@core/registry";
 import { initToggle, isToggleOpen, getToggleTarget } from "./toggle/toggle";
 import { initTooltip } from "./tooltip/tooltip";
+import { initPopover } from "./popover/popover";
 import { initDialog } from "./dialog/dialog";
 import { initFocusInitial } from "./focus/focus-initial";
 import { initFocusMap } from "./focus/focus-map";
@@ -15,6 +16,12 @@ registerPattern("toggle", "[data-automagica11y-toggle]", (node) => {
 registerPattern("tooltip", "[data-automagica11y-tooltip]", (node) => {
   if (node instanceof Element) {
     initTooltip(node);
+  }
+});
+
+registerPattern("popover", "[data-automagica11y-popover]", (node) => {
+  if (node instanceof Element) {
+    initPopover(node);
   }
 });
 
@@ -36,4 +43,13 @@ registerPattern("focus-map", "[data-automagica11y-focus-map]", (node) => {
   }
 });
 
-export { initToggle, isToggleOpen, getToggleTarget, initTooltip, initDialog, initFocusInitial, initFocusMap };
+export {
+  initToggle,
+  isToggleOpen,
+  getToggleTarget,
+  initTooltip,
+  initPopover,
+  initDialog,
+  initFocusInitial,
+  initFocusMap,
+};

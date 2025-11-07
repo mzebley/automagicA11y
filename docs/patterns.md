@@ -32,6 +32,18 @@ automagicA11y patterns are small, self-contained behaviors that automatically ha
 
 ---
 
+### Popover (v0.3)
+
+**Description:** Floating action panel that pairs a trigger with a dismissible surface for menus, inspectors, or quick actions.
+
+**Highlights:**
+- Shares the viewport-aware placement engine with tooltip and publishes the resolved side via `data-automagica11y-popover-placement`.
+- Manages `aria-haspopup`, `aria-expanded`, and `aria-controls` automatically for compliant disclosure semantics.
+- Supports click, Escape, outside pointer, and scroll-based dismissal with configurable thresholds and custom dismiss controls.
+- Emits lifecycle events (`ready`, `toggle`, `shown/hidden`, `dismissed`, `placement`) for analytics or plugin hooks.
+
+---
+
 ### Dialog (v0.2)
 
 **Description:** Accessible modal dialog that traps focus, locks background content, and restores state on close.
