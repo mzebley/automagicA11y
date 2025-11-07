@@ -181,13 +181,17 @@ When the page hydrates, the button receives focus once (without altering the aut
 </div>
 ```
 
-Define an explicit tab order using selectors. Scope the search to a container with `data-automagica11y-focus-map-scope="#page-shell"` (or use `"self"` to limit to the element itself). Use `data-automagica11y-focus-map-anchor` to align the remapped sequence with a specific container’s position in the DOM (defaults to the same element used for scope). The pattern preserves original `tabindex` values, applies sequential indices while the map is active, and restores originals if the map attribute is removed or re-initialised.
+Define an explicit tab order using selectors. Scope the search to a container with `data-automagica11y-focus-map-scope="#page-shell"` (or use `"self"` to limit to the element itself). Provide a `data-automagica11y-focus-map-anchor` selector that resolves to a focusable element – this anchor acts as the entry and exit point for the sequence. If no anchor is supplied and the scope resolves to `document`, the map will not activate.
 
-Use this to keep floating players, overlays, or portal-based menus in the logical navigation sequence.
+Instead of rewriting `tabindex` values, the pattern listens for `Tab` / `Shift + Tab` on the mapped elements and routes focus through the declared order. When focus exits the final element, the browser’s natural tab order resumes so the rest of the page stays reachable. Re-initialize the pattern after DOM changes to refresh the sequence.
+
+Use this to keep floating players, overlays, or portal-based menus in the logical navigation sequence without breaking the author’s source order.
 
 ---
 
-### Announce (cross-cutting)
+## Plugins
+
+### Announce
 
 The announce pattern provides a shared live region for screen reader updates so individual components stay declarative.
 
@@ -220,7 +224,7 @@ registerAnnouncePlugin();
 
 ---
 
-### Animate (cross-cutting)
+### Animate
 
 Delay the “close” side of any toggle until the target (or trigger) finishes its CSS animation. Great for fade-outs or sliding panels where you want the animation to complete before `hidden` flips.
 
@@ -398,12 +402,20 @@ Each pattern initializes independently, avoiding collisions while sharing helper
 ### v0.3
 
 - [x] Focus management utilities (`focus-initial`, `focus-map`, reusable traps)
+- [x] Announce plugin for shared live region messaging
+- [x] Animate plugin for CSS-driven close delays
 
-### v0.4+
+### v0.4
 
-- [ ] Persist and hash plugins
-- [ ] Animate plugin
+- [ ] Persist plugin for remembering disclosure state via storage
+- [ ] Hash-sync plugin for deep-linkable toggles
+- [ ] Keyboard reference docs with pattern-specific shortcuts
+
+### v0.5+
+
 - [ ] Framework wrappers (Angular, React, Svelte)
+- [ ] Authoring CLI that scaffolds semantic markup from component descriptors
+- [ ] Visual regression suite to ensure default class hooks remain stable
 
 ---
 

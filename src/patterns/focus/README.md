@@ -66,5 +66,13 @@ These helpers keep focus behavior predictable across patterns while letting auth
 
 ---
 
-© 2025 Mark Zebley • automagicA11y  
+## Roadmap
+
+- [ ] Automatic rehydration when mapped nodes enter/exit the DOM (MutationObserver support).
+- [ ] Author-provided fallbacks for when no focusable elements resolve inside a map sequence.
+- [ ] Documentation generator that outputs focus diagrams for complex widget setups.
+
+---
+
+© 2025 Mark Zebley • automagicA11y
 _Licensed under the MIT License_

@@ -74,6 +74,14 @@ Any pattern that dispatches `automagica11y:toggle` automatically integrates with
 
 ---
 
+## Roadmap
+
+- [ ] Global configuration API to set project-wide default copy and politeness levels.
+- [ ] Message queueing so rapid toggle changes coalesce into a single announcement.
+- [ ] Integration tests that validate polite/assertive timing across popular screen readers.
+
+---
+
 ## Related Docs
 
 | Document | Description |

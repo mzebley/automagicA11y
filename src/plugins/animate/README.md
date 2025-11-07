@@ -72,9 +72,9 @@ Re-opening mid-close? The plugin cancels all timers/listeners, removes staging c
 
 ## Roadmap
 
-- [x] Ability to watch any specified element’s animation and trigger close after completion (via CSS selector support)
-- [ ] Add support for open-phase animations and custom lifecycle callbacks
-- [ ] Ability to watch any specified element's animation and then trigger close after completion rather than just the trigger or target
+- [ ] Add support for open-phase animations and custom lifecycle callbacks.
+- [ ] Author-configurable minimum/maximum durations via `data-automagica11y-animate-duration-*` guards.
+- [ ] Visual regression example that asserts class hooks stay in sync with the animation lifecycle.
 
 ---
 

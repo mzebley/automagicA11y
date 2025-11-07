@@ -78,5 +78,13 @@ Triggers can share the same truthiness-aware class mapping used by other pattern
 
 ---
 
-© 2025 Mark Zebley • automagicA11y  
+## Roadmap
+
+- [ ] Non-modal “popover” variant that omits scroll locking but retains focus management.
+- [ ] Configurable focus return target for cases where the trigger should not regain focus.
+- [ ] Nested dialog coordination so child modals temporarily pause parent traps without breaking background state snapshots.
+
+---
+
+© 2025 Mark Zebley • automagicA11y
 _Licensed under the MIT License_

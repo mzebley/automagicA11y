@@ -80,5 +80,13 @@ Use the `automagica11y:toggle` payload to integrate with announce, analytics, or
 
 ---
 
-© 2025 Mark Zebley • automagicA11y  
+## Roadmap
+
+- [ ] Optional delay attributes for open/close to better support stylus interactions.
+- [ ] Smart positioning helper that flips the tooltip when it would overflow the viewport.
+- [ ] Touch-specific affordances (long-press detection and dismiss buttons for mobile).
+
+---
+
+© 2025 Mark Zebley • automagicA11y
 _Licensed under the MIT License_

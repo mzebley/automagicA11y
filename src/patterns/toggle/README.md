@@ -76,11 +76,8 @@ When toggled **closed**, these revert automatically.
 |------------|-------------|
 | `data-automagica11y-toggle` | Selector (ID or class) of the target element. **Required.** |
 | `data-automagica11y-trigger-class-[state]` | Classes to apply to the trigger for each state (`open`, `closed`, `active`, `inactive`, etc.). |
-| `data-automagica11y-target-class-[state]` | Classes to apply to the target element for each state. |
-| `data-automagica11y-group` | (Future) Groups multiple toggles as an accordion. |
-| `data-automagica11y-persist` | (Plugin) Remembers state using localStorage/sessionStorage. |
-| `data-automagica11y-hash` | (Plugin) Syncs state with URL hash. |
-| `data-automagica11y-animate` | (Plugin) Delays hiding for CSS transitions. |
+| `data-automagica11y-target-class-[state]` | Classes to apply to the target element for each state (declared on the trigger). |
+| `data-automagica11y-animate` | Opt into the animate plugin so close transitions wait for CSS to finish. |
 
 ---
 
@@ -194,9 +191,16 @@ This structure makes it simple to integrate with frameworks, custom logic, or an
 
 ## Integration Tips
 
-- Manually initialize toggles with `initToggle(element)`.  
-- The registry auto-initializes all `[data-automagica11y-toggle]` elements on load.  
+- Manually initialize toggles with `initToggle(element)`.
+- The registry auto-initializes all `[data-automagica11y-toggle]` elements on load.
 - To extend behavior (persistence, announcements, animations), use or register a plugin.
+
+## Roadmap
+
+- [ ] `data-automagica11y-group` support for accordion-style mutual exclusivity.
+- [ ] Persistence plugin that remembers open state across reloads.
+- [ ] URL hash synchronization so toggles can be deep-linked.
+- [ ] Multi-target toggles (one trigger controlling multiple related panels).
 
 ---
 
