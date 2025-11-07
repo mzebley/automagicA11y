@@ -113,11 +113,15 @@ If no custom trigger classes are defined, automagicA11y falls back to `automagic
 - Pointer hover or focus shows the tooltip
 - Pointer leave, blur, or pressing Escape hides it
 - Optional class hooks apply via the same `data-automagica11y-[trigger|target]-class-*` attributes
+- Optional open/close delays (`data-automagica11y-tooltip-[open|close]-delay`) are honored per trigger
+- Placement auto-flips when the preferred side would clip the viewport; inspect `data-automagica11y-tooltip-placement`
+- Touch users can long-press to open and close the tooltip with a `[data-automagica11y-tooltip-dismiss]` control
 
 #### Behavior notes
 
 - Tooltip stays visible while the pointer rests on either the trigger or tooltip element.
 - When no custom classes are defined, tooltip triggers keep their existing class list (no default toggle classes).
+- Long-press (~550&nbsp;ms) opens the tooltip on touch devices and keeps it visible until dismissed.
 - Tooltips emit the shared `automagica11y:ready`/`automagica11y:toggle` events so announce or custom plugins can react.
 
 ### Dialog

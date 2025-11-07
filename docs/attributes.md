@@ -34,6 +34,12 @@ data-automagica11y-[element]-[affordance]-[action]
 <span id="tip1" role="tooltip">Tooltip text</span>
 ```
 
+**Tooltip-specific attributes** extend the base grammar:
+
+- `data-automagica11y-tooltip-open-delay` / `data-automagica11y-tooltip-close-delay` tune interaction timing per trigger.
+- `data-automagica11y-tooltip-position` sets a preferred side while still allowing the helper to flip when overflowing.
+- `data-automagica11y-tooltip-dismiss` designates an internal control that closes the tooltip for touch/keyboard users.
+
 ### Dialog Example
 
 ```html

@@ -13,6 +13,9 @@
     <p>
       Tooltips show contextual information on hover or focus without any imperative wiring. They share the same class grammar as other patterns, so styling stays declarative.
     </p>
+    <p>
+      This demo highlights configurable open/close delays, responsive placement that flips when the viewport would clip content, and a touch-friendly dismiss control wired with <code>data-automagica11y-tooltip-dismiss</code>.
+    </p>
 
     <section class="card">
       <h2 id="forecast-heading">Daily forecast</h2>
@@ -22,6 +25,8 @@
         <button
           class="btn"
           data-automagica11y-tooltip="#tip-forecast"
+          data-automagica11y-tooltip-open-delay="120"
+          data-automagica11y-tooltip-close-delay="220"
           data-automagica11y-trigger-class-active="is-armed"
           data-automagica11y-target-class-open="tooltip-bubble--visible">
           Show forecast
@@ -46,6 +51,7 @@
             type="button"
             aria-label="Why do we need your work email?"
             data-automagica11y-tooltip="#tip-email"
+            data-automagica11y-tooltip-position="right"
             data-automagica11y-target-class-open="tooltip-bubble--visible">
             ℹ️
           </button>
@@ -74,6 +80,7 @@
         </button>
         <span id="tip-hooks" class="tooltip-bubble" role="tooltip" hidden>
           These events bubble: <code>tooltip:ready</code>, <code>tooltip:shown</code>, <code>tooltip:hidden</code>.
+          <button class="tooltip-dismiss" data-automagica11y-tooltip-dismiss type="button">Dismiss</button>
         </span>
       </div>
 
@@ -85,17 +92,20 @@
 
     <section class="card">
       <h2>Implementation</h2>
-      <p>Reference the tooltip element via <code>data-automagica11y-tooltip</code> and optionally define class hooks for open/closed states.</p>
+      <p>Reference the tooltip element via <code>data-automagica11y-tooltip</code>, tune timing with <code>data-automagica11y-tooltip-open-delay</code>/<code>-close-delay</code>, and optionally define class hooks for open/closed states.</p>
 
       <pre><code class="language-html">&lt;div class="tooltip-wrapper">
   &lt;button
     data-automagica11y-tooltip="#tip-forecast"
+    data-automagica11y-tooltip-open-delay="120"
+    data-automagica11y-tooltip-close-delay="220"
     data-automagica11y-trigger-class-active="is-armed"
     data-automagica11y-target-class-open="tooltip-bubble--visible">
     Show forecast
   &lt;/button>
   &lt;span id="tip-forecast" class="tooltip-bubble" role="tooltip" hidden>
     Expect scattered showers...
+    &lt;button data-automagica11y-tooltip-dismiss type="button">Dismiss&lt;/button>
   &lt;/span>
 &lt;/div></code></pre>
 

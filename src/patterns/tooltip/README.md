@@ -28,6 +28,9 @@ When initialized, automagicA11y automatically:
 - Hides the tooltip by default (`hidden = true`).
 - Keeps the tooltip visible while pointer rests on either trigger or tooltip.
 - Dispatches namespaced lifecycle events (`automagica11y:tooltip:*`).
+- Honors per-trigger open/close delay attributes so teams can match existing motion guidance.
+- Calculates a safe tooltip placement and flips to the opposite side when the preferred position would overflow the viewport.
+- Provides long-press support on touch and wires optional dismiss controls for screen magnifier users.
 
 ---
 
@@ -44,11 +47,12 @@ When initialized, automagicA11y automatically:
 
 ## Interaction Lifecycle
 
-- **Pointer enter** on trigger or tooltip → tooltip shows immediately.
-- **Pointer leave** from both elements → tooltip hides after a short delay (100&nbsp;ms) to prevent flicker.
-- **Focus** on trigger → tooltip shows.
+- **Pointer enter** on trigger or tooltip → tooltip shows after the configured open delay (`0` ms default).
+- **Pointer leave** from both elements → tooltip hides after the configured close delay (`100`&nbsp;ms default) to prevent flicker.
+- **Focus** on trigger → tooltip shows immediately, ignoring pointer delays for accessibility.
 - **Blur** from trigger (with no pointer hover) → tooltip hides on the same delay.
 - **Escape key** → tooltip hides immediately and clears pending timers.
+- **Touch long-press** → tooltip appears after ~550&nbsp;ms and remains visible until dismissed or another interaction occurs.
 
 The delay ensures that moving between the trigger and tooltip content does not accidentally dismiss the tooltip.
 
@@ -59,8 +63,12 @@ The delay ensures that moving between the trigger and tooltip content does not a
 | Attribute | Description |
 |-----------|-------------|
 | `data-automagica11y-tooltip` | Selector (ID or class) resolving to the tooltip element. **Required.** |
+| `data-automagica11y-tooltip-open-delay` | Delay (ms) before showing the tooltip for pointer interactions. Default `0`. |
+| `data-automagica11y-tooltip-close-delay` | Delay (ms) before hiding the tooltip when neither pointer nor focus is active. Default `100`. |
+| `data-automagica11y-tooltip-position` | Preferred placement: `top`, `bottom`, `left`, `right`, or `auto`. Defaults to `auto` (prefers bottom but flips when overflowing). |
 | `data-automagica11y-trigger-class-[state]` | Classes applied to the trigger for truthy/falsy states (`open`, `active`, etc.). |
 | `data-automagica11y-target-class-[state]` | Classes applied to the tooltip. Declared on the trigger element. |
+| `data-automagica11y-tooltip-dismiss` | Add to an element inside the tooltip (ideally a `<button>`) to close the tooltip on touch or keyboard activation. |
 
 Tooltips reuse the [truthiness mapping](../../../docs/truthiness.md) so synonyms like `open`, `expanded`, and `shown` behave consistently.
 
@@ -115,15 +123,36 @@ Tooltips share the same class grammar as the toggle pattern:
 - Tooltips must stay lightweight. Keep content brief and avoid focusable controls inside.
 - Ensure the tooltip element has a unique ID — automagicA11y generates one if absent.
 - Multiple triggers can point at the same tooltip by referencing the same selector.
-- Consider adding a manual dismiss button for touch environments if the tooltip contains lengthy content.
+- Consider exposing a visible dismiss affordance for touch users when the tooltip contains lengthy content; automagicA11y wires `[data-automagica11y-tooltip-dismiss]` controls automatically.
+
+---
+
+## Responsive Placement
+
+Set `data-automagica11y-tooltip-position` to a preferred side. The pattern will honor the request when there is space, but automatically flip to the opposite side when the tooltip would clip the viewport. Use the generated `data-automagica11y-tooltip-placement` attribute for styling arrows and offsets:
+
+```css
+[data-automagica11y-tooltip-placement="top"] { /* place tooltip above */ }
+[data-automagica11y-tooltip-placement="bottom"] { /* default below trigger */ }
+```
+
+---
+
+## Touch Support
+
+- Long-pressing the trigger (`~550` ms) shows the tooltip without requiring hover.
+- The tooltip stays visible after the finger lifts until dismissed, supporting screen magnifiers and switch users.
+- Add `[data-automagica11y-tooltip-dismiss]` to a button or link inside the tooltip to provide a keyboard and touch-friendly close control.
 
 ---
 
 ## Roadmap
 
-- [ ] Opt-in attributes to configure open/close delay per tooltip.
-- [ ] Smart positioning helper that flips when overflowing the viewport.
-- [ ] Touch-specific affordances (long-press support and dismiss buttons).
+- [x] Opt-in attributes to configure open/close delay per tooltip.
+- [x] Smart positioning helper that flips when overflowing the viewport.
+- [x] Touch-specific affordances (long-press support and dismiss buttons).
+- [ ] Investigate collision detection with nested scroll containers.
+- [ ] Author guidance for pairing tooltips with form validation hints.
 
 ---
 
