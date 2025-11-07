@@ -84,14 +84,18 @@ export function initFocusMap(node: Element) {
   }
 
   const elementHandlers = new Map<HTMLElement, (event: KeyboardEvent) => void>();
+  let suppressNextAnchorFocus = false;
+
   ordered.forEach((element, index) => {
     const handler = (event: KeyboardEvent) => {
       if (event.key !== "Tab") return;
       if (event.shiftKey) {
-        event.preventDefault();
         if (index === 0) {
-          focusElement(focusAnchor!);
+          event.preventDefault();
+          suppressNextAnchorFocus = true;
+          focusElement(focusAnchor);
         } else {
+          event.preventDefault();
           focusElement(ordered[index - 1]);
         }
         return;
@@ -111,6 +115,10 @@ export function initFocusMap(node: Element) {
   };
 
   const handleAnchorFocus = (event: FocusEvent) => {
+    if (suppressNextAnchorFocus) {
+      suppressNextAnchorFocus = false;
+      return;
+    }
     const related = event.relatedTarget as HTMLElement | null;
     if (related && ordered.includes(related)) return;
     focusElement(ordered[0]);

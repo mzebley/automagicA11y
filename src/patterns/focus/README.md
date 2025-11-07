@@ -42,7 +42,14 @@ Declare an explicit tab sequence using CSS selectors. Ideal for floating UI (mus
 - Attribute value accepts a semicolon-separated list or a JSON array of selectors.
 - `data-automagica11y-focus-map-scope="self"` queries within the current element; otherwise pass a CSS selector (e.g., `#page-shell`) or omit to use the whole document.
 - `data-automagica11y-focus-map-anchor` points at a focusable element that represents where the mapped sequence belongs in the DOM. Tab/Shift+Tab on the anchor routes focus into/out of the sequence while keeping the rest of the page unaffected.
-- The pattern never assigns positive `tabindex`. Instead it listens for `Tab`/`Shift+Tab` within the mapped elements so keyboard order stays anchored to the surrounding context. Removing the attribute restores the native behavior.
+
+⚠️ If the anchor selector is missing and the scope is not a specific element, the focus map will not activate. The anchor acts as the entry and exit point for the sequence and must resolve to a focusable element.
+
+- The pattern never assigns positive `tabindex`. Instead it listens for `Tab`/`Shift+Tab` within the mapped elements so keyboard order stays anchored to the surrounding context.
+
+⚠️ The mapped focus sequence is captured once on initialization. If elements are added, removed, or become disabled after setup, the focus map will not automatically update. Re‑initialize the pattern after DOM changes to refresh its focus order.
+
+The focus map is intentionally non‑disruptive — pressing Tab on the last mapped element will continue naturally to the next focusable item in the DOM, preserving page flow. This behavior is by design to keep the rest of the page unaffected.
 
 ---
 

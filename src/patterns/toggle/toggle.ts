@@ -2,6 +2,10 @@ import { createClassToggler } from "@core/classes";
 import { ensureId, setAriaExpanded } from "@core/attributes";
 import { setHiddenState } from "@core/styles";
 
+const prefersReducedMotion = () =>
+  typeof window !== "undefined" &&
+  window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches === true;
+
 /**
  * Hydrates a toggle trigger so it controls its target element with accessible defaults.
  * Expects the trigger to provide a `data-automagica11y-toggle` selector that resolves to a target.
@@ -9,12 +13,19 @@ import { setHiddenState } from "@core/styles";
 export function initToggle(trigger: Element) {
   // Guard early: patterns only run against real HTMLElements.
   if (!(trigger instanceof HTMLElement)) return;
+  if ((trigger as HTMLElement & { __automagica11yInitialized?: boolean })
+    .__automagica11yInitialized) {
+    return;
+  }
 
   // Read the selector for the companion target and resolve it in the document.
   const targetSel = trigger.getAttribute("data-automagica11y-toggle");
   if (!targetSel) return;
   const target = document.querySelector<HTMLElement>(targetSel);
   if (!target) return;
+  (
+    trigger as HTMLElement & { __automagica11yInitialized?: boolean }
+  ).__automagica11yInitialized = true;
 
   // Ensure both trigger and target have IDs so ARIA relationships can be wired reliably.
   ensureId(trigger, "automagica11y-t");
@@ -26,9 +37,10 @@ export function initToggle(trigger: Element) {
   target.setAttribute("aria-labelledby", trigger.id);
   setHiddenState(target, true);
 
+  const isNativeButton = trigger.tagName === "BUTTON";
   // Non-button triggers need button semantics and keyboard focusability.
-  if (trigger.tagName !== "BUTTON") {
-    trigger.setAttribute("role", "button");
+  if (!isNativeButton) {
+    if (!trigger.hasAttribute("role")) trigger.setAttribute("role", "button");
     if (!trigger.hasAttribute("tabindex"))
       (trigger as HTMLElement).tabIndex = 0;
     if (!(trigger as HTMLElement).style.cursor)
@@ -75,6 +87,17 @@ export function initToggle(trigger: Element) {
     };
   };
 
+  const dispatchToggle = (expanded: boolean) => {
+    const evt = new CustomEvent("automagica11y:toggle", {
+      detail: { expanded, trigger, target },
+      bubbles: true,
+      cancelable: true,
+      composed: true,
+    });
+    trigger.dispatchEvent(evt);
+    return evt;
+  };
+
   // Centralized state setter keeps ARIA, classes, DOM visibility, and events in sync.
   const setState = (open: boolean) => {
     setAriaExpanded(trigger, open);
@@ -82,9 +105,18 @@ export function initToggle(trigger: Element) {
 
     if (!open) {
       applyClasses(false, target);
+      // Allow plugins to cancel closing before we hide the target.
+      const evt = dispatchToggle(false);
+      if (evt.defaultPrevented) return;
       setHiddenState(target, true);
+      return;
+    }
+
+    setHiddenState(target, false);
+    if (prefersReducedMotion()) {
+      // Skip the double-rAF deferral when users prefer reduced motion.
+      applyClasses(true, target);
     } else {
-      setHiddenState(target, false);
       cancelPendingOpenFrame = queueAfterPaint(() => {
         cancelPendingOpenFrame = null;
         // Flush layout so transitions see the pre-open styles before swapping classes.
@@ -92,11 +124,7 @@ export function initToggle(trigger: Element) {
         applyClasses(true, target);
       });
     }
-    trigger.dispatchEvent(
-      new CustomEvent("automagica11y:toggle", {
-        detail: { expanded: open, trigger, target },
-      })
-    );
+    dispatchToggle(true);
   };
 
   // Basic toggle helper reads existing ARIA state and flips it.
@@ -106,16 +134,29 @@ export function initToggle(trigger: Element) {
   // Click activates the toggle for mouse and touch interactions.
   trigger.addEventListener("click", toggle);
 
-  // Space/Enter support classic button semantics when the trigger is not a native button.
-  trigger.addEventListener("keydown", (e) => {
-    if (e.key === " " || e.key === "Enter") {
-      e.preventDefault();
-      toggle();
-    }
-  });
+  let onKeydown: ((e: KeyboardEvent) => void) | null = null;
+  if (!isNativeButton) {
+    // Space/Enter support classic button semantics when the trigger is not a native button.
+    onKeydown = (e: KeyboardEvent) => {
+      if (e.key === " " || e.key === "Enter") {
+        e.preventDefault();
+        toggle();
+      }
+    };
+    trigger.addEventListener("keydown", onKeydown);
+  }
 
   // Announce readiness so plugins or host applications can hook into initialized toggles.
   trigger.dispatchEvent(
     new CustomEvent("automagica11y:ready", { detail: { trigger, target } })
   );
+
+  return function destroy() {
+    clearPendingOpenFrame();
+    trigger.removeEventListener("click", toggle);
+    if (onKeydown) trigger.removeEventListener("keydown", onKeydown);
+    (
+      trigger as HTMLElement & { __automagica11yInitialized?: boolean }
+    ).__automagica11yInitialized = false;
+  };
 }

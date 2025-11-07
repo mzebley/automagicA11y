@@ -1,6 +1,6 @@
 # automagicA11y
 
-Version: 0.2 (concept phase)
+Version: 0.3 (concept phase)
 
 _Tagline: Drop an attribute. Get the ARIA._
 
@@ -217,6 +217,37 @@ import { registerAnnouncePlugin } from "automagica11y";
 
 registerAnnouncePlugin();
 ```
+
+---
+
+### Animate (cross-cutting)
+
+Delay the “close” side of any toggle until the target (or trigger) finishes its CSS animation. Great for fade-outs or sliding panels where you want the animation to complete before `hidden` flips.
+
+```ts
+import { registerAnimatePlugin } from "automagica11y";
+
+registerAnimatePlugin();
+```
+
+```html
+<button
+  data-automagica11y-toggle="#drawer"
+  data-automagica11y-animate="target"
+  data-automagica11y-target-class-open="drawer--open"
+  data-automagica11y-target-class-closed="drawer--closed">
+  Toggle drawer
+</button>
+```
+
+Behavior:
+
+- Watches the chosen element for `transitionend` / `animationend` (plus `element.getAnimations()` if available) and only applies the close state when CSS actually finishes.
+- Automatically skips delays when `prefers-reduced-motion` is enabled or when no animation is detected.
+- Adds a safety timeout so content can’t get stuck mid-animation and replays the original event once complete.
+- Adds the `.automagica11y-animating` class (or your custom close classes) while the close animation runs so you can transition styles declaratively.
+- Re-opening mid-close cancels the pending wait and removes temporary classes automatically.
+- Works with trigger-side animations as well (`data-automagica11y-animate="trigger"`). See [`examples/animate.html`](./examples/animate.html) for full transition + keyframe demos driven purely by data attributes.
 
 ---
 

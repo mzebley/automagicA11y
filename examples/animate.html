@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>automagicA11y – Animate Plugin</title>
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">
+  <style>
+    .panel {
+      margin-top: 0.75rem;
+      padding: 0.9rem 1rem;
+      border-radius: 0.7rem;
+      border-left: 4px solid #93c5fd;
+      background: #eef6ff;
+      transition: opacity 220ms ease, transform 220ms ease;
+    }
+    .panel--open {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .panel--closing {
+      opacity: 0;
+      transform: translateY(-0.35rem);
+    }
+
+    .toast {
+      border-left: 4px solid #f97316;
+      background: #fff7ed;
+      margin-top: 1rem;
+      padding: 0.85rem;
+      overflow: hidden;
+    }
+    .toast--visible {
+      animation: toast-in 160ms ease-out;
+    }
+    .toast--closing {
+      animation: toast-out 180ms ease-in forwards 2;
+    }
+
+    @keyframes toast-in {
+      from { opacity: 0; transform: translateY(-0.35rem); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes toast-out {
+      from { opacity: 1; transform: translateY(0); }
+      to { opacity: 0; transform: translateY(-0.35rem); }
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.5rem 1rem;
+      border-radius: 999px;
+      border: 1px solid #d0d7ea;
+      background: #fff;
+      cursor: pointer;
+      transition: box-shadow 200ms ease, border-color 200ms ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .pill::after {
+      content: "";
+      width: 0.45rem;
+      height: 0.45rem;
+      border-radius: 999px;
+      background: #64748b;
+      transition: transform 200ms ease, background 200ms ease;
+    }
+    .pill--open {
+      border-color: #818cf8;
+      box-shadow: 0 6px 18px -10px rgba(99, 102, 241, 0.6);
+    }
+    .pill--open::after {
+      background: #4c1d95;
+      transform: scale(1.3);
+    }
+    .pill--closing {
+      animation: pill-flash 180ms ease-in forwards;
+    }
+    @keyframes pill-flash {
+      from { transform: scale(1); }
+      to { transform: scale(0.92); opacity: 0.65; }
+    }
+
+    .inline-panel {
+      margin-top: 0.75rem;
+      border: 1px dashed #c7cddf;
+      border-radius: 0.65rem;
+      padding: 0.9rem 1rem;
+      background: #fdfcff;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Animate Plugin</h1>
+    <p>
+      Delay the “close” side of a toggle until its CSS finishes. The examples below demonstrate transition-based targets, keyframe-based loops, and even trigger-side animations using nothing but data attributes.
+    </p>
+
+    <section class="card">
+      <h2>Transition-based target fade</h2>
+      <p>
+        The target removes <code>hidden</code>, waits one frame, adds <code>panel--closing</code>, and only hides once the opacity transition finishes.
+      </p>
+
+      <button
+        class="btn"
+        data-automagica11y-toggle="#details"
+        data-automagica11y-animate="target"
+        data-automagica11y-target-class-open="panel--open"
+        data-automagica11y-target-class-closed="panel--closing"
+        >
+        Toggle details
+      </button>
+
+      <div id="details" class="panel panel--closing" hidden>
+        <p>This message fades out before it collapses. Try toggling repeatedly to see the difference.</p>
+      </div>
+
+      <pre><code class="language-html">&lt;button
+  data-automagica11y-toggle="#details"
+  data-automagica11y-animate="target"
+  data-automagica11y-target-class-open="panel--open"
+  data-automagica11y-target-class-closed="panel--closing">
+  Toggle details
+&lt;/button></code></pre>
+    </section>
+
+    <section class="card">
+      <h2>Keyframe-driven toast</h2>
+      <p>
+        Here the target plays two iterations of a keyframe animation (`toast-out`) before the plugin hides it. Because the animation is on the target, `data-automagica11y-animate="target"` still applies.
+      </p>
+
+      <div class="toolbar" style="gap:0.5rem;">
+        <button class="btn"
+        data-automagica11y-toggle="#toast"
+        data-automagica11y-animate="target"
+        data-automagica11y-target-class-open="toast--visible"
+        data-automagica11y-target-class-closed="toast--closing" 
+        >Toggle toast</button>
+      </div>
+
+      <div
+        id="toast"
+        class="toast toast--closing"
+        hidden>
+        <strong>Heads up</strong>
+        <p style="margin:0.25rem 0 0;">This notification collapses only after its animation is finished.</p>
+      </div>
+
+      <pre><code class="language-html">&lt;button
+  data-automagica11y-toggle="#toast"
+  data-automagica11y-animate="target"
+  data-automagica11y-target-class-open="toast--visible"
+  data-automagica11y-target-class-closed="toast--closing">
+  Toggle toast
+&lt;/button></code></pre>
+    </section>
+
+    <section class="card">
+      <h2>Trigger-side animation</h2>
+      <p>
+        Sometimes the trigger itself owns the animation (e.g., glowing pill). Set <code>data-automagica11y-animate="trigger"</code> so the plugin watches the trigger element while the target still opens/closes as usual.
+      </p>
+
+      <button
+        class="pill"
+        data-automagica11y-toggle="#pill-panel"
+        data-automagica11y-animate="trigger"
+        data-automagica11y-trigger-class-open="pill--open"
+        data-automagica11y-trigger-class-closed="pill--closing">
+        Highlight block
+      </button>
+
+      <div id="pill-panel" class="inline-panel" hidden>
+        <p>This inline region opens instantly, but the trigger glows while closing so users see visual confirmation.</p>
+      </div>
+
+      <pre><code class="language-html">&lt;button
+  data-automagica11y-toggle="#pill-panel"
+  data-automagica11y-animate="trigger"
+  data-automagica11y-trigger-class-open="pill--open"
+  data-automagica11y-trigger-class-closed="pill--closing">
+  Highlight block
+&lt;/button></code></pre>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markup.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-javascript.min.js"></script>
+  <!-- <script src="../dist/automagica11y.min.js"></script> -->
+  <script type="module">
+    import { registerAnimatePlugin, initNode } from "../dist/automagica11y.esm.js";
+
+    registerAnimatePlugin();
+    initNode(document);
+  </script>
+</body>
+</html>

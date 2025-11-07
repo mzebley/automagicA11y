@@ -1,6 +1,6 @@
 # Plugin Concepts
 
-automagicA11y aims to keep the core tiny and let optional behaviors layer on as needed. Today that means a single shipped plugin (announce) with more specialized plugins planned once patterns expand.
+automagicA11y aims to keep the core tiny and let optional behaviors layer on as needed. Today that means two shipped plugins (announce and animate) with more specialized plugins planned once patterns expand.
 
 ---
 
@@ -40,6 +40,37 @@ Add `data-automagica11y-announce` to a trigger to opt in:
 
 ---
 
+## Current Plugin — Animate
+
+### Description
+
+Delays the “close” side of a pattern until its CSS transition/animation completes so UI stays smooth without manual timeouts.
+
+### Usage
+
+```ts
+import { registerAnimatePlugin } from "automagica11y";
+
+registerAnimatePlugin();
+```
+
+```html
+<button
+  data-automagica11y-toggle="#details"
+  data-automagica11y-animate="target">
+  Toggle details
+</button>
+```
+
+### Features
+
+- Watches the specified element for `transitionend` / `animationend` and only hides once the browser reports completion.
+- Automatically skips delays when `prefers-reduced-motion: reduce` is active or when no animation is present.
+- Applies a defensive timeout so content never gets stuck mid-animation.
+- Works with any pattern that emits `automagica11y:toggle` (toggle, tooltip, dialog, etc.).
+
+---
+
 ## Planned Plugins (Roadmap)
 
 ### 1. Persist Plugin
@@ -54,11 +85,7 @@ data-automagica11y-persist="local"
 
 Synchronizes toggle state with the URL hash (deep-linking).
 
-### 3. Animate Plugin
-
-Delays hiding until CSS transition ends; respects `prefers-reduced-motion`.
-
-### 4. Inert Plugin
+### 3. Inert Plugin
 
 Applies/removes `inert` attribute on non-active content areas for modals or dialogs.
 
