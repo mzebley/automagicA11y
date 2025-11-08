@@ -1,0 +1,198 @@
+---
+import { randomUUID } from 'node:crypto';
+
+const {
+  id = randomUUID(),
+  heading,
+  description
+} = Astro.props as {
+  id?: string;
+  heading?: string;
+  description?: string;
+};
+
+const hasCode = Astro.slots.has('code');
+const hasScript = Astro.slots.has('script');
+const summaryLabel = hasCode ? 'View source' : undefined;
+---
+<section class="playground" aria-labelledby={heading ? `${id}-heading` : undefined}>
+  <div class="playground__header">
+    {heading && (
+      <div id={`${id}-heading`} class="playground__title">{heading}</div>
+    )}
+    {description && <p class="playground__description">{description}</p>}
+    <div class="playground__actions">
+      {hasCode && (
+        <button
+          type="button"
+          class="playground__action"
+          data-playground-action="code"
+          data-playground-id={id}
+          aria-pressed="false"
+        >
+          {summaryLabel}
+        </button>
+      )}
+      <button type="button" class="playground__action" data-playground-action="reset" data-playground-id={id}>
+        Reset
+      </button>
+    </div>
+  </div>
+  <div class="playground__body">
+    <div class="playground__preview" data-playground-preview={id}>
+      <slot name="demo" />
+    </div>
+    {hasCode && (
+      <pre class="playground__code" data-playground-code={id} hidden>
+        <code>
+          <slot name="code" />
+        </code>
+      </pre>
+    )}
+  </div>
+  {hasScript && <slot name="script" />}
+  <script is:inline>
+    (() => {
+      const id = '{id}';
+      const preview = document.querySelector(`[data-playground-preview="${id}"]`);
+      if (!preview) return;
+      const code = document.querySelector(`[data-playground-code="${id}"]`);
+      const actions = document.querySelectorAll(`[data-playground-id="${id}"]`);
+      const initial = preview.innerHTML;
+
+      let libraryPromise;
+      const ensureLibrary = () => {
+        if (!libraryPromise) {
+          libraryPromise = import('automagica11y');
+        }
+        return libraryPromise;
+      };
+
+      const dispatchInit = () => {
+        ensureLibrary().then(({ initNode }) => {
+          if (typeof initNode === 'function') {
+            initNode(preview);
+          }
+          const event = new CustomEvent('automagica11y:playground:init', {
+            detail: { id, container: preview }
+          });
+          document.dispatchEvent(event);
+        });
+      };
+
+      const toggleCode = (action) => {
+        if (!code) return;
+        const expanded = !code.hasAttribute('hidden');
+        code.toggleAttribute('hidden', expanded);
+        const nowExpanded = !code.hasAttribute('hidden');
+        action.setAttribute('aria-pressed', nowExpanded ? 'true' : 'false');
+        action.setAttribute('aria-expanded', nowExpanded ? 'true' : 'false');
+        action.textContent = nowExpanded ? 'Hide source' : 'View source';
+      };
+
+      actions.forEach((action) => {
+        action.addEventListener('click', () => {
+          const mode = action.getAttribute('data-playground-action');
+          if (mode === 'code') {
+            toggleCode(action);
+            return;
+          }
+
+          if (mode === 'reset') {
+            preview.innerHTML = initial;
+            if (code) {
+              code.setAttribute('hidden', '');
+            }
+            if (code && actions.length > 1) {
+              actions.forEach(btn => {
+                if (btn.getAttribute('data-playground-action') === 'code') {
+                  btn.setAttribute('aria-pressed', 'false');
+                  btn.setAttribute('aria-expanded', 'false');
+                  btn.textContent = 'View source';
+                }
+              });
+            }
+            dispatchInit();
+          }
+        });
+      });
+
+      dispatchInit();
+    })();
+  </script>
+</section>
+
+<style>
+  .playground {
+    border: 1px solid var(--sl-color-gray-4);
+    border-radius: var(--sl-border-radius-lg);
+    padding: var(--sl-spacing-lg);
+    margin: var(--sl-spacing-xl) 0;
+    background: var(--sl-color-bg);
+    box-shadow: var(--sl-shadow-md);
+  }
+
+  .playground__header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sl-spacing-md);
+    margin-bottom: var(--sl-spacing-md);
+  }
+
+  .playground__title {
+    font-weight: 600;
+    font-size: var(--sl-text-lg);
+  }
+
+  .playground__description {
+    margin: 0;
+    color: var(--sl-color-text-muted);
+    flex: 1 1 100%;
+  }
+
+  .playground__actions {
+    display: flex;
+    gap: var(--sl-spacing-sm);
+  }
+
+  .playground__action {
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: var(--sl-border-radius-sm);
+    padding: 0.35rem 0.75rem;
+    background: var(--sl-color-bg);
+    color: var(--sl-color-text);
+    font-size: var(--sl-text-sm);
+    cursor: pointer;
+  }
+
+  .playground__body {
+    display: grid;
+    gap: var(--sl-spacing-md);
+  }
+
+  .playground__preview {
+    padding: var(--sl-spacing-md);
+    background: var(--sl-color-bg-raised);
+    border-radius: var(--sl-border-radius-md);
+    border: 1px dashed color-mix(in srgb, var(--sl-color-text-muted) 30%, transparent);
+  }
+
+  .playground__code {
+    overflow-x: auto;
+    background: var(--sl-color-bg-raised);
+    border-radius: var(--sl-border-radius-md);
+    padding: var(--sl-spacing-md);
+  }
+
+  @media (max-width: 720px) {
+    .playground {
+      padding: var(--sl-spacing-md);
+    }
+
+    .playground__preview {
+      padding: var(--sl-spacing-sm);
+    }
+  }
+</style>

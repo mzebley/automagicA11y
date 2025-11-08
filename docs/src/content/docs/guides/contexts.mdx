@@ -1,0 +1,98 @@
+---
+title: Contexts
+description: Use contexts as the single source of truth for semantics and behaviors.
+---
+
+import DemoCallout from '../../../components/DemoCallout.astro';
+import Playground from '../../../components/Playground.astro';
+
+# Contexts
+
+Contexts are the orchestration layer that sit on top of the toggle foundation. They centralize semantics, behaviors, and alias mappings so every surface speaks the same accessibility language.
+
+## Why contexts?
+
+- **Semantics** – contexts apply the right roles and ARIA defaults. Dialogs receive `role="dialog"`, tooltips use `role="tooltip"`, and so on.
+- **Behaviors** – context modes enable focus traps, hover intent, inert locking, dismissal, and more without additional code.
+- **Wiring** – contexts normalize aliases and truthiness, letting you opt into patterns with `data-automagica11y-context="dialog"` or legacy shorthands like `data-automagica11y-dialog`.
+
+<DemoCallout type="success" title="Composable">
+  <p>Contexts reuse the toggle pattern internally. You can compose multiple contexts on the same page and share plugins or lifecycle hooks.</p>
+</DemoCallout>
+
+## Attribute API
+
+| Attribute | Description |
+|-----------|-------------|
+| `data-automagica11y-context` | Names the context to activate (for example `dialog`, `tooltip`, `menu`). |
+| `data-automagica11y-target` | Selector for the surface managed by the context. Defaults to the next sibling or ID declared in the value. |
+| `data-automagica11y-context-mode` | Chooses how much automation to apply. `semantics`, `behaviors`, or `full` (default). |
+| `data-automagica11y-context-alias` | Override the alias mapping for bespoke naming. |
+
+### Modes
+
+- `full` – semantics and behaviors (default).
+- `semantics` – apply ARIA/role defaults only; wire your own behaviors.
+- `behaviors` – reuse dismissal, focus traps, and state syncing without changing existing semantics.
+
+## Alias map
+
+| Alias | Canonical context |
+|-------|-------------------|
+| `dropdown`, `kebab`, `meatball` | `menu` |
+| `modal`, `dialog`, `sheet` | `dialog` |
+| `details`, `expander`, `disclosure` | `toggle` |
+| `tooltip`, `hint`, `label` | `tooltip` |
+
+Aliases keep older attribute names and regional terminology working while still running through the same context pipeline.
+
+## Dialog parity
+
+The legacy `data-automagica11y-dialog` attribute maps directly to the dialog context.
+
+<Playground id="contexts-dialog" heading="Context vs. alias" description="Two ways to activate the same dialog wiring.">
+  <div slot="demo">
+    <div class="docs-contexts-guide__grid">
+      <button data-automagica11y-context="dialog" data-automagica11y-target="#context-dialog">Open via context</button>
+      <button data-automagica11y-dialog="#alias-dialog">Open via alias</button>
+    </div>
+
+    <div id="context-dialog" role="dialog" aria-labelledby="context-dialog-title" hidden>
+      <h2 id="context-dialog-title">Context dialog</h2>
+      <p>Focus trapping, inert background, and Escape dismissal are included.</p>
+      <button data-automagica11y-dialog-close>Close</button>
+    </div>
+
+    <div id="alias-dialog" role="dialog" aria-labelledby="alias-dialog-title" hidden>
+      <h2 id="alias-dialog-title">Alias dialog</h2>
+      <p>The alias uses the same context internally, guaranteeing parity.</p>
+      <button data-automagica11y-dialog-close>Close</button>
+    </div>
+  </div>
+  <div slot="code">
+{`<button data-automagica11y-context="dialog" data-automagica11y-target="#context-dialog">Open via context</button>
+<button data-automagica11y-dialog="#alias-dialog">Open via alias</button>`}
+  </div>
+</Playground>
+
+## Tooltip parity
+
+Tooltips share the same alias wiring.
+
+<Playground id="contexts-tooltip" heading="Context vs. tooltip alias" description="Context and alias both hydrate tooltip behavior.">
+  <div slot="demo">
+    <div class="docs-contexts-guide__grid">
+      <button data-automagica11y-context="tooltip" data-automagica11y-target="#context-tooltip">
+        Hover or focus me
+      </button>
+      <button data-automagica11y-tooltip="#alias-tooltip">Alias trigger</button>
+    </div>
+
+    <span id="context-tooltip" role="tooltip" hidden>Context-powered tooltip.</span>
+    <span id="alias-tooltip" role="tooltip" hidden>Alias-powered tooltip.</span>
+  </div>
+  <div slot="code">
+{`<button data-automagica11y-context="tooltip" data-automagica11y-target="#context-tooltip">Hover me</button>
+<button data-automagica11y-tooltip="#alias-tooltip">Alias trigger</button>`}
+  </div>
+</Playground>

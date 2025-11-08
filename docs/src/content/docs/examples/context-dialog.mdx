@@ -1,0 +1,33 @@
+---
+title: Context → Dialog
+description: Dialog wiring supplied by the context system.
+---
+
+import Playground from '../../../components/Playground.astro';
+
+# Context → Dialog
+
+<Playground id="example-context-dialog" heading="Dialog with context" description="Context drives focus traps, inert backgrounds, and Escape handling.">
+  <div slot="demo">
+    <button
+      data-automagica11y-context="dialog"
+      data-automagica11y-target="#example-context-dialog-surface"
+      class="docs-example-dialog__trigger"
+    >
+      Launch dialog
+    </button>
+    <div id="example-context-dialog-surface" role="dialog" aria-labelledby="example-context-dialog-title" hidden>
+      <div role="document" class="docs-example-dialog__surface">
+        <h2 id="example-context-dialog-title">Context dialog</h2>
+        <p>Focus is trapped inside, Escape closes it, and the background is inert.</p>
+        <button data-automagica11y-dialog-close class="docs-example-dialog__close">Close</button>
+      </div>
+    </div>
+  </div>
+  <div slot="code">
+{`<button data-automagica11y-context="dialog" data-automagica11y-target="#dialog">Open dialog</button>
+<div id="dialog" role="dialog" hidden>
+  <button data-automagica11y-dialog-close>Close</button>
+</div>`}
+  </div>
+</Playground>

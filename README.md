@@ -14,6 +14,16 @@ Built for simplicity and scalability, it uses a consistent declarative syntax vi
 
 ---
 
+## Documentation
+
+- **Live site:** _Coming soon_ – deploy the Starlight docs with the provided GitHub Pages workflow or Vercel project.
+- **Run locally:**
+  1. `npm run build` (ensures the docs import the latest local bundle).
+  2. `npm run docs:dev`
+  3. Open the dev server URL printed in the terminal.
+
+---
+
 ## Design Philosophy
 
 The guiding principle of automagicA11y is to make accessibility effortless and predictable.

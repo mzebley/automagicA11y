@@ -1,0 +1,60 @@
+---
+title: Installation
+description: Install automagicA11y, build the bundle, and wire it into your markup.
+---
+
+import DemoCallout from '../../../components/DemoCallout.astro';
+
+# Installation
+
+## Requirements
+
+- Node.js 18 or later
+- A bundler that understands ES modules (Astro, Vite, Next, etc.)
+
+## Install the package
+
+```bash
+npm install automagica11y
+```
+
+The library ships with ESM, CJS, minified browser builds, and TypeScript definitions so you can integrate with any workflow.
+
+## Build before running the docs
+
+<DemoCallout type="warning" title="Keep the demos fresh">
+  <p>
+    The documentation site loads the local <code>dist/</code> bundle. Run <code>npm run build</code> from the project root whenever you make library changes before launching the docs with <code>npm run docs:dev</code>.
+  </p>
+</DemoCallout>
+
+## Import patterns
+
+You can rely on the registry autoloader or import individual helpers.
+
+```js
+// Load everything (auto-inits on the current document)
+import 'automagica11y';
+
+// Or hydrate specific areas manually
+import { initNode, initPattern } from 'automagica11y';
+
+const island = document.querySelector('#partial-render');
+if (island) {
+  initNode(island);
+}
+```
+
+## Minimal HTML
+
+```html
+<button data-automagica11y-toggle="#details">Details</button>
+<section id="details" hidden>
+  automagicA11y adds aria-expanded, aria-controls, and keyboard support.
+</section>
+<script type="module">
+  import 'automagica11y';
+</script>
+```
+
+The registry observes the document once on load. Use `initNode` for dynamically injected content, or explore the context system to unlock dialogs, tooltips, and custom alias semantics.

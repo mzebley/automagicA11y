@@ -1,0 +1,38 @@
+---
+title: Truthiness aliases
+description: Synonyms resolving to the same open/closed state.
+---
+
+import Playground from '../../../components/Playground.astro';
+
+# Truthiness aliases
+
+<Playground id="example-truthiness" heading="Synonyms in action" description="Multiple class hooks map to the same underlying state.">
+  <div slot="demo">
+    <button
+      data-automagica11y-toggle="#example-truthiness-panel"
+      data-automagica11y-trigger-class-expanded="docs-truthiness-example__trigger--expanded"
+      data-automagica11y-trigger-class-on="docs-truthiness-example__trigger--on"
+      data-automagica11y-target-class-hidden="docs-truthiness-example__panel--hidden"
+      data-automagica11y-target-class-shown="docs-truthiness-example__panel--shown"
+      class="docs-truthiness-example__trigger"
+    >
+      Toggle synonyms
+    </button>
+    <div id="example-truthiness-panel" hidden class="docs-truthiness-example__panel">
+      <p>The trigger picks up <code>.truthiness--expanded</code> and <code>.truthiness--on</code> when open.</p>
+      <p>The panel swaps <code>.truthiness-panel--hidden</code> and <code>.truthiness-panel--shown</code>.</p>
+    </div>
+  </div>
+  <div slot="code">
+{`<button
+  data-automagica11y-toggle="#panel"
+  data-automagica11y-trigger-class-expanded="trigger--open"
+  data-automagica11y-trigger-class-on="trigger--on"
+  data-automagica11y-target-class-hidden="panel--hidden"
+  data-automagica11y-target-class-shown="panel--shown"
+>
+  Toggle synonyms
+</button>`}
+  </div>
+</Playground>

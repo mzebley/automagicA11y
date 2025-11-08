@@ -1,0 +1,48 @@
+---
+title: Truthiness
+description: Map friendly words to canonical open and closed states.
+---
+
+import DemoCallout from '../../../components/DemoCallout.astro';
+
+# Truthiness
+
+Truthiness keeps class hooks, events, and plugins consistent across patterns. Instead of remembering exact keywords, you can author whatever feels natural and automagicA11y will map it to the canonical state.
+
+## Canonical states
+
+| Truthy (open) | Falsy (closed) |
+|---------------|----------------|
+| `open` | `closed` |
+| `expanded` | `collapsed` |
+| `shown` | `hidden` |
+| `active` | `inactive` |
+| `pressed` | `unpressed` |
+| `true` | `false` |
+| `on` | `off` |
+
+Use these tokens after `data-automagica11y-trigger-class-*` or `data-automagica11y-target-class-*` and the library will resolve them to the correct boolean.
+
+## Aliases in action
+
+```html
+<button
+  data-automagica11y-toggle="#faq"
+  data-automagica11y-trigger-class-expanded="btn--primary"
+  data-automagica11y-trigger-class-collapsed="btn--ghost"
+>
+  FAQ
+</button>
+```
+
+The trigger receives `btn--primary` whenever the toggle is open, regardless of whether the synonym is `expanded`, `shown`, or `true`.
+
+## Why it matters
+
+- **Design tokens stay readable.** Use `active` or `hidden` if that’s how your team speaks.
+- **Plugins stay simple.** Lifecycle hooks emit a boolean, so you never translate states manually.
+- **Contexts stay compatible.** Dialogs, tooltips, and future patterns all share the same mapping.
+
+<DemoCallout type="info" title="Custom vocabularies">
+  <p>You can extend truthiness with the context alias system or by registering custom plugins that normalize your own vocabulary before it reaches the registry.</p>
+</DemoCallout>

@@ -1,0 +1,62 @@
+---
+title: Meet automagicA11y
+description: Declarative accessibility utilities that wire the hard parts for you.
+---
+
+import DemoCallout from '../../components/DemoCallout.astro';
+import Playground from '../../components/Playground.astro';
+
+# Meet automagicA11y
+
+automagicA11y is a lightweight, framework-agnostic toolkit that turns semantic HTML and data attributes into fully wired accessible patterns. Drop an attribute, ship the ARIA.
+
+## Quick links
+
+- [Installation](./getting-started/installation/)
+- [Quickstart](./getting-started/quickstart/)
+- [Contexts guide](./guides/contexts/)
+- [Truthiness reference](./guides/truthiness/)
+- [Toggle pattern](./patterns/toggle/)
+- [Plugins](./plugins/announce/)
+
+<DemoCallout title="Local builds" type="info">
+  <p>
+    Run <code>npm run build</code> from the repository root before <code>npm run docs:dev</code>. The playgrounds import the freshly built <code>dist/</code> bundle so demos always reflect your local changes.
+  </p>
+</DemoCallout>
+
+## Install in seconds
+
+```bash
+npm install automagica11y
+```
+
+Once installed, add `data-automagica11y-*` attributes to your markup and let the registry initialize everything automatically.
+
+## Try a toggle
+
+<Playground id="landing-toggle" heading="30-second toggle" description="One attribute, full accessibility." >
+  <div slot="demo">
+    <button
+      data-automagica11y-toggle="#landing-toggle-panel"
+      data-automagica11y-trigger-class-open="docs-cta-button--active"
+      class="docs-cta-button"
+    >
+      Reveal mission
+    </button>
+    <div id="landing-toggle-panel" hidden class="docs-cta-panel">
+      automagicA11y synchronizes <code>aria-expanded</code>, handles keyboard input, and keeps the DOM tidy.
+    </div>
+  </div>
+  <div slot="code">
+{`<button
+  data-automagica11y-toggle="#landing-toggle-panel"
+  data-automagica11y-trigger-class-open="cta--active"
+>
+  Reveal mission
+</button>
+<div id="landing-toggle-panel" hidden>
+  Accessible by default.
+</div>`}
+  </div>
+</Playground>

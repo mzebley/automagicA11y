@@ -1,0 +1,68 @@
+---
+title: Dialog pattern
+description: Modal dialogs powered by the context registry with alias compatibility.
+---
+
+import AttributeTable from '../../../components/AttributeTable.astro';
+import DemoCallout from '../../../components/DemoCallout.astro';
+import Playground from '../../../components/Playground.astro';
+import { dialogAttributes } from '../../../data/patterns';
+
+# Dialog
+
+Dialogs layer focus management, inert background locking, keyboard dismissal, and ARIA semantics on top of toggle. Whether you choose the `context="dialog"` syntax or the legacy `data-automagica11y-dialog` alias, you get identical behavior.
+
+## Guarantees
+
+- Applies `aria-haspopup="dialog"` and `aria-expanded` to triggers.
+- Adds `role="dialog"`, `aria-modal="true"`, and `tabindex="-1"` to the surface.
+- Moves focus inside on open and restores it to the trigger on close.
+- Sets `inert` + `aria-hidden` on siblings while the dialog is active.
+- Emits `automagica11y:ready` and `automagica11y:toggle` lifecycle events.
+
+## Attribute reference
+
+<AttributeTable attributes={dialogAttributes} />
+
+## Alias fidelity
+
+<DemoCallout type="info" title="Parity promise">
+  <p><code>data-automagica11y-dialog</code> is implemented as an alias to the dialog context. You can migrate incrementally without shipping different behavior.</p>
+</DemoCallout>
+
+## Demo
+
+<Playground id="pattern-dialog" heading="Context dialog" description="Full-screen lock, focus trap, Escape dismissal.">
+  <div slot="demo">
+    <button
+      data-automagica11y-context="dialog"
+      data-automagica11y-target="#pattern-dialog-surface"
+      class="docs-dialog-pattern__trigger"
+    >
+      Launch dialog
+    </button>
+    <button data-automagica11y-dialog="#pattern-dialog-alias" class="docs-dialog-pattern__trigger">
+      Launch via alias
+    </button>
+
+    <div id="pattern-dialog-surface" role="dialog" aria-labelledby="pattern-dialog-title" hidden>
+      <div role="document" class="docs-dialog-pattern__surface">
+        <h2 id="pattern-dialog-title">Context dialog</h2>
+        <p>Focus stays inside, background becomes inert, and Escape or the close button exits.</p>
+        <button data-automagica11y-dialog-close class="docs-dialog-pattern__close">Close</button>
+      </div>
+    </div>
+
+    <div id="pattern-dialog-alias" role="dialog" aria-labelledby="pattern-dialog-alias-title" hidden>
+      <div role="document" class="docs-dialog-pattern__surface">
+        <h2 id="pattern-dialog-alias-title">Alias dialog</h2>
+        <p>Alias triggers reuse the same wiring. No behavior drift.</p>
+        <button data-automagica11y-dialog-close class="docs-dialog-pattern__close">Close</button>
+      </div>
+    </div>
+  </div>
+  <div slot="code">
+{`<button data-automagica11y-context="dialog" data-automagica11y-target="#dialog">Open</button>
+<button data-automagica11y-dialog="#dialog-alias">Open alias</button>`}
+  </div>
+</Playground>
