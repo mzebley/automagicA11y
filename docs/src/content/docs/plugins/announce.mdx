@@ -1,0 +1,45 @@
+---
+title: Announce plugin
+description: Pipe toggle events into a shared live region for screen readers.
+---
+
+# Announce plugin
+
+The announce plugin listens to `automagica11y:toggle` events and speaks updates through a shared ARIA live region. Opt-in with a single attribute to make state changes audible.
+
+## Install
+
+```ts
+import { registerAnnouncePlugin } from 'automagica11y';
+
+registerAnnouncePlugin();
+```
+
+Call `registerAnnouncePlugin()` once during boot. It creates a hidden live region and starts listening for toggle events.
+
+## Opt-in on triggers
+
+```html
+<button
+  data-automagica11y-toggle="#filters"
+  data-automagica11y-announce="assertive"
+  data-automagica11y-announce-open="Filters expanded"
+  data-automagica11y-announce-closed="Filters collapsed"
+>
+  Filters
+</button>
+```
+
+- `data-automagica11y-announce` – enables the plugin. Pass `assertive` for urgent updates (default: polite).
+- `data-automagica11y-announce-open` – optional custom string for the open state.
+- `data-automagica11y-announce-closed` – optional custom string for the closed state.
+
+If you omit the custom strings, the plugin synthesizes announcements like “Filters expanded” based on the trigger’s accessible name.
+
+## Lifecycle
+
+- Creates a single `role="status"` live region appended to `body`.
+- Debounces duplicate messages for 750 ms to avoid chatter.
+- Automatically hides the region visually while keeping it accessible.
+
+Combine announce with contexts to give dialogs, tooltips, and upcoming menus audible feedback out of the box.

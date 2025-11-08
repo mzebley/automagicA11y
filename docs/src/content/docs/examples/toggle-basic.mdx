@@ -1,0 +1,27 @@
+---
+title: Toggle — basic disclosure
+description: Classic show/hide interaction with truthiness-aware classes.
+---
+
+import Playground from '../../../components/Playground.astro';
+
+# Toggle — basic disclosure
+
+<Playground id="example-toggle-basic" heading="Toggle with content" description="aria-expanded, aria-controls, and class hooks stay in sync.">
+  <div slot="demo">
+    <button
+      data-automagica11y-toggle="#example-toggle-basic-panel"
+      data-automagica11y-trigger-class-open="docs-example-toggle__trigger--open"
+      class="docs-example-toggle__trigger"
+    >
+      Toggle panel
+    </button>
+    <section id="example-toggle-basic-panel" hidden class="docs-example-toggle__panel">
+      <p>The toggle pattern wires disclosure semantics without extra code.</p>
+    </section>
+  </div>
+  <div slot="code">
+{`<button data-automagica11y-toggle="#panel">Toggle panel</button>
+<section id="panel" hidden>Panel content</section>`}
+  </div>
+</Playground>

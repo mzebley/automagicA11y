@@ -1,0 +1,53 @@
+---
+title: API
+description: Programmatic helpers exported by automagicA11y.
+---
+
+# API
+
+automagicA11y is declarative-first, but every pattern exposes programmatic helpers when you need fine-grained control.
+
+## Registry helpers
+
+```ts
+import { initAllPatterns, initPattern, initPatterns, initNode } from 'automagica11y';
+```
+
+- `initAllPatterns(root?)` – hydrate every registered pattern under `root` (defaults to `document`).
+- `initPattern(name, root?)` – hydrate a single pattern by name.
+- `initPatterns(names, root?)` – hydrate several patterns at once.
+- `initNode(node)` – run all registered initializers against a specific element. Perfect for islands or freshly injected markup.
+
+## Pattern helpers
+
+```ts
+import {
+  initToggle,
+  isToggleOpen,
+  getToggleTarget,
+  initTooltip,
+  initPopover,
+  initDialog,
+  initFocusInitial,
+  initFocusMap
+} from 'automagica11y';
+```
+
+- `initToggle(trigger)` – initialize an individual toggle trigger.
+- `isToggleOpen(trigger)` – read the resolved boolean state.
+- `getToggleTarget(trigger)` – return the resolved target element.
+- `initTooltip(trigger)` – hydrate a tooltip trigger (context-aware).
+- `initPopover(trigger)` – hydrate a popover trigger.
+- `initDialog(trigger)` – hydrate a dialog trigger.
+- `initFocusInitial(element)` – apply the initial-focus helper to a node.
+- `initFocusMap(element)` – wire a custom focus order map.
+
+All helpers return cleanup functions when applicable, enabling frameworks to destroy behaviors during unmount.
+
+## Plugins
+
+```ts
+import { registerAnnouncePlugin, registerAnimatePlugin } from 'automagica11y';
+```
+
+Call plugin registrars once per document. They hook into existing events and extend behavior without touching your markup.

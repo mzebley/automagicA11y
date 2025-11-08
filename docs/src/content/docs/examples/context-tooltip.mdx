@@ -1,0 +1,28 @@
+---
+title: Context → Tooltip
+description: Tooltip semantics and behaviors through contexts.
+---
+
+import Playground from '../../../components/Playground.astro';
+
+# Context → Tooltip
+
+<Playground id="example-context-tooltip" heading="Tooltip with context" description="Hover, focus, or long-press to reveal the hint.">
+  <div slot="demo">
+    <button
+      data-automagica11y-context="tooltip"
+      data-automagica11y-target="#example-context-tooltip-surface"
+      data-automagica11y-tooltip-open-delay="120"
+      class="docs-example-tooltip__trigger"
+    >
+      Info
+    </button>
+    <span id="example-context-tooltip-surface" role="tooltip" hidden class="docs-example-tooltip__surface">
+      Context manages delays, placement, and aria-describedby.
+    </span>
+  </div>
+  <div slot="code">
+{`<button data-automagica11y-context="tooltip" data-automagica11y-target="#tip">Info</button>
+<span id="tip" role="tooltip" hidden>Helpful hint</span>`}
+  </div>
+</Playground>

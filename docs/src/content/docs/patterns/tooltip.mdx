@@ -1,0 +1,53 @@
+---
+title: Tooltip pattern
+description: Hover/focus tooltips powered by the context registry.
+---
+
+import AttributeTable from '../../../components/AttributeTable.astro';
+import DemoCallout from '../../../components/DemoCallout.astro';
+import Playground from '../../../components/Playground.astro';
+import { tooltipAttributes } from '../../../data/patterns';
+
+# Tooltip
+
+Tooltips reuse the toggle foundation but add hover intent, long-press support, and placement helpers. Like dialogs, the context syntax and alias produce identical behavior.
+
+## Behavior highlights
+
+- Synchronizes `aria-describedby` between trigger and tooltip.
+- Keeps tooltips hidden by default and toggles `hidden` + `aria-hidden`.
+- Supports pointer hover, focus, keyboard, and long-press activation.
+- Shares truthiness mapping for class hooks, so `data-automagica11y-trigger-class-shown` just works.
+
+## Attribute reference
+
+<AttributeTable attributes={tooltipAttributes} />
+
+## Alias fidelity
+
+<DemoCallout type="info" title="Alias compatibility">
+  <p><code>data-automagica11y-tooltip</code> is implemented on top of the tooltip context. Switching syntax will not change runtime behavior.</p>
+</DemoCallout>
+
+## Demo
+
+<Playground id="pattern-tooltip" heading="Tooltip interactions" description="Hover, focus, or long-press to show hints.">
+  <div slot="demo">
+    <div class="docs-tooltip-pattern__grid">
+      <button
+        data-automagica11y-context="tooltip"
+        data-automagica11y-target="#context-tooltip-surface"
+        data-automagica11y-tooltip-open-delay="150"
+      >
+        Context trigger
+      </button>
+      <button data-automagica11y-tooltip="#alias-tooltip-surface">Alias trigger</button>
+    </div>
+
+    <span id="context-tooltip-surface" role="tooltip" hidden>Context tooltip with 150ms delay.</span>
+    <span id="alias-tooltip-surface" role="tooltip" hidden>Alias tooltip.</span>
+  </div>
+  <div slot="code">
+{`<button data-automagica11y-context="tooltip" data-automagica11y-target="#tooltip">Hover me</button>`}
+  </div>
+</Playground>

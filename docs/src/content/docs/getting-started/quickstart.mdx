@@ -1,0 +1,77 @@
+---
+title: Quickstart
+description: Wire a toggle and dialog in minutes using the context system.
+---
+
+import Playground from '../../../components/Playground.astro';
+
+# Quickstart
+
+This guide walks through a minimal toggle and a dialog powered by contexts. Build once, scale to any framework.
+
+## 1. Add the markup
+
+```html
+<button data-automagica11y-toggle="#details">Details</button>
+<section id="details" hidden>
+  Plain toggle example.
+</section>
+
+<button data-automagica11y-context="dialog" data-automagica11y-target="#quickstart-dialog">
+  Launch dialog
+</button>
+<div id="quickstart-dialog" role="dialog" hidden>
+  <h2 id="quickstart-title">Context-driven dialog</h2>
+  <p>Roles, aria-modal, focus trapping, and dismissal all come for free.</p>
+  <button data-automagica11y-dialog-close>Close</button>
+</div>
+```
+
+## 2. Load the library
+
+```html
+<script type="module">
+  import 'automagica11y';
+</script>
+```
+
+The import auto-initializes every supported pattern on the current document.
+
+## 3. Test it in the playground
+
+<Playground
+  id="quickstart-dialog"
+  heading="Toggle + dialog"
+  description="Contexts layer semantics on top of toggle behaviors."
+>
+  <div slot="demo">
+    <button data-automagica11y-toggle="#quickstart-toggle">Toggle details</button>
+    <section id="quickstart-toggle" hidden>
+      <p>This section is revealed with aria-expanded, aria-controls, and keyboard support applied for you.</p>
+    </section>
+
+    <button
+      class="dialog-launch"
+      data-automagica11y-context="dialog"
+      data-automagica11y-target="#quickstart-dialog-surface"
+      data-automagica11y-context-mode="full"
+    >
+      Open dialog
+    </button>
+    <div id="quickstart-dialog-surface" role="dialog" aria-labelledby="quickstart-dialog-title" hidden>
+      <div role="document">
+        <h2 id="quickstart-dialog-title">Context-powered dialog</h2>
+        <p>Focus trapping, inert siblings, Escape/overlay dismissal, and restoration are automatic.</p>
+        <button data-automagica11y-dialog-close>Close dialog</button>
+      </div>
+    </div>
+  </div>
+  <div slot="code">
+{`<button data-automagica11y-context="dialog" data-automagica11y-target="#dialog">
+  Open dialog
+</button>
+<div id="dialog" role="dialog" hidden>
+  <button data-automagica11y-dialog-close>Close dialog</button>
+</div>`}
+  </div>
+</Playground>

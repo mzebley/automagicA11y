@@ -1,0 +1,57 @@
+---
+const { type = 'info', title } = Astro.props as {
+  type?: 'info' | 'warning' | 'success';
+  title?: string;
+};
+
+const tone = {
+  info: { label: 'Note', role: 'note' },
+  warning: { label: 'Warning', role: 'alert' },
+  success: { label: 'Success', role: 'status' }
+}[type];
+---
+<div class={`demo-callout demo-callout--${type}`} role={tone.role} data-callout-type={type}>
+  <div class="demo-callout__heading">
+    <span class="demo-callout__kicker">{title ?? tone.label}</span>
+  </div>
+  <div class="demo-callout__content">
+    <slot />
+  </div>
+</div>
+
+<style>
+  .demo-callout {
+    border-radius: var(--sl-border-radius-md);
+    border: 1px solid var(--sl-color-gray-4);
+    padding: var(--sl-spacing-md);
+    background: var(--sl-color-bg-raised);
+    display: grid;
+    gap: var(--sl-spacing-sm);
+  }
+
+  .demo-callout__heading {
+    font-weight: 600;
+    color: var(--sl-color-text-accent);
+    text-transform: uppercase;
+    font-size: var(--sl-text-xs);
+    letter-spacing: 0.08em;
+  }
+
+  .demo-callout--warning {
+    border-color: color-mix(in srgb, var(--sl-color-danger) 50%, transparent);
+    background: color-mix(in srgb, var(--sl-color-danger) 6%, var(--sl-color-bg));
+  }
+
+  .demo-callout--success {
+    border-color: color-mix(in srgb, var(--sl-color-success) 50%, transparent);
+    background: color-mix(in srgb, var(--sl-color-success) 6%, var(--sl-color-bg));
+  }
+
+  .demo-callout__content :global(p:first-child) {
+    margin-top: 0;
+  }
+
+  .demo-callout__content :global(p:last-child) {
+    margin-bottom: 0;
+  }
+</style>

@@ -1,0 +1,65 @@
+---
+title: Toggle pattern
+description: The foundational show/hide primitive powering every context.
+---
+
+import AttributeTable from '../../../components/AttributeTable.astro';
+import DemoCallout from '../../../components/DemoCallout.astro';
+import Playground from '../../../components/Playground.astro';
+import { toggleAttributes } from '../../../data/patterns';
+
+# Toggle
+
+The toggle pattern wires ARIA and visibility state for show/hide interactions. It powers every other context, so getting comfortable with toggle unlocks the entire toolkit.
+
+## Behavior highlights
+
+- Adds `aria-expanded` and `aria-controls` to triggers.
+- Generates IDs when missing and links targets with `aria-labelledby`.
+- Hides targets by default and removes `hidden` when opened.
+- Emits lifecycle events (`automagica11y:ready`, `automagica11y:toggle`).
+- Normalizes truthiness so `active`, `open`, `true`, and `on` all map to the open state.
+
+## Attribute reference
+
+<AttributeTable attributes={toggleAttributes} />
+
+## Keyboard support
+
+- Space/Enter toggle the target for non-button triggers (buttons work out of the box).
+- Focus stays on the trigger when toggling so keyboard users keep context.
+- Non-button triggers receive `role="button"` and `tabindex="0"` automatically.
+
+## Events
+
+| Event | Detail payload |
+|-------|----------------|
+| `automagica11y:ready` | `{ trigger, target }` once initialization completes. |
+| `automagica11y:toggle` | `{ trigger, target, expanded }` on every state change. |
+
+## Demo
+
+<Playground id="pattern-toggle" heading="Toggle playground" description="Truthiness-aware classes and lifecycle events.">
+  <div slot="demo">
+    <button
+      data-automagica11y-toggle="#pattern-toggle-panel"
+      data-automagica11y-trigger-class-open="docs-toggle-pattern__trigger--active"
+      data-automagica11y-target-class-open="docs-toggle-pattern__panel--open"
+      class="docs-toggle-pattern__trigger"
+    >
+      Toggle content
+    </button>
+    <section id="pattern-toggle-panel" hidden class="docs-toggle-pattern__panel">
+      <p>The toggle pattern sets aria-expanded and keeps attributes in sync.</p>
+    </section>
+  </div>
+  <div slot="code">
+{`<button data-automagica11y-toggle="#panel" data-automagica11y-trigger-class-open="toggle--active">
+  Toggle content
+</button>`}
+  </div>
+</Playground>
+
+<DemoCallout type="info" title="Inspect events">
+  <p>Open your devtools console and listen for <code>automagica11y:toggle</code> to react to each state change.</p>
+</DemoCallout>
