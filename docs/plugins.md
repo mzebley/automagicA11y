@@ -2,6 +2,8 @@
 
 automagicA11y aims to keep the core tiny and let optional behaviors layer on as needed. Today that means two shipped plugins (announce and animate) with more specialized plugins planned once patterns expand.
 
+The new context registry exposes consistent semantics/behaviors across patterns, so plugins can observe a single stream of lifecycle events (`automagica11y:toggle`, `automagica11y:tooltip:shown`, etc.) regardless of whether a feature was activated via a legacy alias or the new `data-automagica11y-context` attribute.
+
 ---
 
 ## Current Plugin — Announce (Cross-cutting)

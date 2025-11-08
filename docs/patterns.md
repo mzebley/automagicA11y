@@ -6,6 +6,16 @@ automagicA11y patterns are small, self-contained behaviors that automatically ha
 
 ## Available Today
 
+### Context Registry (v0.3)
+
+**Description:** Shared catalog of semantics + behaviors that sits on top of the toggle foundation. Contexts are activated via `data-automagica11y-context="…"` and optionally tuned with `data-automagica11y-context-mode`.
+
+**Highlights:**
+- Centralizes role/ARIA defaults for dialog, tooltip, menu, and other interactive patterns.
+- Provides consistent behavior helpers (focus traps, hover intent, inert siblings, etc.) that multiple patterns can reuse.
+- Supports `semantics-only` and `behaviors-only` modes so teams can mix automagic defaults with bespoke wiring.
+- Keeps legacy attributes such as `data-automagica11y-dialog` and `data-automagica11y-tooltip` working by delegating through the registry.
+
 ### Toggle / Disclosure (v0.1)
 
 **Description:** Foundational component for show/hide interactions. Manages `aria-expanded`, `aria-controls`, open/closed truthiness mapping, and class reflection.
@@ -23,6 +33,7 @@ automagicA11y patterns are small, self-contained behaviors that automatically ha
 **Description:** Hover/focus tooltip that wires `aria-describedby`, `role="tooltip"`, and manages visibility automatically.
 
 **Highlights:**
+- Powered by the tooltip context—use `data-automagica11y-context="tooltip"` for the same semantics and behaviors.
 - Hides the tooltip by default and synchronizes `hidden`/`aria-hidden` on every toggle.
 - Honors per-trigger open/close delay attributes so teams can match their motion guidelines.
 - Auto-flips placement when the preferred side would clip the viewport and exposes `data-automagica11y-tooltip-placement` for styling.
@@ -49,6 +60,7 @@ automagicA11y patterns are small, self-contained behaviors that automatically ha
 **Description:** Accessible modal dialog that traps focus, locks background content, and restores state on close.
 
 **Highlights:**
+- Powered by the dialog context—`data-automagica11y-context="dialog"` delivers the same wiring as the legacy attribute.
 - Adds `aria-haspopup="dialog"`, `aria-expanded`, and `aria-controls` to triggers.
 - Ensures the dialog container is hidden by default with `role="dialog"`, `aria-modal`, and `tabindex="-1"`.
 - Moves focus inside on open, keeps Tab/Shift+Tab cycling within, and returns focus when closing.

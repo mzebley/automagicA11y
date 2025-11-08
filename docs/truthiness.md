@@ -71,5 +71,24 @@ The announce pattern uses the same notion of "expanded" vs "collapsed" when gene
 
 ---
 
-© 2025 Mark Zebley • automagicA11y  
+## Context aliases
+
+Contexts accept a variety of friendly names which normalize to canonical keys before being applied. Use whichever term feels most natural—automagicA11y keeps the semantics consistent.
+
+| Friendly term(s) | Canonical context |
+| ---------------- | ----------------- |
+| `dialog`, `modal` | `dialog` |
+| `tooltip` | `tooltip` |
+| `dropdown`, `menu`, `kebab`, `meatball`, `overflow`, `popover` | `menu` |
+| `details`, `disclosure`, `expander` | `disclosure` |
+| `accordion` | `accordion` |
+| `select`, `combobox`, `listbox` | `listbox` |
+| `tabs`, `tablist` | `tablist` |
+| `tree`, `treeview` | `tree` |
+
+The table mirrors the lookup used by `normalizeContext()` so both declarative markup and imperative APIs resolve to the same behaviors.
+
+---
+
+© 2025 Mark Zebley • automagicA11y
 _Licensed under the MIT License_

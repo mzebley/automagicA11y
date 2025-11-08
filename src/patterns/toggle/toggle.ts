@@ -2,6 +2,8 @@ import { createClassToggler } from "@core/classes";
 import { ensureId, setAriaExpanded } from "@core/attributes";
 import { setHiddenState } from "@core/styles";
 import { dispatch } from "@core/events";
+import { applyContext, type ContextMode } from "@core/context/apply";
+import { normalizeContext } from "@core/context/normalize";
 
 const prefersReducedMotion = () =>
   typeof window !== "undefined" &&
@@ -167,13 +169,52 @@ export function initToggle(trigger: Element) {
     trigger.addEventListener("keydown", onKeydown);
   }
 
+  // Expose a minimal controller for grouped interactions
+  (trigger as HTMLElement & { __automagica11ySetState?: (open: boolean) => void }).__automagica11ySetState = setState;
+
+  const contextAttr = trigger.getAttribute("data-automagica11y-context");
+  const contextValue = contextAttr ? contextAttr.trim() : null;
+  let contextMode: ContextMode = "all";
+  const modeAttr = trigger.getAttribute("data-automagica11y-context-mode");
+  if (modeAttr) {
+    const normalizedMode = modeAttr.trim().toLowerCase();
+    if (
+      normalizedMode === "all" ||
+      normalizedMode === "semantics-only" ||
+      normalizedMode === "behaviors-only"
+    ) {
+      contextMode = normalizedMode as ContextMode;
+    }
+  }
+
+  if (contextValue) {
+    const canonical = normalizeContext(contextValue);
+    const warnDuplicate = (alias: string) => {
+      const key = `context-${alias}`;
+      const registryHolder = trigger as HTMLElement & { __automagica11yWarnings?: Set<string> };
+      const registry = registryHolder.__automagica11yWarnings ?? new Set<string>();
+      if (!registryHolder.__automagica11yWarnings) {
+        registryHolder.__automagica11yWarnings = registry;
+      }
+      if (registry.has(key)) return;
+      registry.add(key);
+      console.warn(
+        `[automagica11y] data-automagica11y-${alias} and data-automagica11y-context="${alias}" are equivalent; prefer the context attribute.`
+      );
+    };
+    if (canonical === "dialog" && trigger.hasAttribute("data-automagica11y-dialog")) {
+      warnDuplicate("dialog");
+    }
+    if (canonical === "tooltip" && trigger.hasAttribute("data-automagica11y-tooltip")) {
+      warnDuplicate("tooltip");
+    }
+    targets.forEach((target) => applyContext(trigger, target, contextValue, contextMode));
+  }
+
   // Announce readiness so plugins or host applications can hook into initialized toggles.
   trigger.dispatchEvent(
     new CustomEvent("automagica11y:ready", { detail: { trigger, target: targets[0], targets } })
   );
-
-  // Expose a minimal controller for grouped interactions
-  (trigger as HTMLElement & { __automagica11ySetState?: (open: boolean) => void }).__automagica11ySetState = setState;
 
   return function destroy() {
     clearPendingOpenFrame();

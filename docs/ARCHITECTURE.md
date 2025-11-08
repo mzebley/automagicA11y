@@ -89,6 +89,16 @@ Holds shared keyboard affordance helpers such as `isActivateKey()`. Additional h
 
 Wrapper for dispatching typed custom events. Future patterns can build on this instead of re-implementing dispatch logic.
 
+### Context layering
+
+Patterns now compose three distinct responsibilities:
+
+1. **Wiring** — Toggle still owns class reflection, `aria-expanded`, and event emission.
+2. **Semantics** — Contexts call shared helpers (linking triggers, setting roles/ARIA) so every entry point stays consistent.
+3. **Behaviors** — Contexts enable optional helpers such as focus traps, Escape-to-close listeners, hover intent, and inert siblings.
+
+Because contexts are addressable by name (`data-automagica11y-context="dialog"`), legacy attributes can simply defer to them. This keeps feature parity between declarative aliases and new declarative syntax while allowing advanced users to opt into `semantics-only` or `behaviors-only` modes when integrating custom wiring.
+
 ---
 
 ## Lifecycle Events
