@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>automagicA11y – Dialog alias</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main id="main">
+    <h1>Dialog alias</h1>
+    <p>The legacy <code>data-automagica11y-dialog</code> attribute now forwards to the dialog context.</p>
+    <button class="btn" data-automagica11y-dialog="#alias-dialog">
+      Open dialog (alias)
+    </button>
+    <div id="alias-dialog" hidden>
+      <div class="panel">
+        <p>Alias triggers receive the same semantics and behaviors as the dialog context.</p>
+        <button class="btn" data-automagica11y-dialog-close>Close</button>
+      </div>
+    </div>
+  </main>
+  <script type="module" src="../dist/automagica11y.esm.js"></script>
+</body>
+</html>
