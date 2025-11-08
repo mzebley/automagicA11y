@@ -2,6 +2,7 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "framework": null,
+  "buildCommand": "npm run build",
   "headers": [
     {
       "source": "/dist/(.*)",
@@ -11,4 +12,3 @@
     }
   ]
 }
-

@@ -38,10 +38,11 @@ function renderExamplesNav() {
       <a class="brand" href="/">automagicA11y</a>
       <nav aria-label="Examples navigation">
         <ul class="site-nav__list">
-          <li><a href="${base}index.html" ${current === "index.html" ? 'aria-current="page"' : ''}>Examples</a></li>
+          <li><a href="${base.replace(/\/$/, '')}" ${current === "index.html" ? 'aria-current="page"' : ''}>Examples</a></li>
           ${EXAMPLES.map(({ file, title }) => {
+            const slug = file.replace(/\.html$/, '');
             const active = current === file ? ' aria-current="page"' : '';
-            return `<li><a href="${base}${file}"${active}>${title}</a></li>`;
+            return `<li><a href="${base}${slug}"${active}>${title}</a></li>`;
           }).join("")}
         </ul>
       </nav>

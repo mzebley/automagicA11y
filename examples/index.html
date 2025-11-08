@@ -27,14 +27,15 @@
       const list = window.__AUTOMAGIC_EXAMPLES__ || [];
       const grid = document.getElementById('example-grid');
       if (!grid) return;
-      grid.innerHTML = list.map(({ file, title }) => `
-        <a class="example-card" href="./${file}">
+      grid.innerHTML = list.map(({ file, title }) => {
+        const slug = file.replace(/\.html$/, '');
+        return `
+        <a class="example-card" href="./${slug}">
           <span class="example-card__title">${title}</span>
           <span class="example-card__subtitle">Open ${title} example</span>
-        </a>
-      `).join('');
+        </a>`;
+      }).join('');
     });
   </script>
 </body>
 </html>
-
