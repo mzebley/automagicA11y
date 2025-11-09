@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "prebuild": "npm --prefix .. run build",
+    "prebuild": "npm --prefix .. run build && rm -rf public/dist && mkdir -p public/dist && cp -R ../dist/* public/dist/",
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro build",

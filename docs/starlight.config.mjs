@@ -1,4 +1,6 @@
 
+const isProd = process.env.NODE_ENV === 'production';
+
 /** @type {import('@astrojs/starlight').StarlightConfig} */
 const config = {
   title: 'automagicA11y',
@@ -20,7 +22,15 @@ const config = {
     // Light/dark theme-color for better PWA/UA UI integration
     { tag: 'meta', attrs: { name: 'theme-color', media: '(prefers-color-scheme: light)', content: '#4f46e5' } },
     { tag: 'meta', attrs: { name: 'theme-color', media: '(prefers-color-scheme: dark)', content: '#1f2430' } },
-    { tag: 'script', attrs: { type: 'module', src: '/src/scripts/auto-init.ts' } }
+    // Dev: load TS module directly via Vite server. Prod: load built IIFE from /dist.
+    ...(isProd
+      ? [
+          { tag: 'script', attrs: { src: '/dist/automagica11y.min.js' } },
+          { tag: 'script', attrs: { type: 'module' }, content: "(() => { const w = window; if (w.automagicA11y && !w.automagica11y) w.automagica11y = w.automagicA11y; if (w.automagica11y && typeof w.automagica11y.initAllPatterns === 'function') { w.automagica11y.initAllPatterns(document); } })();" }
+        ]
+      : [
+          { tag: 'script', attrs: { type: 'module', src: '/src/scripts/auto-init.ts' } }
+        ])
   ],
   sidebar: [
     {

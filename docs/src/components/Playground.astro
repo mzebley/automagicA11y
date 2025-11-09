@@ -58,15 +58,32 @@ const summaryLabel = hasCode ? 'View source' : undefined;
 
       let libraryPromise;
       const ensureLibrary = () => {
-        // Prefer the globally exposed library (set by docs/src/scripts/auto-init.ts)
-        // to avoid repeated dynamic imports and related dev-time warnings.
         const w = window;
-        if (w.automagica11y) {
-          return Promise.resolve(w.automagica11y);
-        }
-        if (!libraryPromise) {
-          libraryPromise = import('automagica11y');
-        }
+        if (w.automagica11y) return Promise.resolve(w.automagica11y);
+        if (libraryPromise) return libraryPromise;
+        // Fallback: load the prebuilt IIFE from /dist and bridge the global
+        libraryPromise = new Promise((resolve, reject) => {
+          const existing = document.querySelector('script[data-a11y-lib]');
+          if (existing) {
+            existing.addEventListener('load', () => {
+              if (!w.automagica11y && w.automagicA11y) w.automagica11y = w.automagicA11y;
+              resolve(w.automagica11y);
+            }, { once: true });
+            existing.addEventListener('error', reject, { once: true });
+            return;
+          }
+          const s = document.createElement('script');
+          s.src = '/dist/automagica11y.min.js';
+          s.async = true;
+          s.defer = true;
+          s.setAttribute('data-a11y-lib', '');
+          s.onload = () => {
+            if (!w.automagica11y && w.automagicA11y) w.automagica11y = w.automagicA11y;
+            resolve(w.automagica11y);
+          };
+          s.onerror = reject;
+          document.head.appendChild(s);
+        });
         return libraryPromise;
       };
 
