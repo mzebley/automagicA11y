@@ -1,8 +1,8 @@
 # automagicA11y
 
-Version: 0.3 (concept phase)
+Version: 0.4 (concept phase)
 
-_Tagline: Drop an attribute. Get the ARIA._
+_Accessibility that writes itself._
 
 ---
 
