@@ -1,9 +1,9 @@
-import { getDataAttribute } from "@core/attributes";
+import { getDataAttribute } from "../../core/attributes";
 import {
   enableFocusTrap,
   isFocusTrapVisible,
   readFocusTrapOptionsFromAttributes,
-} from "@core/focus-trap";
+} from "../../core/focus-trap";
 
 interface TrapHandle {
   release: (() => void) | null;

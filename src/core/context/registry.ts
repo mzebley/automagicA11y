@@ -1,4 +1,4 @@
-import { getDataAttribute, hasDataAttribute, prefixedSelector } from "@core/attributes";
+import { getDataAttribute, hasDataAttribute, prefixedSelector } from "../attributes";
 import { dispatch } from "../events";
 import { resolveAnchoredPlacement } from "../placement";
 import type { PreferredAnchoredPlacement } from "../placement";

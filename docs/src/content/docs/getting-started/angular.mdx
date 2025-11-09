@@ -1,0 +1,96 @@
+---
+title: Angular
+description: Import automagicA11y in Angular apps with SSR guards and router hydration hooks.
+---
+
+import DemoCallout from '../../../components/DemoCallout.astro';
+
+# Angular integration
+
+Angular 16 and 17 projects can treat automagicA11y like any other ESM dependency. Use the standard
+TypeScript import inside components and guard invocations with `isPlatformBrowser` so server renders stay inert.
+
+## 1. Install
+
+```bash
+npm install automagica11y
+```
+
+## 2. Import in a component
+
+```ts
+// app.component.ts
+import {
+  Component,
+  Inject,
+  PLATFORM_ID,
+  AfterViewInit,
+  OnInit
+} from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { NavigationEnd, Router } from '@angular/router';
+import { initAllPatterns } from 'automagica11y';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html'
+})
+export class AppComponent implements AfterViewInit, OnInit {
+  constructor(@Inject(PLATFORM_ID) private platformId: object, private router: Router) {}
+
+  ngAfterViewInit(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      initAllPatterns();
+    }
+  }
+
+  ngOnInit(): void {
+    this.router.events.subscribe(event => {
+      if (isPlatformBrowser(this.platformId) && event instanceof NavigationEnd) {
+        initAllPatterns();
+      }
+    });
+  }
+}
+```
+
+`initAllPatterns` hydrates every supported pattern on the rendered DOM tree. Call it after lazy components load or whenever
+you append new markup with `data-automagica11y-*` attributes.
+
+### Template example
+
+```html
+<button data-automagica11y-toggle="#details">Details</button>
+<section id="details" hidden>Accessible disclosure target</section>
+```
+
+<DemoCallout type="warning" title="Avoid classic scripts">
+  <p>
+    The Angular CLI runs scripts listed in <code>angular.json</code> as classic (non-module) scripts. Do not add
+    <code>node_modules/automagica11y/dist/automagica11y.esm.js</code> there—classic scripts cannot parse
+    <code>export</code> statements and will throw in the browser. Prefer module imports inside your TypeScript files.
+  </p>
+</DemoCallout>
+
+## Browser-only alternative
+
+When you cannot use ESM (for example, in a legacy AngularJS hybrid shell), fall back to the bundled IIFE and call the declared
+global. Only use this approach on the client.
+
+```json
+// angular.json
+{
+  "scripts": ["node_modules/automagica11y/dist/automagica11y.min.js"]
+}
+```
+
+```ts
+import type automagicA11y from 'automagica11y/browser';
+
+declare const automagicA11y: typeof automagicA11y;
+
+automagicA11y.initAllPatterns();
+```
+
+The browser build exposes the same helpers (`initAllPatterns`, `initPattern`, `initNode`, etc.), so you can continue to hydrate
+new DOM after router navigation or dynamic updates.

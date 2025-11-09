@@ -1,6 +1,6 @@
-import { getDataAttribute } from "@core/attributes";
-import { getClassConfig } from "@core/classes";
-import { setHiddenState } from "@core/styles";
+import { getDataAttribute } from "./attributes";
+import { getClassConfig } from "./classes";
+import { setHiddenState } from "./styles";
 
 /** Track pending close animations so we can cancel if the element re-opens. */
 type PendingClose = {

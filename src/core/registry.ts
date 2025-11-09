@@ -1,4 +1,4 @@
-import { PREFIX_MAP } from "@core/prefixes";
+import { PREFIX_MAP } from "./prefixes";
 
 type PatternInit = (element: Element) => void;
 
@@ -10,6 +10,10 @@ interface PatternDefinition {
 
 const patterns: Record<string, PatternDefinition> = {};
 
+/**
+ * Register a declarative pattern by associating a selector with its initializer.
+ * The registry normalizes attribute prefixes so authors can opt into shorthand aliases.
+ */
 export function registerPattern(name: string, selector: string, init: PatternInit) {
   const canonicalToken = "data-automagica11y-";
   const selectors = new Set<string>([selector]);
@@ -45,22 +49,26 @@ function hydrate(def: PatternDefinition, root: ParentNode | Element) {
   }
 }
 
+/** Hydrate a single pattern by name within the provided root (defaults to `document`). */
 export function initPattern(name: string, root: ParentNode | Element = document) {
   const def = patterns[name];
   if (typeof def === "undefined") return;
   hydrate(def, root);
 }
 
+/** Hydrate several patterns in order by delegating to {@link initPattern}. */
 export function initPatterns(names: string[], root: ParentNode | Element = document) {
   names.forEach(name => initPattern(name, root));
 }
 
+/** Hydrate every registered pattern against a specific node and its descendants. */
 export function initNode(node: Element) {
   for (const name in patterns) {
     hydrate(patterns[name], node);
   }
 }
 
+/** Hydrate all registered patterns within the provided root (defaults to `document`). */
 export function initAllPatterns(root: ParentNode | Element = document) {
   for (const name in patterns) {
     hydrate(patterns[name], root);

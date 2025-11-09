@@ -1,4 +1,4 @@
-import { getDataAttribute, hasDataAttribute, setDataAttribute } from "@core/attributes";
+import { getDataAttribute, hasDataAttribute, setDataAttribute } from "../../core/attributes";
 import { initToggle } from "../toggle/toggle";
 
 /**

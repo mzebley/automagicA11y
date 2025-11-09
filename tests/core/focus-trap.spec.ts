@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import { enableFocusTrap } from "@core/focus-trap";
+import { enableFocusTrap } from "../../src/core/focus-trap";
 
 describe("enableFocusTrap", () => {
   beforeEach(() => {

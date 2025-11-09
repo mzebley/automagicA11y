@@ -1,5 +1,5 @@
-import { getDataAttribute } from "@core/attributes";
-import { getFocusableIn, isFocusable, focusElement } from "@core/focus";
+import { getDataAttribute } from "../../core/attributes";
+import { getFocusableIn, isFocusable, focusElement } from "../../core/focus";
 
 type Cleanup = () => void;
 const releases = new WeakMap<HTMLElement, Cleanup>();

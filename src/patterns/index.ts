@@ -1,5 +1,5 @@
-import { registerPattern } from "@core/registry";
-import { initAnimateLifecycle } from "@core/animate";
+import { registerPattern } from "../core/registry";
+import { initAnimateLifecycle } from "../core/animate";
 import { initContextTrigger } from "./shared/context";
 import { initToggle, isToggleOpen, getToggleTarget } from "./toggle/toggle";
 import { initTooltip } from "./tooltip/tooltip";

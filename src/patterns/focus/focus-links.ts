@@ -1,4 +1,4 @@
-import { focusElement, getFocusableIn, isFocusable } from "@core/focus";
+import { focusElement, getFocusableIn, isFocusable } from "../../core/focus";
 
 const FOCUS_NEXT_ATTR = "data-automagica11y-focus-next";
 const FOCUS_PREV_ATTR = "data-automagica11y-focus-prev";

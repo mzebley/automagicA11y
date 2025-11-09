@@ -1,6 +1,6 @@
-import { getDataAttribute, hasDataAttribute, setDataAttribute } from "@core/attributes";
+import { getDataAttribute, hasDataAttribute, setDataAttribute } from "../../core/attributes";
 import { initToggle } from "../toggle/toggle";
-import { dispatch } from "@core/events";
+import { dispatch } from "../../core/events";
 
 /**
  * Legacy tooltip initializer preserved for back-compat. Delegates to toggle + context="tooltip".

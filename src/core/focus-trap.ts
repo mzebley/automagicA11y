@@ -1,6 +1,6 @@
-import { getDataAttribute } from "@core/attributes";
-import { dispatch } from "@core/events";
-import { focusElement, getFocusableIn, isFocusable } from "@core/focus";
+import { getDataAttribute } from "./attributes";
+import { dispatch } from "./events";
+import { focusElement, getFocusableIn, isFocusable } from "./focus";
 
 /** Options that control focus trap behavior. */
 export interface FocusTrapOptions {

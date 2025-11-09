@@ -1,3 +1,5 @@
+import { getDataAttribute, hasDataAttribute } from "../../core/attributes";
+
 /**
  * The announce pattern wires a shared ARIA live region to automagicA11y events so controls
  * can opt in to screen reader messaging with simple data attributes.
@@ -166,4 +168,3 @@ export function registerAnnouncePlugin() {
   ensureLiveRegion();
   document.addEventListener("automagica11y:toggle", handleToggle, { capture: true });
 }
-import { getDataAttribute, hasDataAttribute } from "@core/attributes";

@@ -8,12 +8,7 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "node",
-    "skipLibCheck": true,
-    "baseUrl": "src",
-    "paths": {
-      "@core/*": ["core/*"],
-      "@utils/*": ["utils/*"]
-    }
+    "skipLibCheck": true
   },
   "include": ["src/**/*", "tests/**/*"],
   "exclude": ["node_modules", "dist"]

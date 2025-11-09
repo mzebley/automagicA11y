@@ -15,6 +15,7 @@
       "default": "./dist/automagica11y.esm.js"
     },
     "./browser": {
+      "types": "./dist/types/browser.d.ts",
       "default": "./dist/automagica11y.min.js"
     }
   },

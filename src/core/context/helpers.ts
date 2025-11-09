@@ -1,7 +1,7 @@
-import { ensureId, appendToken, normalizeAttributeName } from "@core/attributes";
-import { focusElement } from "@core/focus";
-import { enableFocusTrap, readFocusTrapOptionsFromAttributes } from "@core/focus-trap";
-import { setHiddenState, setInert } from "@core/styles";
+import { ensureId, appendToken, normalizeAttributeName } from "../attributes";
+import { focusElement } from "../focus";
+import { enableFocusTrap, readFocusTrapOptionsFromAttributes } from "../focus-trap";
+import { setHiddenState, setInert } from "../styles";
 
 interface FocusTrapController {
   activate: () => void;

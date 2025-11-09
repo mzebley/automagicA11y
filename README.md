@@ -22,6 +22,72 @@ Built for simplicity and scalability, it uses a consistent declarative syntax vi
   2. `npm run docs:dev`
   3. Open the dev server URL printed in the terminal.
 
+## Angular integration
+
+Angular 16+ apps can import the ESM build directly in component code. Guard invocations with
+`isPlatformBrowser` so SSR renders stay inert, then hydrate after Angular paints the view and whenever
+the router swaps pages.
+
+```ts
+// app.component.ts
+import { Component, Inject, PLATFORM_ID, AfterViewInit, OnInit } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { NavigationEnd, Router } from '@angular/router';
+import { initAllPatterns } from 'automagica11y';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html'
+})
+export class AppComponent implements AfterViewInit, OnInit {
+  constructor(@Inject(PLATFORM_ID) private platformId: object, private router: Router) {}
+
+  ngAfterViewInit(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      initAllPatterns();
+    }
+  }
+
+  ngOnInit(): void {
+    this.router.events.subscribe(event => {
+      if (isPlatformBrowser(this.platformId) && event instanceof NavigationEnd) {
+        initAllPatterns();
+      }
+    });
+  }
+}
+```
+
+Call `initAllPatterns` again whenever new markup with `data-automagica11y-*` attributes is rendered (for example,
+after lazy-loaded components resolve or dynamic content appears).
+
+Template example:
+
+```html
+<button data-automagica11y-toggle="#details">Details</button>
+<section id="details" hidden>Accessible disclosure target</section>
+```
+
+> ⚠️ Do not list `node_modules/automagica11y/dist/automagica11y.esm.js` in `angular.json` `scripts` – classic script tags
+> cannot parse `export` statements. Prefer module imports inside TypeScript instead.
+
+If you must use a global script (client-only builds, legacy code), reference the minified bundle and call the exposed global:
+
+```json
+// angular.json
+{
+  "scripts": ["node_modules/automagica11y/dist/automagica11y.min.js"]
+}
+```
+
+```ts
+declare const automagicA11y: typeof import('automagica11y/browser').default;
+
+automagicA11y.initAllPatterns();
+```
+
+Only run the global variant in the browser; the IIFE bundle is not SSR-compatible.
+
 ## Examples
 
 - Toggle — basic disclosure (`docs/src/content/docs/examples/toggle-basic.mdx`)

@@ -1,16 +1,16 @@
-import { createClassToggler } from "@core/classes";
+import { createClassToggler } from "../../core/classes";
 import {
   ensureId,
   appendToken,
   getDataAttribute,
   normalizeAttributeName,
   prefixedSelector,
-} from "@core/attributes";
-import { dispatch } from "@core/events";
-import { setHiddenState } from "@core/styles";
-import { focusElement } from "@core/focus";
-import { resolveAnchoredPlacement } from "@core/placement";
-import type { PreferredAnchoredPlacement } from "@core/placement";
+} from "../../core/attributes";
+import { dispatch } from "../../core/events";
+import { setHiddenState } from "../../core/styles";
+import { focusElement } from "../../core/focus";
+import { resolveAnchoredPlacement } from "../../core/placement";
+import type { PreferredAnchoredPlacement } from "../../core/placement";
 
 const PLACEMENT_ATTRIBUTE = "data-automagica11y-popover-placement";
 const OUTSIDE_DISMISS_ATTRIBUTE = "data-automagica11y-popover-outside-dismiss";

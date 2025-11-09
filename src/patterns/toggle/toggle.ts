@@ -1,15 +1,15 @@
-import { createClassToggler } from "@core/classes";
+import { createClassToggler } from "../../core/classes";
 import {
   ensureId,
   setAriaExpanded,
   getDataAttribute,
   hasDataAttribute,
   prefixedSelector,
-} from "@core/attributes";
-import { setHiddenState } from "@core/styles";
-import { dispatch } from "@core/events";
-import { applyContext, type ContextMode } from "@core/context/apply";
-import { normalizeContext } from "@core/context/normalize";
+} from "../../core/attributes";
+import { setHiddenState } from "../../core/styles";
+import { dispatch } from "../../core/events";
+import { applyContext, type ContextMode } from "../../core/context/apply";
+import { normalizeContext } from "../../core/context/normalize";
 
 const prefersReducedMotion = () =>
   typeof window !== "undefined" &&

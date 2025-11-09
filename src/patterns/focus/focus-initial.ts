@@ -1,5 +1,5 @@
-import { getDataAttribute } from "@core/attributes";
-import { focusElement } from "@core/focus";
+import { getDataAttribute } from "../../core/attributes";
+import { focusElement } from "../../core/focus";
 
 const initialized = new WeakSet<HTMLElement>();
 

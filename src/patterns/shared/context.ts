@@ -1,4 +1,4 @@
-import { ensureId, getDataAttribute, hasDataAttribute, setDataAttribute } from "@core/attributes";
+import { ensureId, getDataAttribute, hasDataAttribute, setDataAttribute } from "../../core/attributes";
 
 /**
  * Initialize a context-declared trigger by promoting `data-automagica11y-target`
