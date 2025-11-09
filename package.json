@@ -1,5 +1,5 @@
 {
-  "name": "automagicA11y",
+  "name": "automagica11y",
   "version": "0.3.0",
   "description": "A lightweight, framework-agnostic accessibility utility for declarative ARIA and a11y automation.",
   "type": "module",
