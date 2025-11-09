@@ -118,7 +118,8 @@
 
 .docs-toggle-pattern__trigger,
 .docs-example-toggle__trigger,
-.docs-truthiness-example__trigger {
+.docs-truthiness-example__trigger,
+.docs-example-accordion__trigger {
   border: 1px solid var(--docs-border-soft);
   padding: 0.5rem 1rem;
   border-radius: var(--docs-radius-md);
@@ -128,14 +129,16 @@
 .docs-toggle-pattern__trigger--active,
 .docs-example-toggle__trigger--open,
 .docs-truthiness-example__trigger--expanded,
-.docs-truthiness-example__trigger--on {
+.docs-truthiness-example__trigger--on,
+.docs-example-accordion__trigger--open {
   background: var(--automagica11y-accent);
   color: white;
 }
 
 .docs-toggle-pattern__panel,
 .docs-example-toggle__panel,
-.docs-truthiness-example__panel {
+.docs-truthiness-example__panel,
+.docs-example-accordion__panel {
   margin-top: 1rem;
   padding: 1rem;
   border-radius: var(--docs-radius-md);
@@ -150,6 +153,11 @@
 
 .docs-truthiness-example__panel--hidden {
   opacity: 0.75;
+}
+
+.docs-example-accordion {
+  display: grid;
+  gap: 0.75rem;
 }
 
 .docs-dialog-pattern__trigger,

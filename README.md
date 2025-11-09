@@ -22,6 +22,18 @@ Built for simplicity and scalability, it uses a consistent declarative syntax vi
   2. `npm run docs:dev`
   3. Open the dev server URL printed in the terminal.
 
+## Examples
+
+- Toggle — basic disclosure (`docs/src/content/docs/examples/toggle-basic.mdx`)
+- Toggle — grouped accordion (`docs/src/content/docs/examples/toggle-accordion.mdx`)
+- Context → Dialog (`docs/src/content/docs/examples/context-dialog.mdx`)
+- Context → Tooltip (`docs/src/content/docs/examples/context-tooltip.mdx`)
+- Truthiness aliases (`docs/src/content/docs/examples/truthiness-aliases.mdx`)
+- Popover dismissal (`docs/src/content/docs/examples/popover-basic.mdx`)
+- Focus map ordering (`docs/src/content/docs/examples/focus-map.mdx`)
+- Per-element focus links (`docs/src/content/docs/examples/focus-links.mdx`)
+- Examples roadmap (`docs/src/content/docs/examples/coverage-plan.mdx`)
+
 ---
 
 ## Design Philosophy

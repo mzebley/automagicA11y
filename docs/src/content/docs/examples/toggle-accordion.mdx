@@ -1,0 +1,59 @@
+---
+title: Toggle — grouped accordion
+description: data-automagica11y-group keeps accordions mutually exclusive.
+---
+
+import Playground from '../../../components/Playground.astro';
+
+# Toggle — grouped accordion
+
+Group related disclosures with `data-automagica11y-group` so opening one item closes any other expanded panels. This mirrors classic accordion behavior without additional JavaScript.
+
+<Playground id="example-toggle-accordion" heading="Grouped accordion" description="Only one panel stays open at a time.">
+  <div slot="demo" class="docs-example-accordion">
+    <button
+      data-automagica11y-toggle="#example-toggle-accordion-a"
+      data-automagica11y-group="faq"
+      data-automagica11y-trigger-class-open="docs-example-accordion__trigger--open"
+      class="docs-example-accordion__trigger"
+    >
+      Shipping
+    </button>
+    <section id="example-toggle-accordion-a" hidden class="docs-example-accordion__panel">
+      <p>Standard orders ship within 3–5 business days. Express options are available at checkout.</p>
+    </section>
+
+    <button
+      data-automagica11y-toggle="#example-toggle-accordion-b"
+      data-automagica11y-group="faq"
+      data-automagica11y-trigger-class-open="docs-example-accordion__trigger--open"
+      class="docs-example-accordion__trigger"
+    >
+      Returns
+    </button>
+    <section id="example-toggle-accordion-b" hidden class="docs-example-accordion__panel">
+      <p>Start a return within 30 days for a prepaid label. Exchanges are processed immediately.</p>
+    </section>
+
+    <button
+      data-automagica11y-toggle="#example-toggle-accordion-c"
+      data-automagica11y-group="faq"
+      data-automagica11y-trigger-class-open="docs-example-accordion__trigger--open"
+      class="docs-example-accordion__trigger"
+    >
+      Support hours
+    </button>
+    <section id="example-toggle-accordion-c" hidden class="docs-example-accordion__panel">
+      <p>Specialists are online 8 a.m.–8 p.m. ET Monday through Friday and 10 a.m.–4 p.m. on weekends.</p>
+    </section>
+  </div>
+  <div slot="code">
+{`<button
+  data-automagica11y-toggle="#shipping"
+  data-automagica11y-group="faq"
+>Shipping</button>
+<section id="shipping" hidden>...</section>`}
+  </div>
+</Playground>
+
+When one trigger opens, any other toggle in the same group automatically closes. This keeps focus on the current section while maintaining accessible disclosure semantics.

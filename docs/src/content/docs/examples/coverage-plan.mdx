@@ -9,8 +9,10 @@ This roadmap inventories the examples we already ship and the scenarios we still
 
 ## Core primitives
 
+- [x] **Truthiness alias inspector** – Demonstrates how synonymous state keywords map to the same class hooks (existing page).
 - [ ] **Attributes + Classes sandbox** – Inspect how `ensureId`, `appendToken`, and truthiness-driven class hooks behave on arbitrary markup.
-- [ ] **Context capability lab** – Toggle each capability (focus trap, inert siblings, hover intent) to demonstrate the helpers exported from `@core/context/helpers`.
+- [ ] **Context capability lab** – Toggle each capability (focus trap, inert siblings, hover intent, anchor follow) to demonstrate the helpers exported from `@core/context/helpers`.
+- [ ] **Context mode explorer** – Compare `all`, `semantics-only`, and `behaviors-only` toggles across dialog and tooltip contexts.
 - [ ] **Placement visualizer** – Drag a trigger around the viewport and watch how `resolveAnchoredPlacement` chooses the best side.
 
 ## Patterns
@@ -18,12 +20,15 @@ This roadmap inventories the examples we already ship and the scenarios we still
 ### Toggle
 
 - [x] Basic show/hide playground (existing page).
-- [ ] Grouped accordions using `data-automagica11y-group`.
+- [x] Truthiness alias synonyms wired to the same state (existing page).
+- [x] Grouped accordions using `data-automagica11y-group` (new example).
+- [ ] Multi-target toggle controlling companion overlays and ARIA mirrors.
 - [ ] Toggle + menu context once behaviors ship for menus.
 
 ### Dialog
 
 - [x] Context vs alias parity (existing page).
+- [ ] Backdrop dismissal toggled with `data-automagica11y-dialog-dismissable`.
 - [ ] Dialog integrated with `initFocusInitial` and the animate plugin.
 - [ ] Multi-trigger dialog demonstrating inert sibling coordination.
 
@@ -32,15 +37,27 @@ This roadmap inventories the examples we already ship and the scenarios we still
 - [x] Dismiss-on-outside-click demo (existing page).
 - [ ] Command palette with focus map ordering and search field.
 - [ ] Teaching bubble that responds to `automagica11y:popover:placement` updates.
+- [ ] Sticky popover example showing `data-automagica11y-popover-outside-dismiss="false"` and scroll thresholds.
 
 ### Tooltip
 
 - [x] Context vs alias parity (existing page).
 - [ ] Hover intent playground for open/close delay tuning.
 - [ ] Mobile long-press tooltip with explicit dismiss controls.
+- [ ] Tooltip dismiss button recipe using `data-automagica11y-tooltip-dismiss`.
+
+### Future contexts
+
+- [ ] Menu semantics gallery showing `role="menu"` markup before interactive behaviors ship.
+- [ ] Disclosure/accordion context parity demo once shared behaviors land.
+- [ ] Listbox, tablist, and tree context previews illustrating the automatic role scaffolding.
 
 ## Focus helpers
 
+- [x] Focus map ordering demo (existing page).
+- [x] Per-element focus links chaining `data-automagica11y-focus-next`/`-prev` (existing page).
+- [ ] Focus trap auto-activation walkthrough with `data-automagica11y-focus-trap` options.
+- [ ] Focus initial + animate plugin handshake so focus waits until exit transitions finish.
 - [ ] Live editor for `data-automagica11y-focus-map` selectors.
 - [ ] Dialog integration that shows how focus is restored when closing.
 
@@ -49,6 +66,8 @@ This roadmap inventories the examples we already ship and the scenarios we still
 ### Announce
 
 - [ ] Screen reader announcement inspector that logs polite/assertive output.
+- [ ] Grouped toggle announcements showing only the newly opened item speaks.
+- [ ] Localization walkthrough for author-supplied announcement strings.
 
 ### Animate
 

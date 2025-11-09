@@ -68,11 +68,13 @@ const config = {
       label: 'Examples',
       items: [
         { label: 'Toggle', link: '/examples/toggle-basic/' },
+        { label: 'Toggle — grouped accordion', link: '/examples/toggle-accordion/' },
         { label: 'Context → Dialog', link: '/examples/context-dialog/' },
         { label: 'Context → Tooltip', link: '/examples/context-tooltip/' },
         { label: 'Truthiness aliases', link: '/examples/truthiness-aliases/' },
         { label: 'Popover dismissal', link: '/examples/popover-basic/' },
         { label: 'Focus map ordering', link: '/examples/focus-map/' },
+        { label: 'Per-element focus links', link: '/examples/focus-links/' },
         { label: 'Examples roadmap', link: '/examples/coverage-plan/' }
       ]
     }
