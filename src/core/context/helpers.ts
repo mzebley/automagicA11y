@@ -1,11 +1,11 @@
 import { ensureId, appendToken, normalizeAttributeName } from "@core/attributes";
-import { createFocusTrap, focusElement } from "@core/focus";
+import { focusElement } from "@core/focus";
+import { enableFocusTrap, readFocusTrapOptionsFromAttributes } from "@core/focus-trap";
 import { setHiddenState, setInert } from "@core/styles";
 
 interface FocusTrapController {
   activate: () => void;
   deactivate: () => void;
-  focusInitial: () => void;
 }
 
 interface RestoreFocusController {
@@ -61,32 +61,23 @@ const escapeControllers = new WeakMap<HTMLElement, EscapeController>();
 const inertControllers = new WeakMap<HTMLElement, InertController>();
 
 function createFocusTrapController(target: HTMLElement): FocusTrapController {
-  const trap = createFocusTrap(target);
-  let active = false;
-
-  const onFocusIn = (event: FocusEvent) => {
-    trap.handleFocusIn(event);
-  };
-
-  const onKeydown = (event: KeyboardEvent) => {
-    trap.handleKeydown(event);
-  };
+  const options = readFocusTrapOptionsFromAttributes(target);
+  let release: (() => void) | null = null;
 
   return {
     activate() {
-      if (active) return;
-      active = true;
-      document.addEventListener("focusin", onFocusIn, true);
-      document.addEventListener("keydown", onKeydown, true);
+      if (release) return;
+      release = enableFocusTrap(target, {
+        initial: options.initial,
+        returnFocus: false,
+        escapeDismiss: options.escapeDismiss,
+      });
     },
     deactivate() {
-      if (!active) return;
-      active = false;
-      document.removeEventListener("focusin", onFocusIn, true);
-      document.removeEventListener("keydown", onKeydown, true);
-    },
-    focusInitial() {
-      queueMicrotask(() => trap.focusFirst());
+      if (!release) return;
+      const dispose = release;
+      release = null;
+      dispose();
     }
   };
 }

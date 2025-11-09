@@ -229,6 +229,44 @@ export const focusLinkAttributes = [
   }
 ];
 
+export const focusTrapAttributes = [
+  {
+    attribute: 'data-automagica11y-focus-trap',
+    type: 'boolean attribute',
+    allowedValues: 'Present on any container',
+    defaultValue: 'N/A',
+    description: 'Enables the focus trap when the container is visible so Tab/Shift+Tab stay inside.'
+  },
+  {
+    attribute: 'data-automagica11y-focus-trap-initial',
+    type: '`first` | `last` | Selector',
+    allowedValues: 'First, last, or any CSS selector',
+    defaultValue: '`first`',
+    description: 'Controls where focus moves when the trap activates.'
+  },
+  {
+    attribute: 'data-automagica11y-focus-trap-return',
+    type: 'boolean',
+    allowedValues: '`true`, `false`',
+    defaultValue: '`true`',
+    description: 'Whether to restore focus to the previously active element when the trap releases.'
+  },
+  {
+    attribute: 'data-automagica11y-focus-trap-escape-dismiss',
+    type: 'boolean',
+    allowedValues: '`true`, `false`',
+    defaultValue: '`false`',
+    description: 'Opt-in Escape key to release the trap (useful for non-modal surfaces).'
+  },
+  {
+    attribute: 'data-automagica11y-focus-trap-auto',
+    type: 'boolean',
+    allowedValues: '`true`, `false`',
+    defaultValue: '`true`',
+    description: 'Automatically enable/disable the trap when the container becomes visible or hidden.'
+  }
+];
+
 export const attributeReference = [
   {
     attribute: 'data-automagica11y-toggle',

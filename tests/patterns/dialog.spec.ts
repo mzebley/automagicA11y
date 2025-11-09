@@ -66,12 +66,12 @@ describe("dialog pattern", () => {
     expect(toggles[0].detail.expanded).toBe(true);
 
     // Tab should loop within dialog.
-    const tabEvent = new KeyboardEvent("keydown", { key: "Tab" });
-    document.dispatchEvent(tabEvent);
+    const tabEvent = new KeyboardEvent("keydown", { key: "Tab", bubbles: true });
+    (document.activeElement as HTMLElement | null)?.dispatchEvent(tabEvent);
     expect(document.activeElement).toBe(document.getElementById("logout"));
 
-    const shiftTab = new KeyboardEvent("keydown", { key: "Tab", shiftKey: true });
-    document.dispatchEvent(shiftTab);
+    const shiftTab = new KeyboardEvent("keydown", { key: "Tab", shiftKey: true, bubbles: true });
+    (document.activeElement as HTMLElement | null)?.dispatchEvent(shiftTab);
     expect(document.activeElement).toBe(closeBtn);
     vi.useRealTimers();
   });

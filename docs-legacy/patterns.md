@@ -76,7 +76,7 @@ automagicA11y patterns are small, self-contained behaviors that automatically ha
 **Highlights:**
 - `data-automagica11y-focus-initial` focuses an element once after hydration without permanently changing its tabindex.
 - `data-automagica11y-focus-map` lets you define selector-based tab sequences scoped to a container. Pair it with `data-automagica11y-focus-map-anchor` to keep the mapped order aligned with the surrounding DOM (for example, when a floating music player is rendered at the end of the document but appears near the top of the UI).
-- Shared core utilities (`getFocusableIn`, `focusElement`, `createFocusTrap`) keep focus trapping consistent across patterns.
+- Shared core utilities (`getFocusableIn`, `focusElement`, `enableFocusTrap`) keep focus trapping consistent across patterns.
 
 ---
 

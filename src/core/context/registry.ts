@@ -153,25 +153,24 @@ export const Contexts: Record<string, ContextSpec> = {
         if (!(event instanceof CustomEvent)) return;
         const detail = event.detail as ToggleDetail;
         if (!detail || detail.target !== target) return;
-        if (detail.expanded) {
-          const siblings = dialogTriggerBindings.get(target);
-          if (siblings) {
-            for (const candidate of siblings) {
-              if (candidate === trigger) continue;
-              const controller = getToggleController(candidate);
-              controller?.(false);
+          if (detail.expanded) {
+            const siblings = dialogTriggerBindings.get(target);
+            if (siblings) {
+              for (const candidate of siblings) {
+                if (candidate === trigger) continue;
+                const controller = getToggleController(candidate);
+                controller?.(false);
+              }
             }
-          }
-          state.currentTrigger = trigger;
-          state.restoreFocus.capture(trigger);
-          state.inert.activate();
-          state.focusTrap.activate();
-          state.focusTrap.focusInitial();
-          state.escape.activate(trigger);
-        } else {
-          state.escape.deactivate();
-          state.focusTrap.deactivate();
-          state.inert.deactivate();
+            state.currentTrigger = trigger;
+            state.restoreFocus.capture(trigger);
+            state.inert.activate();
+            state.focusTrap.activate();
+            state.escape.activate(trigger);
+          } else {
+            state.escape.deactivate();
+            state.focusTrap.deactivate();
+            state.inert.deactivate();
           state.restoreFocus.restore();
           state.currentTrigger = null;
         }

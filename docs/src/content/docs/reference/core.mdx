@@ -74,7 +74,7 @@ Focus utilities power both the dialog context and dedicated focus patterns:
 - `isFocusable(element)` and `getFocusableIn(root)` filter nodes against visibility, `hidden`, `aria-hidden`, and `tabindex` rules.
 - `focusElement(element, { preventScroll, preserveTabIndex })` safely focuses while preserving author `tabindex` values.
 - `focusFirst(root)` moves focus to the first focusable descendant, falling back to the root element.
-- `createFocusTrap(container)` returns a trap interface that dialog contexts reuse.
+- `enableFocusTrap(container, options)` activates a managed focus loop and returns a disposer.
 - `applyFocusOrder(elements, options)` assigns a deterministic tab order and returns a controller to restore the previous state.
 
 ## Keyboard (`@core/keyboard`)

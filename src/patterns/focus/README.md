@@ -79,13 +79,44 @@ If a selector cannot be resolved, or every resolved element is unfocusable, the 
 
 ---
 
+## Focus Trap (`data-automagica11y-focus-trap`)
+
+Lock focus within a container while it is shown. The declarative pattern wraps the imperative `enableFocusTrap` helper so dialogs, popovers, and custom disclosures can opt into containment with a single attribute.
+
+```html
+<div
+  data-automagica11y-focus-trap
+  data-automagica11y-focus-trap-initial="[data-primary]"
+  data-automagica11y-focus-trap-return="true"
+  data-automagica11y-focus-trap-escape-dismiss="false">
+  <!-- tabbables -->
+</div>
+```
+
+- `data-automagica11y-focus-trap` marks the container. When visible, focus wraps on `Tab`/`Shift+Tab` and cannot leak.
+- `data-automagica11y-focus-trap-initial` accepts `first`, `last`, or a selector inside the container. Defaults to the first tabbable.
+- `data-automagica11y-focus-trap-return` controls whether focus returns to the previously focused element on release (default `true`).
+- `data-automagica11y-focus-trap-escape-dismiss` enables Escape-to-release for non-modal surfaces (default `false`).
+- `data-automagica11y-focus-trap-auto` toggles automatic activation when the container is revealed (`hidden`/`aria-hidden` removed). Defaults to `true`.
+
+Activation happens two ways:
+
+1. **Automatic visibility watcher** – When `-auto` is not `false`, the trap enables itself once the element becomes visible and tears down when hidden or detached.
+2. **Lifecycle events** – Dispatch `automagica11y:toggle`, `automagica11y:toggle:opened`, `automagica11y:toggle:closed`, `automagica11y:shown`, or `automagica11y:hidden` with `detail.target` referencing the container to force enable/disable. This mirrors the events emitted by the toggle pattern.
+
+Nested traps are coordinated by a shared manager so the most recent activation owns keyboard handling while parents pause. When the inner trap releases, the parent resumes automatically and restores focus according to its settings.
+
+Escape dismissal dispatches `automagica11y:focus-trap:escape` from the container so hosts can react.
+
+---
+
 ## Shared Focus Utilities
 
 Located in `src/core/focus.ts`:
 
 - `getFocusableIn(root)` – returns focusable elements within a container.
 - `focusElement(element, { preserveTabIndex, preventScroll })` – focuses an element without permanently altering tabindex.
-- `createFocusTrap(container)` – reusable trap used by the dialog pattern for keyboard containment.
+- `enableFocusTrap(container, options)` – installs a managed trap that wraps focus and returns a disposer. Context-driven patterns call this under the hood.
 - `applyFocusOrder(elements)` – applies sequential `tabindex` values and returns a controller that can restore originals.
 
 These helpers keep focus behavior predictable across patterns while letting authors opt into higher-level behaviors via declarative attributes.

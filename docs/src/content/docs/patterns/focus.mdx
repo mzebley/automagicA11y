@@ -5,7 +5,7 @@ description: Declarative helpers that control initial focus placement and bespok
 
 import AttributeTable from '../../../components/AttributeTable.astro';
 import DemoCallout from '../../../components/DemoCallout.astro';
-import { focusInitialAttributes, focusMapAttributes, focusLinkAttributes } from '../../../data/patterns';
+import { focusInitialAttributes, focusMapAttributes, focusLinkAttributes, focusTrapAttributes } from '../../../data/patterns';
 
 # Focus utilities
 
@@ -75,6 +75,36 @@ Pressing <kbd>Tab</kbd> on the anchor jumps into the sequenced buttons, while <k
 - No positive `tabindex` values are assigned; keyboard order is achieved by intercepting Tab presses and focusing the next/previous mapped element.
 - When nodes change after initialization, rerun `initFocusMap` to refresh the order.
 
+## Focus trap (`data-automagica11y-focus-trap`)
+
+Wrap an interactive surface in a managed focus loop so keyboard users never land outside the active UI. The attribute version builds on the shared `enableFocusTrap()` helper while handling visibility and event-driven activation.
+
+<AttributeTable attributes={focusTrapAttributes} />
+
+### Example
+
+```html
+<div
+  id="sheet"
+  hidden
+  data-automagica11y-focus-trap
+  data-automagica11y-focus-trap-initial="[data-primary]"
+  data-automagica11y-focus-trap-return="true">
+  <button data-primary>Primary action</button>
+  <button>Secondary</button>
+  <button data-automagica11y-dialog-close>Cancel</button>
+</div>
+```
+
+When the element becomes visible (no `hidden` attribute and `aria-hidden` is not `true`), the trap enables, focuses the first tabbable (or your selector), and keeps Tab/Shift+Tab cycling within. Toggling `hidden` or removing the element disables the trap and returns focus to the opener unless `data-automagica11y-focus-trap-return="false"`.
+
+### Behavior summary
+
+- Auto mode is on by default. Set `data-automagica11y-focus-trap-auto="false"` to opt out and toggle traps manually.
+- The pattern also listens for `automagica11y:toggle`, `automagica11y:toggle:opened`, `automagica11y:toggle:closed`, `automagica11y:shown`, and `automagica11y:hidden` events. Dispatch one with `detail.target` equal to the container to force enable/disable.
+- Escape dismissal stays opt-in via `data-automagica11y-focus-trap-escape-dismiss="true"` so dialogs keep owning their close logic.
+- Nested traps cooperate—activating a child trap pauses its parent. When the child releases, the parent resumes with its previous focus target.
+
 ## Per-element links (`data-automagica11y-focus-next` / `data-automagica11y-focus-prev`)
 
 Build lightweight relationships between neighboring elements without defining an entire map. Any focusable control can declare a `data-automagica11y-focus-next` or `data-automagica11y-focus-prev` selector. When the user presses <kbd>Tab</kbd> or <kbd>Shift</kbd>+<kbd>Tab</kbd>, automagicA11y resolves the selector inside the configured scope, skips hidden/disabled/inert matches, and focuses the first viable result. Reverse edges are inferred automatically, so authoring only the `focus-next` side still makes backward navigation work.
@@ -108,7 +138,7 @@ Build lightweight relationships between neighboring elements without defining an
 
 - `getFocusableIn(root)` — finds focusable descendants inside a container.
 - `focusElement(element, options)` — focuses without permanently altering `tabindex`.
-- `createFocusTrap(container)` — powers dialog-style containment.
+- `enableFocusTrap(container, options)` — installs a managed focus trap and returns a disposer.
 - `applyFocusOrder(elements)` — temporarily reorders focus via sequential `tabindex` values and returns a controller that restores originals.
 
 ## Coverage plan

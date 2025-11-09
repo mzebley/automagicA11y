@@ -74,7 +74,7 @@ Reusable focus primitives shared by dialogs and focus patterns.
 
 - `getFocusableIn()` enumerates tabbable descendants.
 - `focusElement()` focuses while preserving original tabindex.
-- `createFocusTrap()` loops focus within a container.
+- `enableFocusTrap()` loops focus within a container.
 - `applyFocusOrder()` applies temporary tabindex maps and restores originals.
 
 ### `aria.ts`

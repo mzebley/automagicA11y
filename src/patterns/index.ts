@@ -6,6 +6,7 @@ import { initPopover } from "./popover/popover";
 import { initDialog } from "./dialog/dialog";
 import { initFocusInitial } from "./focus/focus-initial";
 import { initFocusMap } from "./focus/focus-map";
+import { initFocusTrap } from "./focus/focus-trap";
 import { initFocusLinks } from "./focus/focus-links";
 export { registerAnnouncePlugin } from "../plugins/announce/announce";
 
@@ -54,6 +55,12 @@ registerPattern("focus-map", "[data-automagica11y-focus-map]", (node) => {
   }
 });
 
+registerPattern("focus-trap", "[data-automagica11y-focus-trap]", (node) => {
+  if (node instanceof Element) {
+    initFocusTrap(node);
+  }
+});
+
 if (typeof document !== "undefined") {
   initFocusLinks(document);
 }
@@ -68,4 +75,5 @@ export {
   initFocusInitial,
   initFocusMap,
   initFocusLinks,
+  initFocusTrap,
 };

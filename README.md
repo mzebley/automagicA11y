@@ -296,6 +296,29 @@ Use this to keep floating players, overlays, or portal-based menus in the logica
 
 Author `data-automagica11y-focus-next` / `data-automagica11y-focus-prev` on any focusable element to define its immediate neighbors. The handler resolves selectors inside the configured scope (use `data-automagica11y-focus-scope="self"` to limit lookups) and moves focus to the first viable match, skipping hidden, disabled, or inert nodes along the way. Reverse edges are inferred automatically, so adding only `data-automagica11y-focus-next` still makes `Shift+Tab` land on the previous linked element.
 
+#### Focus trap
+
+```html
+<section
+  data-automagica11y-focus-trap
+  data-automagica11y-focus-trap-initial="[data-primary]"
+  data-automagica11y-focus-trap-return="true"
+  data-automagica11y-focus-trap-escape-dismiss="false">
+  <!-- interactive content -->
+</section>
+```
+
+Adding `data-automagica11y-focus-trap` keeps `Tab` / `Shift+Tab` cycling inside the container. By default the trap activates whenever the element becomes visible (no `hidden` attribute, `aria-hidden="true"` removed) and pauses when hidden or detached. Provide:
+
+- `data-automagica11y-focus-trap-initial="first|last|<selector>"` to control the starting focus target.
+- `data-automagica11y-focus-trap-return="false"` to opt out of restoring focus to the prior invoker on release.
+- `data-automagica11y-focus-trap-escape-dismiss="true"` to make Escape release the trap (ideal for non-modal surfaces).
+- `data-automagica11y-focus-trap-auto="false"` when you only want to toggle via lifecycle events.
+
+In addition to auto mode, the pattern listens for `automagica11y:toggle`, `automagica11y:toggle:opened`, `automagica11y:toggle:closed`, `automagica11y:shown`, and `automagica11y:hidden` events. Dispatching any of these with `detail.target` pointing at the container forces the trap on/off—perfect for custom dialog managers.
+
+Nested surfaces (dialog inside popover) just work: a shared focus trap manager pauses the parent trap while the child is active and resumes it once the child releases. Imperative callers can reach for `enableFocusTrap(container, options)` when they need direct control.
+
 ---
 
 ## Plugins

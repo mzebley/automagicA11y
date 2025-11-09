@@ -57,7 +57,9 @@ describe("dialog context", () => {
     expect(background.getAttribute("aria-hidden")).toBe("true");
     expect(background.hasAttribute("inert")).toBe(true);
 
-    document.dispatchEvent(new KeyboardEvent("keydown", { key: "Tab" }));
+    (document.activeElement as HTMLElement | null)?.dispatchEvent(
+      new KeyboardEvent("keydown", { key: "Tab", bubbles: true })
+    );
     expect(document.activeElement).toBe(document.getElementById("other"));
 
     document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
