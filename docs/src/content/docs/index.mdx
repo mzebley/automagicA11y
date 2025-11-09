@@ -1,24 +1,120 @@
 ---
 title: Meet automagicA11y
 description: Declarative accessibility utilities that wire the hard parts for you.
+template: splash
+hero:
+  title: Accessibility that wires itself.
+  tagline: Drop a <code>data-automagica11y-*</code> attribute and let the runtime synchronize ARIA, focus management, and visual states without bespoke scripts.
+  image:
+    html: |
+      <div class="landing-hero-visual" aria-hidden="true">
+        <div class="landing-hero-orb"></div>
+        <div class="landing-hero-card">
+          <span class="landing-hero-card__eyebrow">auto-init</span>
+          <span class="landing-hero-card__title">initAllPatterns(document)</span>
+          <span class="landing-hero-card__caption">Runs once, wires everything.</span>
+        </div>
+        <div class="landing-hero-badge">Focus-safe toggles</div>
+      </div>
+  actions:
+    - text: Quickstart
+      link: /getting-started/quickstart/
+      variant: primary
+    - text: Explore patterns
+      link: /patterns/toggle/
+      variant: secondary
 ---
 
 import DemoCallout from '../../components/DemoCallout.astro';
 import Playground from '../../components/Playground.astro';
+import LandingFeatureGrid from '../../components/LandingFeatureGrid.astro';
 
-# Meet automagicA11y
+const features = [
+  {
+    title: 'Drop-in attributes',
+    description: 'Use semantic HTML and `data-automagica11y-*` hooks. The library reflects `aria-expanded`, `aria-controls`, and stateful classes automatically.',
+    icon: '✨',
+    link: { href: '/getting-started/installation/', label: 'Install guide' }
+  },
+  {
+    title: 'Context-aware patterns',
+    description: 'Toggle dialogs, popovers, and tooltips with a single attribute. Context presets add roles, keyboard bindings, and focus management for you.',
+    icon: '🎯',
+    link: { href: '/guides/contexts/', label: 'Contexts guide' }
+  },
+  {
+    title: 'Progressive enhancement first',
+    description: 'No-JS fallbacks stay semantic. Enhancements respect reduced motion, restore focus, and keep the DOM tidy.',
+    icon: '🌱',
+    link: { href: '/guides/animate/', label: 'Animate responsibly' }
+  }
+];
 
-automagicA11y is a lightweight, framework-agnostic toolkit that turns semantic HTML and data attributes into fully wired accessible patterns. Drop an attribute, ship the ARIA.
+const quickLinks = [
+  {
+    href: '/getting-started/installation/',
+    label: 'Installation',
+    description: 'Add automagicA11y with npm or pnpm and pull in the auto-init helper.'
+  },
+  {
+    href: '/getting-started/quickstart/',
+    label: 'Quickstart',
+    description: 'Wire your first toggle in under a minute with live playgrounds.'
+  },
+  {
+    href: '/guides/truthiness/',
+    label: 'Truthiness reference',
+    description: 'Map custom open/closed states to the library’s boolean helpers.'
+  },
+  {
+    href: '/patterns/toggle/',
+    label: 'Toggle pattern',
+    description: 'Review attributes, focus helpers, and context-aware presets.'
+  },
+  {
+    href: '/patterns/focus/',
+    label: 'Focus utilities',
+    description: 'Coordinate focus maps, guard rails, and interactive regions.'
+  },
+  {
+    href: '/plugins/announce/',
+    label: 'Announce plugin',
+    description: 'Send live region updates with a single `data-automagica11y` attribute.'
+  }
+];
 
-## Quick links
+<LandingFeatureGrid
+  heading="Ship accessible UI without the busywork"
+  description="automagicA11y pairs declarative HTML with opinionated defaults so you can ship inclusive patterns quickly."
+  features={features}
+/>
 
-- [Installation](./getting-started/installation/)
-- [Quickstart](./getting-started/quickstart/)
-- [Contexts guide](./guides/contexts/)
-- [Truthiness reference](./guides/truthiness/)
-- [Toggle pattern](./patterns/toggle/)
-- [Focus utilities](./patterns/focus/)
-- [Plugins](./plugins/announce/)
+## Get started in minutes
+
+<div class="landing-quickstart">
+  <div class="landing-quickstart__copy">
+    <p class="landing-quickstart__lead">
+      Install the package, drop one attribute, and let the registry hydrate every supported pattern. You can progressively enhance
+      existing markup or scaffold new components from our playgrounds.
+    </p>
+    <ol class="landing-quickstart__steps">
+      <li>Install the package and include the <code>auto-init</code> helper.</li>
+      <li>Annotate triggers with <code>data-automagica11y-toggle</code> (or a context shortcut).</li>
+      <li>Drop your markup into the docs playgrounds to validate keyboard, ARIA, and reduced-motion states.</li>
+    </ol>
+  </div>
+  <div class="landing-quickstart__install">
+    <h3>Install in seconds</h3>
+
+```bash
+npm install automagica11y
+```
+
+    <p class="landing-quickstart__note">
+      Once installed, add `data-automagica11y-*` attributes to your markup and let the registry initialize everything automatically.
+    </p>
+  </div>
+</div>
 
 <DemoCallout title="Local builds" type="info">
   <p>
@@ -26,13 +122,16 @@ automagicA11y is a lightweight, framework-agnostic toolkit that turns semantic H
   </p>
 </DemoCallout>
 
-## Install in seconds
+## Quick links
 
-```bash
-npm install automagica11y
-```
-
-Once installed, add `data-automagica11y-*` attributes to your markup and let the registry initialize everything automatically.
+<div class="landing-quick-links" role="list">
+  {quickLinks.map((link) => (
+    <a class="landing-quick-links__item" href={link.href} role="listitem">
+      <span class="landing-quick-links__label">{link.label}</span>
+      <span class="landing-quick-links__description">{link.description}</span>
+    </a>
+  ))}
+</div>
 
 ## Try a toggle
 

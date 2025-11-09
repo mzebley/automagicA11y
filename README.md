@@ -12,6 +12,12 @@ automagicA11y is a lightweight, framework-agnostic accessibility utility that au
 
 Built for simplicity and scalability, it uses a consistent declarative syntax via `data-automagica11y-*` attributes to handle open or closed states, ARIA bindings, and accessibility affordances automatically.
 
+### Key capabilities
+
+- **Drop-in attributes:** Use semantic HTML and `data-automagica11y-*` hooks. The runtime reflects ARIA attributes and stateful classes without bespoke scripts.
+- **Context-aware patterns:** Toggle dialogs, popovers, tooltips, and more with a single attribute. Presets bundle roles, keyboard bindings, and focus management for you.
+- **Progressive enhancement first:** No-JS fallbacks stay semantic while enhancements respect reduced motion, restore focus, and keep the DOM tidy.
+
 ---
 
 ## Documentation

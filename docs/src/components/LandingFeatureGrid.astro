@@ -1,0 +1,47 @@
+---
+/**
+ * LandingFeatureGrid renders a responsive grid of feature descriptions for the home page hero.
+ * It accepts a heading, optional introductory copy, and a list of feature objects so docs pages
+ * can reuse the layout without duplicating markup.
+ */
+type FeatureLink = {
+  href: string;
+  label: string;
+};
+
+type Feature = {
+  title: string;
+  description: string;
+  icon?: string;
+  link?: FeatureLink;
+};
+
+interface Props {
+  heading: string;
+  description?: string;
+  features: Feature[];
+}
+
+const { heading, description, features } = Astro.props as Props;
+---
+<section class="landing-feature-grid" aria-labelledby="landing-feature-grid-heading">
+  <div class="landing-feature-grid__intro">
+    <p class="landing-feature-grid__eyebrow">Why automagicA11y</p>
+    <h2 id="landing-feature-grid-heading">{heading}</h2>
+    {description && <p class="landing-feature-grid__lead">{description}</p>}
+  </div>
+  <div class="landing-feature-grid__grid" role="list">
+    {features.map((feature) => (
+      <article class="landing-feature-grid__card" role="listitem">
+        {feature.icon && <span class="landing-feature-grid__icon" aria-hidden="true">{feature.icon}</span>}
+        <h3 class="landing-feature-grid__title">{feature.title}</h3>
+        <p class="landing-feature-grid__copy">{feature.description}</p>
+        {feature.link && (
+          <p class="landing-feature-grid__cta">
+            <a class="landing-feature-grid__link" href={feature.link.href}>{feature.link.label}</a>
+          </p>
+        )}
+      </article>
+    ))}
+  </div>
+</section>
