@@ -6,6 +6,8 @@ automagicA11y uses a predictable, declarative attribute structure. Toggle/disclo
 data-automagica11y-[element]-[affordance]-[action]
 ```
 
+> **Alias-friendly:** Prefer the canonical `data-automagica11y-` prefix in docs, but the runtime also accepts shorthands such as `data-automagically-`, `data-ama11y-`, `data-ama-`, or `data-automagic-`. Every alias normalizes to the canonical prefix before parsing.
+
 | Part | Description | Examples |
 |------|--------------|-----------|
 | `element` | The item being manipulated (`trigger` or `target`) | `data-automagica11y-trigger-*` |

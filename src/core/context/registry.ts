@@ -1,3 +1,4 @@
+import { getDataAttribute, hasDataAttribute, prefixedSelector } from "@core/attributes";
 import { dispatch } from "../events";
 import { resolveAnchoredPlacement } from "../placement";
 import type { PreferredAnchoredPlacement } from "../placement";
@@ -61,7 +62,7 @@ function ensureDialogState(target: HTMLElement, h: Helpers): DialogBehaviorState
   const onClick = (event: MouseEvent) => {
     const origin = event.target as HTMLElement | null;
     if (!origin) return;
-    const closer = origin.closest("[data-automagica11y-dialog-close]");
+    const closer = origin.closest(prefixedSelector("dialog-close"));
     if (closer && target.contains(closer)) {
       event.preventDefault();
       const trigger = state?.currentTrigger;
@@ -69,7 +70,7 @@ function ensureDialogState(target: HTMLElement, h: Helpers): DialogBehaviorState
       controller?.(false);
       return;
     }
-    if (origin === target && target.hasAttribute("data-automagica11y-dialog-dismissable")) {
+    if (origin === target && hasDataAttribute(target, "dialog-dismissable")) {
       event.preventDefault();
       const trigger = state?.currentTrigger;
       const controller = trigger ? getToggleController(trigger) : null;
@@ -97,8 +98,8 @@ function ensureTooltipState(target: HTMLElement): TooltipBehaviorState {
   return state;
 }
 
-function parseDelay(trigger: HTMLElement, attr: string, fallback: number) {
-  const value = trigger.getAttribute(attr);
+function parseDelay(trigger: HTMLElement, suffix: string, fallback: number) {
+  const value = getDataAttribute(trigger, suffix);
   if (!value) return fallback;
   const parsed = Number.parseInt(value, 10);
   return Number.isFinite(parsed) && parsed >= 0 ? parsed : fallback;
@@ -193,10 +194,10 @@ export const Contexts: Record<string, ContextSpec> = {
       }
       if (boundTargets.has(target)) return;
       boundTargets.add(target);
-      const openDelay = parseDelay(trigger, "data-automagica11y-tooltip-open-delay", 0);
-      const closeDelay = parseDelay(trigger, "data-automagica11y-tooltip-close-delay", 100);
-      const longPressDelay = parseDelay(trigger, "data-automagica11y-tooltip-long-press", 550);
-      const preferredPlacement = parsePreferredPlacement(trigger.getAttribute("data-automagica11y-tooltip-position"));
+      const openDelay = parseDelay(trigger, "tooltip-open-delay", 0);
+      const closeDelay = parseDelay(trigger, "tooltip-close-delay", 100);
+      const longPressDelay = parseDelay(trigger, "tooltip-long-press", 550);
+      const preferredPlacement = parsePreferredPlacement(getDataAttribute(trigger, "tooltip-position"));
       const controller = getToggleController(trigger);
       if (!controller) return;
 
@@ -227,7 +228,9 @@ export const Contexts: Record<string, ContextSpec> = {
       });
       state.hover = hoverHandle;
 
-      const dismissControls = Array.from(target.querySelectorAll<HTMLElement>("[data-automagica11y-tooltip-dismiss]"));
+      const dismissControls = Array.from(
+        target.querySelectorAll<HTMLElement>(prefixedSelector("tooltip-dismiss"))
+      );
       state.dismissControls = dismissControls;
       dismissControls.forEach((dismiss) => {
         if (dismiss instanceof HTMLButtonElement && !dismiss.hasAttribute("type")) {

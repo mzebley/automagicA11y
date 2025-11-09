@@ -1,5 +1,11 @@
 import { createClassToggler } from "@core/classes";
-import { ensureId, appendToken } from "@core/attributes";
+import {
+  ensureId,
+  appendToken,
+  getDataAttribute,
+  normalizeAttributeName,
+  prefixedSelector,
+} from "@core/attributes";
 import { dispatch } from "@core/events";
 import { setHiddenState } from "@core/styles";
 import { focusElement } from "@core/focus";
@@ -17,7 +23,7 @@ const DEFAULT_SCROLL_DISTANCE = 0;
 const TRUTHY = new Set(["", "true", "1", "yes", "on"]);
 const FALSY = new Set(["false", "0", "no", "off"]);
 
-const DISMISS_QUERY = "[data-automagica11y-popover-dismiss]";
+const DISMISS_QUERY = prefixedSelector("popover-dismiss");
 
 const DEFAULT_OUTSIDE_DISMISS = true;
 const DEFAULT_SCROLL_DISMISS = true;
@@ -28,8 +34,17 @@ type PopoverVisibilityReason = PopoverReason | "initial";
 
 type PreferredPopoverPlacement = PreferredAnchoredPlacement;
 
+function readDataAttribute(element: HTMLElement, attribute: string): string | null {
+  const normalized = normalizeAttributeName(attribute);
+  if (!normalized.startsWith("data-automagica11y-")) {
+    return element.getAttribute(attribute);
+  }
+  const suffix = normalized.slice("data-automagica11y-".length);
+  return getDataAttribute(element, suffix);
+}
+
 function parseBooleanAttribute(element: HTMLElement, attribute: string, fallback: boolean): boolean {
-  const value = element.getAttribute(attribute);
+  const value = readDataAttribute(element, attribute);
   if (value === null) return fallback;
   const normalized = value.trim().toLowerCase();
   if (TRUTHY.has(normalized)) return true;
@@ -47,7 +62,7 @@ function parsePreferredPlacement(value: string | null): PreferredPopoverPlacemen
 }
 
 function parseScrollDistance(element: HTMLElement): number {
-  const value = element.getAttribute(SCROLL_DISTANCE_ATTRIBUTE);
+  const value = readDataAttribute(element, SCROLL_DISTANCE_ATTRIBUTE);
   if (!value) return DEFAULT_SCROLL_DISTANCE;
   const parsed = Number.parseFloat(value);
   return Number.isFinite(parsed) && parsed >= 0 ? parsed : DEFAULT_SCROLL_DISTANCE;
@@ -105,7 +120,7 @@ function ensureButtonType(control: HTMLElement) {
 export function initPopover(node: Element) {
   if (!(node instanceof HTMLElement)) return;
 
-  const selector = node.getAttribute("data-automagica11y-popover");
+  const selector = getDataAttribute(node, "popover");
   if (!selector) return;
 
   const target = document.querySelector<HTMLElement>(selector);
@@ -129,7 +144,7 @@ export function initPopover(node: Element) {
   const outsideDismissEnabled = parseBooleanAttribute(node, OUTSIDE_DISMISS_ATTRIBUTE, DEFAULT_OUTSIDE_DISMISS);
   const scrollDismissEnabled = parseBooleanAttribute(node, SCROLL_DISMISS_ATTRIBUTE, DEFAULT_SCROLL_DISMISS);
   const scrollThreshold = parseScrollDistance(node);
-  const preferredPlacement = parsePreferredPlacement(node.getAttribute(POSITION_ATTRIBUTE));
+  const preferredPlacement = parsePreferredPlacement(readDataAttribute(node, POSITION_ATTRIBUTE));
 
   const dismissControls = Array.from(panel.querySelectorAll<HTMLElement>(DISMISS_QUERY));
   dismissControls.forEach(ensureButtonType);

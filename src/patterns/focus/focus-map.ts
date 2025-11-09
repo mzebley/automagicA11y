@@ -1,3 +1,4 @@
+import { getDataAttribute } from "@core/attributes";
 import { getFocusableIn, isFocusable, focusElement } from "@core/focus";
 
 type Cleanup = () => void;
@@ -22,14 +23,14 @@ function parseSelectors(value: string | null): string[] {
 
 export function initFocusMap(node: Element) {
   if (!(node instanceof HTMLElement)) return;
-  const selectors = parseSelectors(node.getAttribute("data-automagica11y-focus-map"));
+  const selectors = parseSelectors(getDataAttribute(node, "focus-map"));
   if (selectors.length === 0) {
     releases.get(node)?.();
     releases.delete(node);
     return;
   }
 
-  const scopeAttr = node.getAttribute("data-automagica11y-focus-map-scope");
+  const scopeAttr = getDataAttribute(node, "focus-map-scope");
   let scope: ParentNode | Element = document;
   if (scopeAttr === "self") scope = node;
   else if (scopeAttr && scopeAttr !== "document") {
@@ -68,7 +69,7 @@ export function initFocusMap(node: Element) {
 
   releases.get(node)?.();
 
-  const anchorSelector = node.getAttribute("data-automagica11y-focus-map-anchor");
+  const anchorSelector = getDataAttribute(node, "focus-map-anchor");
   let focusAnchor: HTMLElement | null = null;
   if (anchorSelector) {
     focusAnchor = document.querySelector(anchorSelector) as HTMLElement | null;

@@ -1,3 +1,5 @@
+import { PREFIX_MAP } from "@core/prefixes";
+
 type PatternInit = (element: Element) => void;
 
 interface PatternDefinition {
@@ -9,8 +11,17 @@ interface PatternDefinition {
 const patterns: Record<string, PatternDefinition> = {};
 
 export function registerPattern(name: string, selector: string, init: PatternInit) {
+  const canonicalToken = "data-automagica11y-";
+  const selectors = new Set<string>([selector]);
+  if (selector.includes(canonicalToken)) {
+    PREFIX_MAP.forEach((canonical, alias) => {
+      if (canonical !== "automagica11y") return;
+      const aliasToken = `data-${alias}-`;
+      selectors.add(selector.split(canonicalToken).join(aliasToken));
+    });
+  }
   patterns[name] = {
-    selector,
+    selector: Array.from(selectors).join(","),
     init,
     initialized: new WeakSet<Element>()
   };

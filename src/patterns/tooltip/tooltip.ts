@@ -1,3 +1,4 @@
+import { getDataAttribute, hasDataAttribute, setDataAttribute } from "@core/attributes";
 import { initToggle } from "../toggle/toggle";
 import { dispatch } from "@core/events";
 
@@ -6,16 +7,16 @@ import { dispatch } from "@core/events";
  */
 export function initTooltip(trigger: Element) {
   if (!(trigger instanceof HTMLElement)) return;
-  const selector = trigger.getAttribute("data-automagica11y-tooltip");
+  const selector = getDataAttribute(trigger, "tooltip");
   if (!selector) return;
   const target = document.querySelector<HTMLElement>(selector);
   if (!target) return;
 
-  if (!trigger.hasAttribute("data-automagica11y-toggle")) {
-    trigger.setAttribute("data-automagica11y-toggle", selector);
+  if (!hasDataAttribute(trigger, "toggle")) {
+    setDataAttribute(trigger, "toggle", selector);
   }
-  if (!trigger.hasAttribute("data-automagica11y-context")) {
-    trigger.setAttribute("data-automagica11y-context", "tooltip");
+  if (!hasDataAttribute(trigger, "context")) {
+    setDataAttribute(trigger, "context", "tooltip");
   }
 
   initToggle(trigger);

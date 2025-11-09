@@ -126,8 +126,8 @@ export function announce(message: string, assertive = false) {
 function announcementFor(detail: ToggleEventDetail, trigger: HTMLElement): string {
   const expanded = Boolean(detail.expanded);
   const attr = expanded
-    ? trigger.getAttribute("data-automagica11y-announce-open")
-    : trigger.getAttribute("data-automagica11y-announce-closed");
+    ? getDataAttribute(trigger, "announce-open")
+    : getDataAttribute(trigger, "announce-closed");
   if (attr !== null && attr.trim().length > 0) return attr.trim();
 
   const controlName = nameOf(trigger);
@@ -144,12 +144,13 @@ function handleToggle(event: Event) {
   const detail = event.detail as ToggleEventDetail | undefined;
   const trigger = detail?.trigger;
   if (!(trigger instanceof HTMLElement)) return;
-  if (!trigger.hasAttribute("data-automagica11y-announce")) return;
+  if (!hasDataAttribute(trigger, "announce")) return;
 
   // When focus stays on the trigger, screen readers announce aria-expanded natively.
   if (trigger === document.activeElement) return;
 
-  const modeAttr = trigger.getAttribute("data-automagica11y-announce")?.toLowerCase() as AnnounceMode | null;
+  const announceAttr = getDataAttribute(trigger, "announce");
+  const modeAttr = announceAttr?.toLowerCase() as AnnounceMode | null;
   const mode: AnnounceMode = modeAttr === "assertive" ? "assertive" : "polite";
   const message = announcementFor(detail ?? {}, trigger);
   // Hand off to the live region with the requested politeness mode.
@@ -165,3 +166,4 @@ export function registerAnnouncePlugin() {
   ensureLiveRegion();
   document.addEventListener("automagica11y:toggle", handleToggle, { capture: true });
 }
+import { getDataAttribute, hasDataAttribute } from "@core/attributes";

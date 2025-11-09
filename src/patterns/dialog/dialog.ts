@@ -1,3 +1,4 @@
+import { getDataAttribute, hasDataAttribute, setDataAttribute } from "@core/attributes";
 import { initToggle } from "../toggle/toggle";
 
 /**
@@ -5,14 +6,14 @@ import { initToggle } from "../toggle/toggle";
  */
 export function initDialog(trigger: Element) {
   if (!(trigger instanceof HTMLElement)) return;
-  const selector = trigger.getAttribute("data-automagica11y-dialog");
+  const selector = getDataAttribute(trigger, "dialog");
   if (!selector) return;
 
-  if (!trigger.hasAttribute("data-automagica11y-toggle")) {
-    trigger.setAttribute("data-automagica11y-toggle", selector);
+  if (!hasDataAttribute(trigger, "toggle")) {
+    setDataAttribute(trigger, "toggle", selector);
   }
-  if (!trigger.hasAttribute("data-automagica11y-context")) {
-    trigger.setAttribute("data-automagica11y-context", "dialog");
+  if (!hasDataAttribute(trigger, "context")) {
+    setDataAttribute(trigger, "context", "dialog");
   }
 
   initToggle(trigger);

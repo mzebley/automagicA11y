@@ -1,3 +1,4 @@
+import { getDataAttribute } from "@core/attributes";
 import { focusElement } from "@core/focus";
 
 const initialized = new WeakSet<HTMLElement>();
@@ -7,9 +8,9 @@ export function initFocusInitial(node: Element) {
   if (initialized.has(node)) return;
   initialized.add(node);
 
-  const delayAttr = node.getAttribute("data-automagica11y-focus-delay");
+  const delayAttr = getDataAttribute(node, "focus-delay");
   const delay = delayAttr ? Number(delayAttr) : 0;
-  const preventScroll = node.getAttribute("data-automagica11y-focus-prevent-scroll") !== "false";
+  const preventScroll = getDataAttribute(node, "focus-prevent-scroll") !== "false";
 
   const run = () => {
     focusElement(node, { preventScroll, preserveTabIndex: true });

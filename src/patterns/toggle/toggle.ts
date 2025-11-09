@@ -1,5 +1,11 @@
 import { createClassToggler } from "@core/classes";
-import { ensureId, setAriaExpanded } from "@core/attributes";
+import {
+  ensureId,
+  setAriaExpanded,
+  getDataAttribute,
+  hasDataAttribute,
+  prefixedSelector,
+} from "@core/attributes";
 import { setHiddenState } from "@core/styles";
 import { dispatch } from "@core/events";
 import { applyContext, type ContextMode } from "@core/context/apply";
@@ -23,7 +29,7 @@ export function initToggle(trigger: Element) {
   }
 
   // Read the selector for the companion target and resolve it in the document.
-  const targetSel = trigger.getAttribute("data-automagica11y-toggle");
+  const targetSel = getDataAttribute(trigger, "toggle");
   if (targetSel === null || targetSel === "") return;
   const targetNodeList = document.querySelectorAll<HTMLElement>(targetSel);
   const targets = Array.from(targetNodeList).filter((el): el is HTMLElement => el instanceof HTMLElement);
@@ -135,11 +141,11 @@ export function initToggle(trigger: Element) {
     dispatch(trigger, "automagica11y:toggle:opened", { trigger, target: targets[0], targets });
 
     // If grouped, close siblings in the same group.
-    const group = trigger.getAttribute("data-automagica11y-group");
+    const group = getDataAttribute(trigger, "group");
     if (group) {
       const others = Array.from(
-        document.querySelectorAll<HTMLElement>(`[data-automagica11y-group]`)
-      ).filter((el) => el !== trigger && el.getAttribute("data-automagica11y-group") === group);
+        document.querySelectorAll<HTMLElement>(prefixedSelector("group"))
+      ).filter((el) => el !== trigger && getDataAttribute(el, "group") === group);
       others.forEach((other) => {
         const controller = (other as HTMLElement & { __automagica11ySetState?: (open: boolean) => void })
           .__automagica11ySetState;
@@ -172,10 +178,10 @@ export function initToggle(trigger: Element) {
   // Expose a minimal controller for grouped interactions
   (trigger as HTMLElement & { __automagica11ySetState?: (open: boolean) => void }).__automagica11ySetState = setState;
 
-  const contextAttr = trigger.getAttribute("data-automagica11y-context");
+  const contextAttr = getDataAttribute(trigger, "context");
   const contextValue = contextAttr ? contextAttr.trim() : null;
   let contextMode: ContextMode = "all";
-  const modeAttr = trigger.getAttribute("data-automagica11y-context-mode");
+  const modeAttr = getDataAttribute(trigger, "context-mode");
   if (modeAttr) {
     const normalizedMode = modeAttr.trim().toLowerCase();
     if (
@@ -202,10 +208,10 @@ export function initToggle(trigger: Element) {
         `[automagica11y] data-automagica11y-${alias} and data-automagica11y-context="${alias}" are equivalent; prefer the context attribute.`
       );
     };
-    if (canonical === "dialog" && trigger.hasAttribute("data-automagica11y-dialog")) {
+    if (canonical === "dialog" && hasDataAttribute(trigger, "dialog")) {
       warnDuplicate("dialog");
     }
-    if (canonical === "tooltip" && trigger.hasAttribute("data-automagica11y-tooltip")) {
+    if (canonical === "tooltip" && hasDataAttribute(trigger, "tooltip")) {
       warnDuplicate("tooltip");
     }
     targets.forEach((target) => applyContext(trigger, target, contextValue, contextMode));
@@ -234,7 +240,7 @@ export function isToggleOpen(trigger: HTMLElement): boolean {
 
 /** Resolve the target element controlled by a toggle trigger. */
 export function getToggleTarget(trigger: HTMLElement): HTMLElement | null {
-  const fromData = trigger.getAttribute("data-automagica11y-toggle");
+  const fromData = getDataAttribute(trigger, "toggle");
   if (fromData) {
     const el = document.querySelector<HTMLElement>(fromData);
     if (el) return el;

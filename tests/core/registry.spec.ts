@@ -63,4 +63,20 @@ describe("pattern registry", () => {
 
     expect(calls).toHaveLength(2);
   });
+
+  it("hydrates alias-prefixed attributes for registered selectors", () => {
+    const calls: Element[] = [];
+    const name = `alias-pattern-${Math.random()}`;
+    registerPattern(name, "[data-automagica11y-alias]", (el) => {
+      calls.push(el);
+    });
+
+    document.body.innerHTML = `
+      <div data-ama-alias></div>
+    `;
+
+    initPattern(name);
+
+    expect(calls).toHaveLength(1);
+  });
 });

@@ -1,3 +1,4 @@
+import { getDataAttribute } from "@core/attributes";
 import { getClassConfig } from "@core/classes";
 import { setHiddenState } from "@core/styles";
 
@@ -305,7 +306,7 @@ export function registerAnimatePlugin() {
       // Already handled once after animation -> let it bubble through.
       if (typeof detail !== "undefined" && detail.__automagica11yAnimateProcessed === true) return;
 
-      const animateAttr = trigger.getAttribute("data-automagica11y-animate");
+      const animateAttr = getDataAttribute(trigger, "animate");
       if (animateAttr === null || animateAttr === "") return;
       const attr = animateAttr.trim();
       // Element used for class manipulation (defaults to target)

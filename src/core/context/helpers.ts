@@ -1,4 +1,4 @@
-import { ensureId, appendToken } from "@core/attributes";
+import { ensureId, appendToken, normalizeAttributeName } from "@core/attributes";
 import { createFocusTrap, focusElement } from "@core/focus";
 import { setHiddenState, setInert } from "@core/styles";
 
@@ -31,9 +31,10 @@ interface HoverIntentHandle {
 
 function hasRoleOverride(el: HTMLElement) {
   if (el.hasAttribute("role")) return true;
-  return Array.from(el.attributes).some((attr) =>
-    attr.name.startsWith("data-automagica11y") && attr.name.endsWith("-role")
-  );
+  return Array.from(el.attributes).some((attr) => {
+    const normalized = normalizeAttributeName(attr.name);
+    return normalized.startsWith("data-automagica11y") && normalized.endsWith("-role");
+  });
 }
 
 function hasAriaOverride(el: HTMLElement, attribute: string) {
@@ -48,7 +49,10 @@ function hasAriaOverride(el: HTMLElement, attribute: string) {
     `data-automagica11y-trigger-${normalized}`,
     `data-automagica11y-trigger-aria-${normalized}`,
   ];
-  return candidates.some((name) => el.hasAttribute(name));
+  const attributeNames = Array.from(el.attributes).map((attr) =>
+    normalizeAttributeName(attr.name)
+  );
+  return candidates.some((name) => attributeNames.includes(name));
 }
 
 const focusTraps = new WeakMap<HTMLElement, FocusTrapController>();

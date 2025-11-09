@@ -351,6 +351,8 @@ Behavior:
 
 automagicA11y recognizes several synonyms for open or closed states to improve author ergonomics.
 
+> ✨ **Prefix shortcuts:** Attributes can also be authored with shorthand prefixes such as `data-automagically-*`, `data-ama11y-*`, `data-ama-*`, or `data-automagic-*`. The runtime normalizes every alias to `data-automagica11y-*` so existing selectors and plugins keep working.
+
 | True states                   | False states                           |
 | ----------------------------- | -------------------------------------- |
 | open, expanded, shown, active, pressed | closed, collapsed, hidden, inactive, unpressed |

@@ -194,6 +194,27 @@ describe("toggle pattern", () => {
     expect(target.hidden).toBe(false);
   });
 
+  it("hydrates alias-prefixed toggle attributes", () => {
+    document.body.innerHTML = `
+      <button data-ama-toggle="#panel"></button>
+      <div id="panel">Alias content</div>
+    `;
+
+    const trigger = document.querySelector("[data-ama-toggle]") as HTMLElement;
+    const target = document.getElementById("panel") as HTMLElement;
+
+    initToggle(trigger);
+
+    expect(trigger.getAttribute("aria-controls")).toBe(target.id);
+    expect(trigger.getAttribute("aria-expanded")).toBe("false");
+    expect(target.hidden).toBe(true);
+
+    trigger.click();
+
+    expect(trigger.getAttribute("aria-expanded")).toBe("true");
+    expect(target.hidden).toBe(false);
+  });
+
   it("applies open classes after double rAF when motion is allowed; immediate when reduced motion", () => {
     document.body.innerHTML = `
       <button id="t" data-automagica11y-toggle="#p"

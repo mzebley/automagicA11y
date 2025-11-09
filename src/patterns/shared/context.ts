@@ -1,4 +1,4 @@
-import { ensureId } from "@core/attributes";
+import { ensureId, getDataAttribute, hasDataAttribute, setDataAttribute } from "@core/attributes";
 
 /**
  * Initialize a context-declared trigger by promoting `data-automagica11y-target`
@@ -18,10 +18,10 @@ export function initContextTrigger(node: Element) {
   if (!(node instanceof HTMLElement)) return;
 
   // If authors already provided a toggle selector, nothing to do here.
-  if (node.hasAttribute("data-automagica11y-toggle")) return;
+  if (hasDataAttribute(node, "toggle")) return;
 
   // Resolve the target surface via explicit attribute or next sibling fallback.
-  const explicit = node.getAttribute("data-automagica11y-target");
+  const explicit = getDataAttribute(node, "target");
   let target: HTMLElement | null = null;
 
   if (explicit && explicit.trim() !== "") {
@@ -34,6 +34,6 @@ export function initContextTrigger(node: Element) {
 
   // Ensure a stable ID for ARIA relations and toggle selector wiring.
   ensureId(target, "automagica11y-p");
-  node.setAttribute("data-automagica11y-toggle", `#${target.id}`);
+  setDataAttribute(node, "toggle", `#${target.id}`);
 }
 

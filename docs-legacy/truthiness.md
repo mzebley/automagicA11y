@@ -2,6 +2,8 @@
 
 automagicA11y introduces a **truthiness mapping** to normalize state terms (like `open`, `expanded`, or `active`) into a boolean model internally. Toggle, tooltip, and dialog patterns all rely on this mapping when applying trigger/target classes.
 
+> **Prefix shortcuts welcome:** every attribute example shown here also works with shorthand prefixes like `data-ama-*`, `data-automagically-*`, or `data-automagic-*`. The library normalizes these aliases to the canonical `data-automagica11y-*` prefix during hydration.
+
 ---
 
 ## Purpose
