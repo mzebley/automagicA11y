@@ -284,9 +284,9 @@ export const attributeReference = [
   },
   {
     attribute: 'data-automagica11y-context-mode',
-    type: '`full` | `semantics` | `behaviors`',
+    type: '`all` | `semantics-only` | `behaviors-only`',
     allowedValues: 'Mode tokens',
-    defaultValue: '`full`',
+    defaultValue: '`all`',
     description: 'Controls how much automation the context applies.'
   },
   {

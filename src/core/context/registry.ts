@@ -114,6 +114,10 @@ function parsePreferredPlacement(value: string | null): PreferredAnchoredPlaceme
   return "auto";
 }
 
+// Contexts declare the semantics + behaviors layered on top of toggle triggers.
+// Keep the capability matrix in README.md and docs/src/content/docs/guides/contexts.mdx
+// synchronized with the data below so contributors and consumers can track parity and
+// roadmap status from code or documentation.
 export const Contexts: Record<string, ContextSpec> = {
   dialog: {
     capabilities: [
