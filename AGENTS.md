@@ -7,6 +7,8 @@ code_editing_rules:
   - "Provide inline documentation for each exported function so new contributors can understand intent and flow."
   - "Follow the event naming convention 'automagica11y:<pattern>:<action>' to simplify debugging and ensure consistency."
   - "Prefer clear, atomic commits and thorough PR descriptions for auditability."
+  - "All documentation updates must be reflected in three places: inline code comments, README files, and the Astro site within the /docs folder at the project root. The Astro site serves as the canonical documentation source."
+  - "Examples for every new or updated feature must be built and maintained exclusively within the Astro /docs folder. Inline or README snippets are allowed for quick reference, but full working examples should live in the site."
 
 guiding_principles:
   - "Maximize accessibility with minimal developer friction. Automate ARIA and role defaults whenever possible."
@@ -47,6 +49,9 @@ All new code and refactors must prioritize reusability and clarity. Avoid repeti
 Type safety is mandatory—avoid `any` and prefer utility types (`Pick`, `Partial`, `Record`) when inference fails. Write inline documentation so any contributor can understand the file without external context.
 
 Use standardized event names (`automagica11y:<pattern>:<action>`) for consistent debugging, and ensure PR descriptions communicate intent and scope.
+
+All documentation and examples should be synchronized with the Astro documentation site under `/docs`. This site acts as the single source of truth for both contributor and consumer-facing documentation. Each new or modified feature must include a working example there.  
+Inline and README documentation remain necessary for context, but contributors should prioritize the Astro site for discoverability and cohesion.
 
 ---
 
@@ -93,3 +98,4 @@ If a decision isn’t clear-cut:
 - Choose the most semantically correct assumption.  
 - Document the reasoning inline in code comments or commit messages.  
 - Move forward confidently, trusting iteration over indecision.
+```

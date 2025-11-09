@@ -15,5 +15,12 @@ export default new Map([
 ["src/content/docs/reference/api.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fdocs%2Freference%2Fapi.mdx&astroContentModuleFlag=true")],
 ["src/content/docs/plugins/announce.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fdocs%2Fplugins%2Fannounce.mdx&astroContentModuleFlag=true")],
 ["src/content/docs/reference/attributes.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fdocs%2Freference%2Fattributes.mdx&astroContentModuleFlag=true")],
-["src/content/docs/reference/events.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fdocs%2Freference%2Fevents.mdx&astroContentModuleFlag=true")]]);
+["src/content/docs/reference/events.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fdocs%2Freference%2Fevents.mdx&astroContentModuleFlag=true")],
+["src/content/docs/examples/coverage-plan.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fdocs%2Fexamples%2Fcoverage-plan.mdx&astroContentModuleFlag=true")],
+["src/content/docs/examples/focus-map.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fdocs%2Fexamples%2Ffocus-map.mdx&astroContentModuleFlag=true")],
+["src/content/docs/examples/popover-basic.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fdocs%2Fexamples%2Fpopover-basic.mdx&astroContentModuleFlag=true")],
+["src/content/docs/guides/focus.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fdocs%2Fguides%2Ffocus.mdx&astroContentModuleFlag=true")],
+["src/content/docs/patterns/popover.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fdocs%2Fpatterns%2Fpopover.mdx&astroContentModuleFlag=true")],
+["src/content/docs/plugins/animate.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fdocs%2Fplugins%2Fanimate.mdx&astroContentModuleFlag=true")],
+["src/content/docs/reference/core.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fdocs%2Freference%2Fcore.mdx&astroContentModuleFlag=true")]]);
 		
