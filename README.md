@@ -89,7 +89,7 @@ If no custom trigger classes are defined, automagicA11y falls back to `automagic
 
 ### Context Engine
 
-The new context registry acts as the single source of truth for accessibility semantics and behaviors. Pair any toggle trigger with `data-automagica11y-context` to opt into a preset bundle of roles, ARIA wiring, and behavioral helpers.
+The new context registry acts as the single source of truth for accessibility semantics and behaviors. Pair any toggle trigger with `data-automagica11y-context` to opt into a preset bundle of roles, ARIA wiring, and behavioral helpers. The [Astro docs "Contexts" guide](docs/src/content/docs/guides/contexts.mdx) mirrors this overview with live demos, a capability matrix, and roadmap status for each composite pattern.
 
 ```html
 <button
@@ -105,19 +105,27 @@ The new context registry acts as the single source of truth for accessibility se
 - `data-automagica11y-context` accepts friendly aliases such as `dialog`, `modal`, `tooltip`, `dropdown`, and more. Values are normalized automatically.
 - `data-automagica11y-context-mode` controls how much the registry applies: `all` (default), `semantics-only`, or `behaviors-only`.
 - Legacy attributes like `data-automagica11y-dialog` and `data-automagica11y-tooltip` now defer to the context engine, so existing markup keeps working.
+- Cross-reference the live [Context dialog example](docs/src/content/docs/examples/context-dialog.mdx) and [Context tooltip example](docs/src/content/docs/examples/context-tooltip.mdx) when testing locally. The docs site renders the same markup inside playgrounds.
 
-| Context  | Semantics applied | Behaviors provided |
-| -------- | ----------------- | ------------------ |
-| `dialog` | `aria-haspopup="dialog"`, `role="dialog"`, `aria-modal="true"`, shared ID/linking | Focus trap, Escape-to-close, background inerting + scroll lock, restore focus |
-| `tooltip` | `role="tooltip"`, `aria-describedby` linkage | Hover/focus/long-press show & hide, Escape-to-close, placement event hook |
-| `menu`    | `role="menu"` | _Behaviors planned_ |
-| `accordion` | `role="region"` | _Behaviors planned_ |
-| `disclosure` | `role="region"` | _Behaviors planned_ |
-| `listbox` | `role="listbox"` | _Behaviors planned_ |
-| `tablist` | `role="tablist"` | _Behaviors planned_ |
-| `tree` | `role="tree"` | _Behaviors planned_ |
+| Context  | Semantics applied | Behaviors provided | Docs & Examples |
+| -------- | ----------------- | ------------------ | --------------- |
+| `dialog` | `aria-haspopup="dialog"`, `role="dialog"`, `aria-modal="true"`, shared ID/linking | Focus trap, Escape-to-close, background inerting + scroll lock, restore focus | [Dialog pattern](docs/src/content/docs/patterns/dialog.mdx) · [Context dialog example](docs/src/content/docs/examples/context-dialog.mdx) |
+| `tooltip` | `role="tooltip"`, `aria-describedby` linkage | Hover/focus/long-press show & hide, Escape-to-close, placement event hook | [Tooltip pattern](docs/src/content/docs/patterns/tooltip.mdx) · [Context tooltip example](docs/src/content/docs/examples/context-tooltip.mdx) |
+| `menu`    | `role="menu"` | _Behaviors planned_ | [Toggle pattern](docs/src/content/docs/patterns/toggle.mdx) |
+| `accordion` | `role="region"` | _Behaviors planned_ | [Toggle pattern](docs/src/content/docs/patterns/toggle.mdx) |
+| `disclosure` | `role="region"` | _Behaviors planned_ | [Toggle pattern](docs/src/content/docs/patterns/toggle.mdx) |
+| `listbox` | `role="listbox"` | _Behaviors planned_ | [Toggle pattern](docs/src/content/docs/patterns/toggle.mdx) |
+| `tablist` | `role="tablist"` | _Behaviors planned_ | [Toggle pattern](docs/src/content/docs/patterns/toggle.mdx) |
+| `tree` | `role="tree"` | _Behaviors planned_ | [Toggle pattern](docs/src/content/docs/patterns/toggle.mdx) |
 
 Use `semantics-only` mode when you want ARIA defaults without focus trapping or inerting (for example, when integrating a custom dialog manager) and `behaviors-only` when you have bespoke semantics but still want automagicA11y to handle containment and dismissal logic.
+
+**Roadmap checkpoints** (mirrored in the Astro docs):
+
+- Menu context roving tabindex + typeahead interactions.
+- Accordion/disclosure single-open coordination and `aria-disabled` propagation.
+- Listbox, tablist, and tree keyboard navigation parity with WAI-ARIA Authoring Practices.
+- Interactive capability lab demonstrating focus trap, inert siblings, hover intent, and anchor follow toggles.
 
 ### Toggle / Disclosure
 

@@ -8,16 +8,17 @@ import Playground from '../../../components/Playground.astro';
 
 # Contexts
 
-Contexts are the orchestration layer that sit on top of the toggle foundation. They centralize semantics, behaviors, and alias mappings so every surface speaks the same accessibility language.
+Contexts sit on top of the [`toggle` foundation](/patterns/toggle/) and orchestrate everything a composite pattern needs: ARIA semantics, behavioral wiring, and alias normalization. Attach a single `data-automagica11y-context` attribute to a toggle trigger and the registry keeps the trigger, target, and any aliases in sync.
 
-## Why contexts?
+## How contexts compose with toggle
 
-- **Semantics** – contexts apply the right roles and ARIA defaults. Dialogs receive `role="dialog"`, tooltips use `role="tooltip"`, and so on.
-- **Behaviors** – context modes enable focus traps, hover intent, inert locking, dismissal, and more without additional code.
-- **Wiring** – contexts normalize aliases and truthiness, letting you opt into patterns with `data-automagica11y-context="dialog"` or legacy shorthands like `data-automagica11y-dialog`.
+1. **Start with a toggle.** Every context begins as a [`data-automagica11y-toggle` trigger](/patterns/toggle/#demo) connected to a target surface.
+2. **Opt into shared semantics.** Add `data-automagica11y-context="dialog"` (or any alias) and the registry applies the appropriate roles and ARIA attributes.
+3. **Layer behaviors on demand.** Context modes decide whether to hydrate focus traps, hover intent, inert locking, and other helpers. Behaviors always piggyback on the same toggle lifecycle events that plugins use.
+4. **Compose freely.** Multiple contexts can coexist on a page. They emit namespaced events (`automagica11y:dialog:*`, `automagica11y:tooltip:*`) so plugins and analytics stay coordinated.
 
-<DemoCallout type="success" title="Composable">
-  <p>Contexts reuse the toggle pattern internally. You can compose multiple contexts on the same page and share plugins or lifecycle hooks.</p>
+<DemoCallout type="success" title="Toggle-first mental model">
+  <p>Because contexts reuse toggle internally, everything you learn in the <a href="/patterns/toggle/">Toggle pattern</a> applies here too: truthiness aliases, grouped triggers, and lifecycle events all behave identically.</p>
 </DemoCallout>
 
 ## Attribute API
@@ -25,15 +26,30 @@ Contexts are the orchestration layer that sit on top of the toggle foundation. T
 | Attribute | Description |
 |-----------|-------------|
 | `data-automagica11y-context` | Names the context to activate (for example `dialog`, `tooltip`, `menu`). |
-| `data-automagica11y-target` | Selector for the surface managed by the context. Defaults to the next sibling or ID declared in the value. |
-| `data-automagica11y-context-mode` | Chooses how much automation to apply. `semantics`, `behaviors`, or `full` (default). |
-| `data-automagica11y-context-alias` | Override the alias mapping for bespoke naming. |
+| `data-automagica11y-target` | Selector for the managed surface. Defaults to the next sibling or the resolved ID. |
+| `data-automagica11y-context-mode` | Controls automation depth. Accepts `all` (default), `semantics-only`, or `behaviors-only`. |
+| `data-automagica11y-context-alias` | Override the alias mapping for bespoke vocabulary. |
 
 ### Modes
 
-- `full` – semantics and behaviors (default).
-- `semantics` – apply ARIA/role defaults only; wire your own behaviors.
-- `behaviors` – reuse dismissal, focus traps, and state syncing without changing existing semantics.
+- `all` – semantics + behaviors (default).
+- `semantics-only` – apply ARIA/role defaults only; wire your own behaviors.
+- `behaviors-only` – reuse dismissal, focus traps, and state syncing without altering existing semantics.
+
+## Capability matrix
+
+| Context | Semantics | Behaviors | Examples | Pattern docs |
+|---------|-----------|-----------|----------|--------------|
+| `dialog` | `role="dialog"`, `aria-modal`, trigger linking | Focus trap, inert siblings, Escape to close, restore focus | [Context dialog](/examples/context-dialog/) | [Dialog pattern](/patterns/dialog/) |
+| `tooltip` | `role="tooltip"`, `aria-describedby` wiring | Hover intent, long-press, anchor follow | [Context tooltip](/examples/context-tooltip/) | [Tooltip pattern](/patterns/tooltip/) |
+| `menu` | `role="menu"` scaffolding | _Behaviors planned_ (roving tabindex, typeahead) | _Roadmap_ | [Toggle pattern](/patterns/toggle/) |
+| `accordion` | `role="region"` scaffolding | _Behaviors planned_ | _Roadmap_ | [Toggle pattern](/patterns/toggle/) |
+| `disclosure` | `role="region"` scaffolding | _Behaviors planned_ | _Roadmap_ | [Toggle pattern](/patterns/toggle/) |
+| `listbox` | `role="listbox"` scaffolding | _Behaviors planned_ | _Roadmap_ | [Toggle pattern](/patterns/toggle/) |
+| `tablist` | `role="tablist"` scaffolding | _Behaviors planned_ | _Roadmap_ | [Toggle pattern](/patterns/toggle/) |
+| `tree` | `role="tree"` scaffolding | _Behaviors planned_ | _Roadmap_ | [Toggle pattern](/patterns/toggle/) |
+
+Use the matrix to decide whether a context already automates the behaviors you need or whether you should augment it with plugins today. The [`@core/context/registry.ts`](/reference/core/#contexts-corecontext) reference page lists the same capabilities at the source level.
 
 ## Alias map
 
@@ -46,7 +62,14 @@ Contexts are the orchestration layer that sit on top of the toggle foundation. T
 
 Aliases keep older attribute names and regional terminology working while still running through the same context pipeline.
 
-## Dialog parity
+## Examples & recipes
+
+- [Dialog quickstart](/getting-started/quickstart/) – builds a dialog with context mode `all`.
+- [Context dialog example](/examples/context-dialog/) – focus trap, inert siblings, Escape dismissal.
+- [Context tooltip example](/examples/context-tooltip/) – hover, focus, and long-press interactions.
+- [Truthiness aliases guide](/guides/truthiness/) – shows how contexts share the same vocabulary.
+
+## Alias parity demos
 
 The legacy `data-automagica11y-dialog` attribute maps directly to the dialog context.
 
@@ -75,8 +98,6 @@ The legacy `data-automagica11y-dialog` attribute maps directly to the dialog con
   </div>
 </Playground>
 
-## Tooltip parity
-
 Tooltips share the same alias wiring.
 
 <Playground id="contexts-tooltip" heading="Context vs. tooltip alias" description="Context and alias both hydrate tooltip behavior.">
@@ -96,3 +117,20 @@ Tooltips share the same alias wiring.
 <button data-automagica11y-tooltip="#alias-tooltip">Alias trigger</button>`}
   </div>
 </Playground>
+
+## Roadmap
+
+The context registry evolves alongside the core patterns. Track progress in the [Examples roadmap](/examples/coverage-plan/) and the [Core reference](/reference/core/):
+
+- **Menu context behaviors** – roving tabindex, typeahead search, and dismissible submenus.
+- **Accordion & disclosure parity** – share toggle grouping logic, add `aria-disabled` and single-open coordination.
+- **Listbox, tablist, and tree** – mirror WAI-ARIA Authoring Practices with arrow key navigation and typeahead.
+- **Context capability lab** – interactive demo that lets you toggle focus trap, inert siblings, hover intent, and anchor follow helpers individually.
+
+As each milestone lands, the matrix above and the associated pattern pages will note the new capabilities.
+
+## Continue exploring
+
+- Dive into the [Dialog pattern](/patterns/dialog/) and [Tooltip pattern](/patterns/tooltip/) for behavior deep dives.
+- Pair contexts with plugins like [Announce](/plugins/announce/) to broadcast state changes to screen readers.
+- Explore imperative helpers in [`@core/context/helpers`](/reference/core/#contexts-corecontext) when you need bespoke orchestration.
