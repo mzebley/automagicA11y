@@ -1,0 +1,60 @@
+---
+title: Focus management
+description: Guide to the dedicated focus helpers that complement dialogs, popovers, and custom flows.
+---
+
+import AttributeTable from '../../../components/AttributeTable.astro';
+import DemoCallout from '../../../components/DemoCallout.astro';
+import { focusInitialAttributes, focusMapAttributes } from '../../../data/patterns';
+
+# Focus management
+
+Dialogs and popovers handle focus out of the box, but sometimes you need extra control. The focus helpers in `src/patterns/focus` give you declarative attributes and lightweight initializers you can call imperatively.
+
+## Initial focus (`initFocusInitial`)
+
+`initFocusInitial` watches for elements marked with `data-automagica11y-focus-initial` and moves focus to them once the node enters the DOM. It preserves existing `tabindex` values, respects `preventScroll`, and allows delayed focus for animated surfaces.
+
+<AttributeTable attributes={focusInitialAttributes} />
+
+### Example
+
+```html
+<div hidden id="sheet">
+  <button data-automagica11y-focus-initial data-automagica11y-focus-delay="150">
+    Jump here after the sheet animates
+  </button>
+</div>
+```
+
+When the sheet opens you can call `initFocusInitial(sheet.querySelector('[data-automagica11y-focus-initial]'))` to focus the button after a 150 ms delay. The helper queues the work with `queueMicrotask` for zero-delay cases, so SSR hydration stays predictable.
+
+## Focus maps (`initFocusMap`)
+
+Complex composites (command palettes, multicolumn layouts, grid menus) often need a custom tab order. `initFocusMap` takes a semicolon-separated list or JSON array of selectors and wires deterministic Tab/Shift+Tab behavior between them. You can scope where selectors resolve and specify which element acts as the loop anchor.
+
+<AttributeTable attributes={focusMapAttributes} />
+
+### Example
+
+```html
+<nav data-automagica11y-focus-map=".primary-action; .secondary-action"
+     data-automagica11y-focus-map-scope="self">
+  <button class="primary-action">Primary</button>
+  <button class="secondary-action">Secondary</button>
+</nav>
+```
+
+Call `initFocusMap(nav)` after the nav renders. The helper locates each selector, ensures focusable descendants are included, and attaches keyboard handlers that keep focus inside the ordered list. If the list is empty the helper cleans up automatically.
+
+<DemoCallout type="warning" title="Keep anchors focusable">When you point `data-automagica11y-focus-map-anchor` at an element that is not normally focusable, the helper temporarily sets `tabindex="0"` and restores the previous state on cleanup.</DemoCallout>
+
+## Coverage plan
+
+To round out the focus story we plan to add:
+
+1. A recipe showing `initFocusInitial` paired with the animate plugin so focus waits for exit transitions.
+2. A live playground that lets you experiment with custom focus maps.
+3. Reference docs cross-linking which contexts automatically call these helpers (dialogs today, menus once behaviors land).
+
+Track progress on the [Core modules](/reference/core/) plan as you contribute these additions.

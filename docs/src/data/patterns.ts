@@ -112,6 +112,99 @@ export const tooltipAttributes = [
   }
 ];
 
+export const popoverAttributes = [
+  {
+    attribute: 'data-automagica11y-popover',
+    type: 'string | Selector',
+    allowedValues: 'CSS selector or ID reference',
+    defaultValue: 'Required',
+    description: 'Connects the trigger to the popover surface.'
+  },
+  {
+    attribute: 'data-automagica11y-popover-position',
+    type: '`auto` | `top` | `bottom` | `left` | `right`',
+    allowedValues: 'Placement tokens',
+    defaultValue: '`auto`',
+    description: 'Preferred placement for anchored positioning. Falls back automatically.'
+  },
+  {
+    attribute: 'data-automagica11y-popover-outside-dismiss',
+    type: 'boolean',
+    allowedValues: '`true`, `false`',
+    defaultValue: '`true`',
+    description: 'Close the popover when clicking outside the surface.'
+  },
+  {
+    attribute: 'data-automagica11y-popover-scroll-dismiss',
+    type: 'boolean',
+    allowedValues: '`true`, `false`',
+    defaultValue: '`true`',
+    description: 'Close the popover when the page scrolls beyond the configured distance.'
+  },
+  {
+    attribute: 'data-automagica11y-popover-scroll-distance',
+    type: 'number (px)',
+    allowedValues: '0+',
+    defaultValue: '0',
+    description: 'Pixels of scroll before the popover dismisses itself.'
+  },
+  {
+    attribute: 'data-automagica11y-popover-dismiss',
+    type: 'boolean attribute',
+    allowedValues: 'Present on any control inside the surface',
+    defaultValue: 'N/A',
+    description: 'Marks controls that close the popover when activated.'
+  }
+];
+
+export const focusInitialAttributes = [
+  {
+    attribute: 'data-automagica11y-focus-initial',
+    type: 'boolean attribute',
+    allowedValues: 'Present on any focusable element',
+    defaultValue: 'N/A',
+    description: 'Opt-in marker that tells the helper which element to focus.'
+  },
+  {
+    attribute: 'data-automagica11y-focus-delay',
+    type: 'number (ms)',
+    allowedValues: '0+',
+    defaultValue: '0',
+    description: 'Delay before focusing. Useful when waiting for transitions.'
+  },
+  {
+    attribute: 'data-automagica11y-focus-prevent-scroll',
+    type: 'boolean',
+    allowedValues: '`true`, `false`',
+    defaultValue: '`true`',
+    description: 'Control whether focusing should avoid scrolling the page.'
+  }
+];
+
+export const focusMapAttributes = [
+  {
+    attribute: 'data-automagica11y-focus-map',
+    type: 'string | string[]',
+    allowedValues: 'Semicolon or JSON array of selectors',
+    defaultValue: 'None',
+    description: 'Ordered selectors describing the preferred focus sequence.'
+  },
+  {
+    attribute: 'data-automagica11y-focus-map-scope',
+    type: '`document` | `self` | Selector',
+    allowedValues: 'Scope tokens',
+    defaultValue: '`document`',
+    description: 'Restrict where selectors resolve when building the focus list.'
+  },
+  {
+    attribute: 'data-automagica11y-focus-map-anchor',
+    type: 'Selector',
+    allowedValues: 'CSS selector',
+    defaultValue: '`self`',
+    description: 'Element that receives focus first and loops back when Shift+Tabbing from the first mapped item.'
+  }
+];
+
 export const attributeReference = [
   {
     attribute: 'data-automagica11y-toggle',

@@ -1,0 +1,109 @@
+---
+title: Core modules
+description: How the building blocks under src/core fit together and when to reach for each helper.
+---
+
+import DemoCallout from '../../../components/DemoCallout.astro';
+
+# Core modules
+
+The `src/core` directory hosts the primitives that every pattern, context, and plugin shares. Use this page as a map when you need to wire a bespoke behavior or understand how higher-level features stay in sync.
+
+## Attributes (`@core/attributes`)
+
+- `ensureId(element, prefix)` guarantees repeatable ARIA wiring by stamping IDs when authors omit them.
+- `setAriaExpanded`, `setAriaHidden`, `appendToken`, and `removeToken` keep boolean state and token lists synchronized across trigger and target elements.
+- Prefer these helpers over manual attribute juggling so you inherit the library's whitespace and UUID safeguards.
+
+```ts
+import { ensureId, setAriaExpanded } from 'automagica11y/core';
+
+const trigger = document.querySelector<HTMLButtonElement>('[data-automagica11y-toggle]');
+if (trigger) {
+  ensureId(trigger, 'docs-trigger');
+  setAriaExpanded(trigger, false);
+}
+```
+
+## ARIA (`@core/aria`)
+
+- `setIfAbsent(element, name, value)` writes defaults without clobbering author overrides. Contexts use it to respect custom roles and labels.
+
+## Classes (`@core/classes`)
+
+- Truthiness-aware parsing lets authors describe class hooks using any of the reserved state keywords (`open`, `shown`, `true`, etc.).
+- `createClassToggler(trigger, options)` returns a function that applies the correct class set to the trigger and target for each boolean state.
+- `getClassConfig` and `applyClasses` are available when you need to inspect or reuse the parsed configuration directly.
+
+<DemoCallout type="info" title="Share configuration">Reuse the toggler returned from `createClassToggler` whenever multiple surfaces mirror the same state so you avoid re-parsing author attributes.</DemoCallout>
+
+## Contexts (`@core/context/*`)
+
+Context logic allows toggle-based patterns to layer richer semantics and behaviors:
+
+- `context/aliases.ts` maps friendly names (`modal`, `tabs`, `treeview`) to canonical registry keys.
+- `normalizeContext(value)` accepts any alias and returns the canonical key registered in `Contexts`.
+- `applyContext(trigger, target, contextName, mode)` orchestrates semantics (`aria-*`, roles) and behaviors (focus traps, hover intent, inert background) based on the selected mode (`all`, `semantics-only`, or `behaviors-only`).
+- `helpers.ts` exposes a toolbox of reusable behaviors: focus traps, Escape-to-close, hover intent, inert siblings, anchor-follow notifications, and more.
+- `registry.ts` enumerates the built-in contexts (`dialog`, `tooltip`, `menu`, `accordion`, `disclosure`, `listbox`, `tablist`, `tree`) and records which capabilities each one enables today. Dialog and tooltip ship with complete behaviors; the remaining contexts currently provide semantic scaffolding so authors can build progressively.
+
+### Capability reference
+
+| Capability | Helper | Purpose |
+|------------|--------|---------|
+| `semantics` | `helpers.link`, `helpers.setRole`, `helpers.setAria` | Applies ARIA relationships and roles safely. |
+| `focusTrap` | `helpers.focusTrap` | Traps focus inside a dialog surface. |
+| `escToClose` | `helpers.closeOnEscape` | Wires Escape to the owning toggle controller. |
+| `inertSiblings` | `helpers.inertSiblingsWhileOpen` | Locks background content while a modal dialog is active. |
+| `restoreFocus` | `helpers.restoreFocusOnClose` | Returns focus to the opener after dismissal. |
+| `hoverIntent` | `helpers.hoverIntent` | Provides pointer/focus/touch hover intent for tooltip-style surfaces. |
+| `anchorFollow` | `helpers.anchorFollow` | Emits `automagica11y:context:anchor` so positioning plugins can react. |
+| `rovingTabindex`, `typeahead`, `arrowNav` | _Planned_ | Reserved for future interactive list patterns. |
+
+Use the `capabilities` array exposed on each context to detect what semantics and behaviors are currently automated and where you may need to augment with custom logic.
+
+## Events (`@core/events`)
+
+- `dispatch(target, type, detail, options?)` wraps `CustomEvent` creation with the library defaults (bubbling + composed events) and enforces the `automagica11y:<pattern>:<action>` naming convention.
+- Pass `{ cancelable: true }` when plugins should be able to veto a close or open transition.
+
+## Focus (`@core/focus`)
+
+Focus utilities power both the dialog context and dedicated focus patterns:
+
+- `isFocusable(element)` and `getFocusableIn(root)` filter nodes against visibility, `hidden`, `aria-hidden`, and `tabindex` rules.
+- `focusElement(element, { preventScroll, preserveTabIndex })` safely focuses while preserving author `tabindex` values.
+- `focusFirst(root)` moves focus to the first focusable descendant, falling back to the root element.
+- `createFocusTrap(container)` returns a trap interface that dialog contexts reuse.
+- `applyFocusOrder(elements, options)` assigns a deterministic tab order and returns a controller to restore the previous state.
+
+## Keyboard (`@core/keyboard`)
+
+- `isActivateKey(event)` checks for Space/Enter activation. Toggle uses it to give non-button triggers button semantics.
+
+## Placement (`@core/placement`)
+
+- `resolveAnchoredPlacement(trigger, surface, preferred, measure?)` decides where to position anchored surfaces (tooltips, popovers) while respecting viewport constraints. Provide a custom `measure` object when rendering inside a scroller or virtual viewport.
+
+## Registry (`@core/registry`)
+
+- `registerPattern(name, selector, init)` registers a pattern initializer along with its selector.
+- `initPattern(name, root?)`, `initPatterns(names, root?)`, `initNode(node)`, and `initAllPatterns(root?)` hydrate patterns individually, in bulk, or against injected DOM fragments.
+- Patterns automatically mark hydrated elements with a `WeakSet` guard, so re-running an initializer is safe.
+
+## Styles (`@core/styles`)
+
+- `setHiddenState(element, hidden)` keeps `hidden` and `aria-hidden` synchronized.
+- `setInert(element, true/false)` applies or removes the `inert` attribute while preserving author intent.
+
+---
+
+## Example & documentation coverage plan
+
+To keep the docs actionable, every core subsystem will receive the following coverage over time:
+
+1. **Narrative guide** – deepen this overview with end-to-end recipes (focus traps inside dialogs, hover intent customization, etc.).
+2. **Interactive example** – each capability should have a live playground demonstrating the helper in isolation.
+3. **API reference** – expand the existing tables with parameter/return type callouts and cross-links to patterns that consume the helper.
+
+<DemoCallout type="success" title="Tracking progress">As you create new guides, reference this plan and tick off the relevant bullet so contributors know which areas still need hands-on demos.</DemoCallout>

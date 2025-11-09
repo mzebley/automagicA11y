@@ -1,0 +1,59 @@
+---
+title: Examples roadmap
+description: Planned interactive demos covering every pattern, context, and plugin.
+---
+
+# Examples roadmap
+
+This roadmap inventories the examples we already ship and the scenarios we still need to capture. Use it to coordinate contributions and avoid duplicate work.
+
+## Core primitives
+
+- [ ] **Attributes + Classes sandbox** – Inspect how `ensureId`, `appendToken`, and truthiness-driven class hooks behave on arbitrary markup.
+- [ ] **Context capability lab** – Toggle each capability (focus trap, inert siblings, hover intent) to demonstrate the helpers exported from `@core/context/helpers`.
+- [ ] **Placement visualizer** – Drag a trigger around the viewport and watch how `resolveAnchoredPlacement` chooses the best side.
+
+## Patterns
+
+### Toggle
+
+- [x] Basic show/hide playground (existing page).
+- [ ] Grouped accordions using `data-automagica11y-group`.
+- [ ] Toggle + menu context once behaviors ship for menus.
+
+### Dialog
+
+- [x] Context vs alias parity (existing page).
+- [ ] Dialog integrated with `initFocusInitial` and the animate plugin.
+- [ ] Multi-trigger dialog demonstrating inert sibling coordination.
+
+### Popover
+
+- [x] Dismiss-on-outside-click demo (existing page).
+- [ ] Command palette with focus map ordering and search field.
+- [ ] Teaching bubble that responds to `automagica11y:popover:placement` updates.
+
+### Tooltip
+
+- [x] Context vs alias parity (existing page).
+- [ ] Hover intent playground for open/close delay tuning.
+- [ ] Mobile long-press tooltip with explicit dismiss controls.
+
+## Focus helpers
+
+- [ ] Live editor for `data-automagica11y-focus-map` selectors.
+- [ ] Dialog integration that shows how focus is restored when closing.
+
+## Plugins
+
+### Announce
+
+- [ ] Screen reader announcement inspector that logs polite/assertive output.
+
+### Animate
+
+- [ ] Trigger vs target animation comparison.
+- [ ] Selector-based animation watching an overlay element.
+- [ ] Integration with focus helpers to delay focus restoration until close completes.
+
+Track overall progress on the [Core modules reference](/reference/core/) and individual pattern pages for context-specific coverage notes.

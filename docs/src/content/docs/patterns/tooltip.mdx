@@ -18,6 +18,7 @@ Tooltips reuse the toggle foundation but add hover intent, long-press support, a
 - Keeps tooltips hidden by default and toggles `hidden` + `aria-hidden`.
 - Supports pointer hover, focus, keyboard, and long-press activation.
 - Shares truthiness mapping for class hooks, so `data-automagica11y-trigger-class-shown` just works.
+- Emits context events (`automagica11y:tooltip:toggle`, `automagica11y:tooltip:shown`, `automagica11y:tooltip:hidden`) whenever the tooltip visibility changes.
 
 ## Attribute reference
 
@@ -28,6 +29,14 @@ Tooltips reuse the toggle foundation but add hover intent, long-press support, a
 <DemoCallout type="info" title="Alias compatibility">
   <p><code>data-automagica11y-tooltip</code> is implemented on top of the tooltip context. Switching syntax will not change runtime behavior.</p>
 </DemoCallout>
+
+## Events
+
+| Event | Detail payload |
+|-------|----------------|
+| `automagica11y:tooltip:ready` | `{ trigger, target }` when hydration finishes. |
+| `automagica11y:tooltip:toggle` | `{ trigger, target, expanded }` every time the tooltip state flips. |
+| `automagica11y:tooltip:shown` / `hidden` | `{ trigger, target }` after visibility changes settle. |
 
 ## Demo
 
@@ -51,3 +60,11 @@ Tooltips reuse the toggle foundation but add hover intent, long-press support, a
 {`<button data-automagica11y-context="tooltip" data-automagica11y-target="#tooltip">Hover me</button>`}
   </div>
 </Playground>
+
+## Coverage plan
+
+1. Add a demo illustrating hover intent configuration with different open/close delays.
+2. Document how tooltips respond to touch long-press and how to customize `data-automagica11y-tooltip-long-press`.
+3. Provide guidance for accessible dismiss buttons using `data-automagica11y-tooltip-dismiss`.
+
+See the [Examples roadmap](/examples/coverage-plan/) for progress tracking.

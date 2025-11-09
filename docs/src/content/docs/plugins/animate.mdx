@@ -1,0 +1,55 @@
+---
+title: Animate plugin
+description: Delay toggle teardown until your CSS transitions and animations finish.
+---
+
+import DemoCallout from '../../../components/DemoCallout.astro';
+
+# Animate plugin
+
+The animate plugin listens for every `automagica11y:toggle` event. When a trigger opts in with `data-automagica11y-animate`, the plugin pauses the close operation, waits for CSS transitions/animations to finish, and then replays the toggle so core patterns stay declarative.
+
+## Setup
+
+```ts
+import { registerAnimatePlugin } from 'automagica11y';
+
+registerAnimatePlugin();
+```
+
+Call the registrar once during application boot. The listener is passive until a trigger includes `data-automagica11y-animate`.
+
+## Opt-in attributes
+
+| Value | Watched element | Notes |
+|-------|-----------------|-------|
+| _(empty)_ or `target` | Target surface | Default. The plugin keeps the surface visible while the closing animation plays. |
+| `trigger` | Trigger element | Useful when the trigger owns the animation (glowing pill, shrink-on-close). |
+| CSS selector | Resolved element | Watch any element in the document (overlays, wrappers). The plugin still applies open/close classes to the trigger/target unless you override them. |
+
+Add `data-automagica11y-animate` to the trigger and ensure the watched element has a CSS transition or animation on its closing classes. The plugin applies `automagica11y-animating` and toggled class hooks so your CSS can target the in-flight state.
+
+<DemoCallout type="info" title="Graceful no-motion fallback">When `prefers-reduced-motion: reduce` is active or the watched element reports zero-duration animations, the plugin falls back to immediate close so assistive tech never waits on visuals.</DemoCallout>
+
+## Lifecycle
+
+1. Trigger fires `automagica11y:toggle` with `expanded: false`.
+2. Animate plugin intercepts the event, prevents the close, and applies closing classes + the `--automagica11y-animating` custom property.
+3. The plugin waits for `transitionend`/`animationend` (with `getAnimations()` and a timeout fallback).
+4. After animations finish, the plugin sets `hidden`/`aria-hidden`, dispatches `automagica11y:animation-done`, and replays `automagica11y:toggle` with `__automagica11yAnimateProcessed: true` so core toggle handlers finish cleanup.
+
+## Events
+
+| Event | Detail payload |
+|-------|----------------|
+| `automagica11y:animation-done` | `{ trigger, target, watched, phase: "close" }` after the plugin completes the close animation. |
+
+Listen for `automagica11y:animation-done` when you need to chain additional work after exit transitions (DOM recycling, analytics, etc.).
+
+## Coverage plan
+
+1. Publish a playground demonstrating trigger-, target-, and selector-based animations.
+2. Document how animate coordinates with the focus helpers so focus waits until the panel is hidden.
+3. Provide troubleshooting tips for common configuration mistakes (missing transitions, conflicting preventDefault calls).
+
+Progress rolls up to the [Core modules](/reference/core/) plan.

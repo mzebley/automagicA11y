@@ -200,3 +200,65 @@
   border-radius: var(--docs-radius-sm);
   border: 1px solid var(--docs-border-soft);
 }
+
+.docs-popover-pattern__trigger,
+.docs-popover-example__trigger {
+  border: 1px solid var(--docs-border-soft);
+  border-radius: var(--docs-radius-md);
+  padding: 0.5rem 1rem;
+  background: var(--docs-bg);
+  cursor: pointer;
+}
+
+.docs-popover-pattern__surface,
+.docs-popover-example__surface {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: var(--docs-radius-md);
+  background: var(--docs-code-bg);
+  border: 1px solid var(--docs-border-soft);
+  max-width: 24rem;
+  box-shadow: var(--docs-shadow-md);
+}
+
+.docs-popover-pattern__close,
+.docs-popover-example__dismiss {
+  margin-top: 0.75rem;
+  border: 0;
+  border-radius: var(--docs-radius-sm);
+  padding: 0.5rem 0.75rem;
+  background: var(--automagica11y-accent);
+  color: white;
+  cursor: pointer;
+}
+
+.docs-popover-example {
+  min-height: 12rem;
+  padding: 1rem;
+  border: 1px dashed var(--docs-border-soft);
+  border-radius: var(--docs-radius-lg);
+  overflow: auto;
+  max-height: 16rem;
+}
+
+.docs-focus-map-example {
+  display: grid;
+  gap: 0.75rem;
+  padding: 1rem;
+  border: 1px solid var(--docs-border-soft);
+  border-radius: var(--docs-radius-lg);
+  background: var(--docs-bg-soft);
+}
+
+.docs-focus-map-example button {
+  border: 0;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--docs-radius-md);
+  background: var(--automagica11y-accent);
+  color: white;
+  cursor: pointer;
+}
+
+.docs-focus-map-example .fallback {
+  color: var(--automagica11y-accent);
+}

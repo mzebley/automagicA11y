@@ -35,7 +35,8 @@ const config = {
       label: 'Guides',
       items: [
         { label: 'Contexts', link: '/guides/contexts/' },
-        { label: 'Truthiness', link: '/guides/truthiness/' }
+        { label: 'Truthiness', link: '/guides/truthiness/' },
+        { label: 'Focus management', link: '/guides/focus/' }
       ]
     },
     {
@@ -43,18 +44,21 @@ const config = {
       items: [
         { label: 'Toggle', link: '/patterns/toggle/' },
         { label: 'Dialog', link: '/patterns/dialog/' },
+        { label: 'Popover', link: '/patterns/popover/' },
         { label: 'Tooltip', link: '/patterns/tooltip/' }
       ]
     },
     {
       label: 'Plugins',
       items: [
-        { label: 'Announce', link: '/plugins/announce/' }
+        { label: 'Announce', link: '/plugins/announce/' },
+        { label: 'Animate', link: '/plugins/animate/' }
       ]
     },
     {
       label: 'Reference',
       items: [
+        { label: 'Core modules', link: '/reference/core/' },
         { label: 'Attributes', link: '/reference/attributes/' },
         { label: 'Events', link: '/reference/events/' },
         { label: 'API', link: '/reference/api/' }
@@ -66,7 +70,10 @@ const config = {
         { label: 'Toggle', link: '/examples/toggle-basic/' },
         { label: 'Context → Dialog', link: '/examples/context-dialog/' },
         { label: 'Context → Tooltip', link: '/examples/context-tooltip/' },
-        { label: 'Truthiness aliases', link: '/examples/truthiness-aliases/' }
+        { label: 'Truthiness aliases', link: '/examples/truthiness-aliases/' },
+        { label: 'Popover dismissal', link: '/examples/popover-basic/' },
+        { label: 'Focus map ordering', link: '/examples/focus-map/' },
+        { label: 'Examples roadmap', link: '/examples/coverage-plan/' }
       ]
     }
   ],

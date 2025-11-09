@@ -1,0 +1,69 @@
+---
+title: Popover pattern
+description: Floating panels with outside click dismissal, Escape handling, and placement helpers.
+---
+
+import AttributeTable from '../../../components/AttributeTable.astro';
+import DemoCallout from '../../../components/DemoCallout.astro';
+import Playground from '../../../components/Playground.astro';
+import { popoverAttributes } from '../../../data/patterns';
+
+# Popover
+
+Popovers extend toggle with anchored positioning, rich dismissal mechanics, and ARIA glue. They stay in sync with CSS animations, focus management, and plugin hooks so you can build command palettes, menus, or teaching bubbles without bespoke wiring.
+
+## Behavior highlights
+
+- Adds `aria-haspopup="dialog"`, `aria-expanded`, and `aria-controls` to triggers.
+- Keeps the surface hidden until open, synchronizing `hidden` and `aria-hidden`.
+- Resolves placement (`top`, `bottom`, `left`, `right`) automatically using viewport heuristics.
+- Supports outside click, Escape, scroll distance, and custom dismiss controls.
+- Emits lifecycle events (`automagica11y:popover:toggle`, `automagica11y:popover:shown`, `automagica11y:popover:hidden`, `automagica11y:popover:placement`).
+
+## Attribute reference
+
+<AttributeTable attributes={popoverAttributes} />
+
+## Events
+
+| Event | Detail payload |
+|-------|----------------|
+| `automagica11y:popover:ready` | `{ trigger, target }` after hydration. |
+| `automagica11y:popover:toggle` | `{ trigger, target, expanded, reason }` for every state change. |
+| `automagica11y:popover:shown` / `hidden` | `{ trigger, target, reason }` after visibility transitions. |
+| `automagica11y:popover:dismissed` | `{ trigger, target, reason }` when closed via outside click, Escape, scroll, or dismiss control. |
+| `automagica11y:popover:placement` | `{ trigger, target, placement }` each time the resolved placement updates. |
+
+<DemoCallout type="info" title="Pair with animate">Add `data-automagica11y-animate` to your trigger and register the animate plugin to wait for CSS transitions before the popover fully hides. This keeps opacity fades smooth without flashing hidden content.</DemoCallout>
+
+## Demo
+
+<Playground id="pattern-popover" heading="Popover playground" description="Outside dismissal, scroll-dismiss, and placement events.">
+  <div slot="demo">
+    <button
+      data-automagica11y-popover="#pattern-popover-surface"
+      data-automagica11y-popover-position="bottom"
+      data-automagica11y-popover-scroll-distance="24"
+      class="docs-popover-pattern__trigger"
+    >
+      Toggle popover
+    </button>
+    <div id="pattern-popover-surface" hidden class="docs-popover-pattern__surface">
+      <p>Click outside, press Escape, or scroll 24px to dismiss.</p>
+      <button data-automagica11y-popover-dismiss class="docs-popover-pattern__close">Dismiss</button>
+    </div>
+  </div>
+  <div slot="code">
+{`<button data-automagica11y-popover="#surface" data-automagica11y-popover-position="auto">`}
+{`  Toggle popover`}
+{`</button>`}
+  </div>
+</Playground>
+
+## Coverage plan
+
+1. Document how popovers interact with contexts (`data-automagica11y-context="menu"`) once list patterns gain behaviors.
+2. Provide a recipe integrating popovers with focus maps for command menus.
+3. Add an example showing animated placement changes reacting to `automagica11y:popover:placement`.
+
+Track progress in the [Examples roadmap](/examples/coverage-plan/).

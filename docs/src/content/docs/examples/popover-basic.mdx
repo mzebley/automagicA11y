@@ -1,0 +1,36 @@
+---
+title: Popover dismissal
+description: Demonstrates outside click, Escape, scroll, and dismiss button handling.
+---
+
+import Playground from '../../../components/Playground.astro';
+
+# Popover dismissal
+
+This example mirrors the default popover behavior: outside clicks, Escape, and scrolling dismiss the surface. Use the buttons and scroll the demo container to see each path in action.
+
+<Playground id="example-popover" heading="Popover dismissal" description="Dismiss via outside click, Escape, scroll, or button.">
+  <div slot="demo" class="docs-popover-example">
+    <button
+      data-automagica11y-popover="#example-popover-surface"
+      data-automagica11y-popover-scroll-distance="16"
+      class="docs-popover-example__trigger"
+    >
+      Show popover
+    </button>
+    <div id="example-popover-surface" hidden class="docs-popover-example__surface">
+      <p>Click the dismiss button, press Escape, click outside, or scroll the container.</p>
+      <button data-automagica11y-popover-dismiss class="docs-popover-example__dismiss">Dismiss</button>
+    </div>
+  </div>
+  <div slot="code">
+{`<button data-automagica11y-popover="#surface" data-automagica11y-popover-scroll-distance="16">`}
+{`  Show popover`}
+{`</button>`}
+{`<div id="surface" hidden>`}
+{`  <button data-automagica11y-popover-dismiss>Dismiss</button>`}
+{`</div>`}
+  </div>
+</Playground>
+
+The plugin-friendly `automagica11y:popover:toggle` event fires for each open/close. Listen for `automagica11y:popover:dismissed` to differentiate which dismissal path ran.

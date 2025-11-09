@@ -1,0 +1,29 @@
+---
+title: Focus map ordering
+description: Use data-automagica11y-focus-map to create custom tab sequences.
+---
+
+import Playground from '../../../components/Playground.astro';
+
+# Focus map ordering
+
+This example wires a deterministic tab order across several controls using only data attributes. Try pressing <kbd>Tab</kbd> and <kbd>Shift</kbd>+<kbd>Tab</kbd> inside the playground to see the custom focus loop in action.
+
+<Playground id="example-focus-map" heading="Focus map demo" description="Custom tab order with fallback anchor handling.">
+  <div slot="demo" data-automagica11y-focus-map=".primary; .secondary; .tertiary" data-automagica11y-focus-map-scope="self" class="docs-focus-map-example">
+    <button class="primary">Primary action</button>
+    <button class="secondary">Secondary action</button>
+    <button class="tertiary">Tertiary action</button>
+    <a href="#" class="fallback">Outside link</a>
+  </div>
+  <div slot="code">
+{`<div data-automagica11y-focus-map=".primary; .secondary; .tertiary"
+     data-automagica11y-focus-map-scope="self">`}
+{`  <button class="primary">Primary action</button>`}
+{`  <button class="secondary">Secondary action</button>`}
+{`  <button class="tertiary">Tertiary action</button>`}
+{`</div>`}
+  </div>
+</Playground>
+
+The helper keeps focus cycling through the three buttons. The surrounding link remains reachable by clicking or manually focusing it, but the focus map anchor (the wrapper element) redirects stray focus back to the first mapped control.

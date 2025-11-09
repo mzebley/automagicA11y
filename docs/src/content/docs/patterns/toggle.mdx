@@ -17,7 +17,7 @@ The toggle pattern wires ARIA and visibility state for show/hide interactions. I
 - Adds `aria-expanded` and `aria-controls` to triggers.
 - Generates IDs when missing and links targets with `aria-labelledby`.
 - Hides targets by default and removes `hidden` when opened.
-- Emits lifecycle events (`automagica11y:ready`, `automagica11y:toggle`).
+- Emits lifecycle events (`automagica11y:ready`, `automagica11y:toggle`, `automagica11y:toggle:opened`, `automagica11y:toggle:closed`).
 - Normalizes truthiness so `active`, `open`, `true`, and `on` all map to the open state.
 
 ## Attribute reference
@@ -34,8 +34,10 @@ The toggle pattern wires ARIA and visibility state for show/hide interactions. I
 
 | Event | Detail payload |
 |-------|----------------|
-| `automagica11y:ready` | `{ trigger, target }` once initialization completes. |
-| `automagica11y:toggle` | `{ trigger, target, expanded }` on every state change. |
+| `automagica11y:ready` | `{ trigger, target, targets }` once initialization completes. |
+| `automagica11y:toggle` | `{ trigger, target, targets, expanded }` on every state change. |
+| `automagica11y:toggle:opened` | `{ trigger, target, targets }` after an open transition completes. |
+| `automagica11y:toggle:closed` | `{ trigger, target, targets }` after a close transition completes. |
 
 ## Demo
 
@@ -63,3 +65,11 @@ The toggle pattern wires ARIA and visibility state for show/hide interactions. I
 <DemoCallout type="info" title="Inspect events">
   <p>Open your devtools console and listen for <code>automagica11y:toggle</code> to react to each state change.</p>
 </DemoCallout>
+
+## Coverage plan
+
+1. Add a live demo combining toggle with `data-automagica11y-context="menu"` once menu semantics ship.
+2. Document how grouped toggles (`data-automagica11y-group`) coordinate state across triggers.
+3. Provide recipes showing how plugins (announce, animate) extend toggle lifecycle events.
+
+Track plan progress in [Core modules](/reference/core/) and the [Examples roadmap](/examples/coverage-plan/).

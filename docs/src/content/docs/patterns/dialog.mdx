@@ -19,6 +19,7 @@ Dialogs layer focus management, inert background locking, keyboard dismissal, an
 - Moves focus inside on open and restores it to the trigger on close.
 - Sets `inert` + `aria-hidden` on siblings while the dialog is active.
 - Emits `automagica11y:ready` and `automagica11y:toggle` lifecycle events.
+- Forwards Escape presses to the owning toggle and restores focus to the opener on close.
 
 ## Attribute reference
 
@@ -66,3 +67,11 @@ Dialogs layer focus management, inert background locking, keyboard dismissal, an
 <button data-automagica11y-dialog="#dialog-alias">Open alias</button>`}
   </div>
 </Playground>
+
+## Coverage plan
+
+1. Add a walkthrough showing dialog + `initFocusInitial` to focus the first actionable element after transitions.
+2. Document how to integrate the animate plugin so exit animations finish before `hidden` toggles.
+3. Provide an example of nested dialogs or grouped triggers that share inert background locking.
+
+Progress is tracked in the [Focus management guide](/guides/focus/) and the [Examples roadmap](/examples/coverage-plan/).
