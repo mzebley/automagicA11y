@@ -11,7 +11,6 @@ export type LandingFeatureLink = {
 export type LandingFeature = {
   title: string;
   description: string;
-  icon?: string;
   link?: LandingFeatureLink;
 };
 
@@ -25,55 +24,19 @@ export const landingFeatures: LandingFeature[] = [
   {
     title: 'Drop-in attributes',
     description:
-      'Use semantic HTML and `data-automagica11y-*` hooks. The library reflects `aria-expanded`, `aria-controls`, and stateful classes automatically.',
-    icon: '✨',
+      'Use semantic HTML and data-automagica11y-* hooks and we\'ll wire the ARIA, focus, and stateful classes automatically at runtime. No setup required.',
     link: { href: '/getting-started/installation/', label: 'Install guide' }
   },
   {
     title: 'Context-aware patterns',
     description:
-      'Toggle dialogs, popovers, and tooltips with a single attribute. Context presets add roles, keyboard bindings, and focus management for you.',
-    icon: '🎯',
+      'Toggle dialogs, popovers, and tooltips with a single attribute. Context-aware logic handles roles, keyboard bindings, and focus flow for you.',
     link: { href: '/guides/contexts/', label: 'Contexts guide' }
   },
   {
-    title: 'Progressive enhancement first',
+    title: 'Thoughtful details',
     description:
-      'No-JS fallbacks stay semantic. Enhancements respect reduced motion, restore focus, and keep the DOM tidy.',
-    icon: '🌱',
-    link: { href: '/guides/animate/', label: 'Animate responsibly' }
-  }
-];
-
-export const landingQuickLinks: LandingQuickLink[] = [
-  {
-    href: '/getting-started/installation/',
-    label: 'Installation',
-    description: 'Add automagicA11y with npm or pnpm and pull in the auto-init helper.'
-  },
-  {
-    href: '/getting-started/quickstart/',
-    label: 'Quickstart',
-    description: 'Wire your first toggle in under a minute with live playgrounds.'
-  },
-  {
-    href: '/guides/truthiness/',
-    label: 'Truthiness reference',
-    description: 'Map custom open/closed states to the library’s boolean helpers.'
-  },
-  {
-    href: '/patterns/toggle/',
-    label: 'Toggle pattern',
-    description: 'Review attributes, focus helpers, and context-aware presets.'
-  },
-  {
-    href: '/patterns/focus/',
-    label: 'Focus utilities',
-    description: 'Coordinate focus maps, guard rails, and interactive regions.'
-  },
-  {
-    href: '/plugins/announce/',
-    label: 'Announce plugin',
-    description: 'Send live region updates with a single `data-automagica11y` attribute.'
+      'Write code the way you think. Truthiness mapping understands your naming — open, expanded, active — and keeps behavior consistent across patterns.',
+    link: { href: '/guides/truthiness/', label: 'Truthiness map' }
   }
 ];
