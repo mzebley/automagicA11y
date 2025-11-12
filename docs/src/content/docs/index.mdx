@@ -1,25 +1,19 @@
 ---
-title: Meet automagicA11y
+title: Meet automagica11y
 description: Declarative accessibility utilities that wire the hard parts for you.
 template: splash
 hero:
-  title: Accessibility that wires itself.
-  tagline: Drop a <code>data-automagica11y-*</code> attribute and let the runtime synchronize ARIA, focus management, and visual states without bespoke scripts.
+  title: Accessibility that writes itself.
+  tagline: Drop a <strong>data-automagica11y-*</strong> attribute and get ARIA, focus management, visual states, and more at runtime.<br><br>Easy as that.
   image:
-    html: |
-      <div class="landing-hero-visual" aria-hidden="true">
-        <div class="landing-hero-orb"></div>
-        <div class="landing-hero-card">
-          <span class="landing-hero-card__eyebrow">auto-init</span>
-          <span class="landing-hero-card__title">initAllPatterns(document)</span>
-          <span class="landing-hero-card__caption">Runs once, wires everything.</span>
-        </div>
-        <div class="landing-hero-badge">Focus-safe toggles</div>
-      </div>
+    file: ../../assets/hero_wordmark.svg
+    alt: Logo bro-bro
   actions:
     - text: Quickstart
       link: /getting-started/quickstart/
       variant: primary
+      icon: right-arrow
+      iconPlacement: end
     - text: Explore patterns
       link: /patterns/toggle/
       variant: secondary
@@ -31,58 +25,14 @@ import LandingFeatureGrid from '../../components/LandingFeatureGrid.astro';
 import { landingFeatures, landingQuickLinks } from '../../data/landing';
 
 <LandingFeatureGrid
-  heading="Ship accessible UI without the busywork"
-  description="automagicA11y pairs declarative HTML with opinionated defaults so you can ship inclusive patterns quickly."
+  heading="Why automagica11y?"
+  description="Pair declarative HTML with empathetic defaults so you can ship inclusive results quickly."
   features={landingFeatures}
 />
 
-## Get started in minutes
+## Try it out
 
-<div class="landing-quickstart">
-  <div class="landing-quickstart__copy">
-    <p class="landing-quickstart__lead">
-      Install the package, drop one attribute, and let the registry hydrate every supported pattern. You can progressively enhance
-      existing markup or scaffold new components from our playgrounds.
-    </p>
-    <ol class="landing-quickstart__steps">
-      <li>Install the package and include the <code>auto-init</code> helper.</li>
-      <li>Annotate triggers with <code>data-automagica11y-toggle</code> (or a context shortcut).</li>
-      <li>Drop your markup into the docs playgrounds to validate keyboard, ARIA, and reduced-motion states.</li>
-    </ol>
-  </div>
-  <div class="landing-quickstart__install">
-    <h3>Install in seconds</h3>
-
-```bash
-npm install automagica11y
-```
-
-    <p class="landing-quickstart__note">
-      Once installed, add `data-automagica11y-*` attributes to your markup and let the registry initialize everything automatically.
-    </p>
-  </div>
-</div>
-
-<DemoCallout title="Local builds" type="info">
-  <p>
-    You can run <code>npm run docs:dev</code> without a prebuild now. The docs resolve to the local source during development and use the built bundle when available.
-  </p>
-</DemoCallout>
-
-## Quick links
-
-<div class="landing-quick-links" role="list">
-  {landingQuickLinks.map((link) => (
-    <a class="landing-quick-links__item" href={link.href} role="listitem">
-      <span class="landing-quick-links__label">{link.label}</span>
-      <span class="landing-quick-links__description">{link.description}</span>
-    </a>
-  ))}
-</div>
-
-## Try a toggle
-
-<Playground id="landing-toggle" heading="30-second toggle" description="One attribute, full accessibility." >
+<Playground id="landing-toggle" heading="The 5-second toggle" description="One attribute, full accessibility." >
   <div slot="demo">
     <button
       data-automagica11y-toggle="#landing-toggle-panel"
@@ -107,3 +57,5 @@ npm install automagica11y
 </div>`}
   </div>
 </Playground>
+
+

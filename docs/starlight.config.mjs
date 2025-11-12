@@ -4,12 +4,13 @@ const isProd = process.env.NODE_ENV === 'production';
 
 /** @type {import('@astrojs/starlight').StarlightConfig} */
 const config = {
-  title: 'automagicA11y',
+  title: 'automagica11y',
   description: 'Progressively-enhanced accessibility utilities with first-class documentation.',
   favicon: '/favicon.svg',
   logo: {
-    src: './src/assets/logo.svg',
-    alt: 'automagicA11y logo'
+    light: './src/assets/logo-dark.svg',
+    dark: './src/assets/logo-dark.svg',
+    replacesTitle: true,
   },
   social: [
     {
@@ -22,8 +23,8 @@ const config = {
   customCss: ['./src/styles/custom.css'],
   head: [
     // Light/dark theme-color for better PWA/UA UI integration
-    { tag: 'meta', attrs: { name: 'theme-color', media: '(prefers-color-scheme: light)', content: '#4f46e5' } },
-    { tag: 'meta', attrs: { name: 'theme-color', media: '(prefers-color-scheme: dark)', content: '#1f2430' } },
+    { tag: 'meta', attrs: { name: 'theme-color', media: '(prefers-color-scheme: light)', content: '#2266DD' } },
+    { tag: 'meta', attrs: { name: 'theme-color', media: '(prefers-color-scheme: dark)', content: '#2E2E2E' } },
     // Dev: load TS module directly via Vite server. Prod: load built IIFE from /dist.
     ...(isProd
       ? [

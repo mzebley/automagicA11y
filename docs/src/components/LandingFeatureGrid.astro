@@ -16,14 +16,12 @@ const { heading, description, features } = Astro.props as Props;
 ---
 <section class="landing-feature-grid" aria-labelledby="landing-feature-grid-heading">
   <div class="landing-feature-grid__intro">
-    <p class="landing-feature-grid__eyebrow">Why automagicA11y</p>
     <h2 id="landing-feature-grid-heading">{heading}</h2>
     {description && <p class="landing-feature-grid__lead">{description}</p>}
   </div>
   <div class="landing-feature-grid__grid" role="list">
     {features.map((feature) => (
       <article class="landing-feature-grid__card" role="listitem">
-        {feature.icon && <span class="landing-feature-grid__icon" aria-hidden="true">{feature.icon}</span>}
         <h3 class="landing-feature-grid__title">{feature.title}</h3>
         <p class="landing-feature-grid__copy">{feature.description}</p>
         {feature.link && (

@@ -1,0 +1,54 @@
+header.header {
+
+    img {
+        height: calc(var(--sl-nav-height) - (3.25 * var(--sl-nav-pad-y)));
+    }
+
+    -webkit-backdrop-filter: blur(0.5rem);
+    backdrop-filter: blur(0.5rem);
+    background-color: var(--ama-deep-blue-transparent);
+    border-bottom: 1px solid var(--ama-deep-blue);
+
+    .social-icons {
+        a {
+            color: var(--ama-cream);
+            transition: color .325s ease;
+
+            svg {
+                width: 1.5rem;
+                height: 1.5rem;
+            }
+
+            &:hover {
+                color: var(--ama-coral-light);
+            }
+        }
+        &:after {
+            border-inline-end: .125rem solid var(--ama-a11y-blue);
+            opacity:.5;
+        }
+    }
+
+    button svg {
+        width: 1.5rem;
+        height: 1.5rem;
+    }
+
+    svg :is(.moon, .sun) {
+        fill: var(--ama-cream);
+        transition: fill .325s ease;
+    }
+
+    svg .sun-beams {
+        stroke: var(--ama-cream);
+        transition: stroke .325s ease;
+    }
+
+    button:is(:hover, :focus-visible) svg :is(.moon, .sun) {
+        fill: var(--ama-coral-light);
+    }
+
+    button:is(:hover, :focus-visible) svg .sun-beams {
+        stroke: var(--ama-coral-light);
+    }
+}
