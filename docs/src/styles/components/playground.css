@@ -1,0 +1,134 @@
+:root {}
+
+.playground {
+  overflow: hidden;
+  margin: var(--ama-spacing-1) 0;
+  /* Constrain to Starlight's content column even when descendants
+     include `.not-content` (added by Expressive Code). */
+  width: 100%;
+  max-width: var(--sl-content-width);
+  margin-inline: auto;
+}
+
+.playground__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sl-spacing-sm);
+  padding: var(--sl-spacing-sm) var(--sl-spacing-md);
+  border-bottom: 1px solid var(--docs-border-soft);
+}
+
+.playground__title {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.playground__heading {
+  font-weight: 600;
+  font-size: var(--ama-font-size-md);
+}
+
+.playground__description {
+  margin: 0;
+  color: var(--sl-color-text-muted);
+  font-size: var(--ama-font-size-sm);
+}
+
+.playground__actions {
+  display: inline-flex;
+  gap: var(--sl-spacing-xs);
+  margin: 0;
+  width: 100%;
+  justify-content: space-between;
+
+}
+
+.playground__actions > span {
+  position:relative;
+}
+
+.playground__action {
+  appearance: none;
+  border: none;
+  background: transparent;
+  color: var(--sl-link-color);
+  border-radius: var(--sl-border-radius-sm);
+  padding: 0.375rem 0.5rem;
+  font-size: var(--sl-text-sm);
+  line-height: 1.25;
+  margin:0;
+  cursor: pointer;
+  min-width: max-content;
+  transition: background-color 150ms ease-in-out;
+}
+
+.playground__action:hover {
+  background: color-mix(in srgb, var(--sl-link-color) 8%, transparent);
+}
+
+.playground__action:active {
+  background: color-mix(in srgb, var(--sl-link-color) 12%, transparent);
+}
+
+.playground__action:focus-visible {
+  outline: var(--sl-focus-ring);
+  outline-offset: 2px;
+}
+
+.playground__action[data-playground-action="reset"] {
+  color: var(--sl-color-text-muted);
+}
+
+@media (min-width: 50rem) {
+  .playground__header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .playground__actions {
+    width: auto;
+    justify-content: flex-end;
+     align-items: center;
+  }
+}
+
+.playground__body {
+  display: grid;
+  gap: var(--sl-spacing-md);
+  padding: var(--sl-spacing-md);
+}
+
+.playground__preview {
+  padding: var(--sl-spacing-md);
+  border-radius: var(--docs-radius-md);
+  border: 1px solid var(--docs-border-soft);
+  background:
+    radial-gradient(circle at 1px 1px, color-mix(in srgb, var(--sl-color-text) 8%, transparent) 1px, transparent 0) 0 0 / 14px 14px,
+    var(--docs-code-bg);
+}
+
+/* Let Expressive Code render visuals (frames, copy, theming). Keep spacing minimal. */
+.playground__code {
+  margin-top: 0;
+  border-top: 1px solid var(--docs-border-soft);
+  padding: var(--sl-spacing-sm) var(--sl-spacing-md);
+  /* Prevent inner EC blocks from stretching container */
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.playground__code>* {
+  max-width: 100%;
+}
+
+@media (max-width: 720px) {
+  .playground {
+    border-radius: var(--sl-border-radius-md);
+  }
+
+  .playground__preview {
+    padding: var(--sl-spacing-sm);
+  }
+}

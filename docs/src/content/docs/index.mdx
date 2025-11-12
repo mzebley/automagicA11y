@@ -37,26 +37,27 @@ import { landingFeatures, landingQuickLinks } from '../../data/landing';
   <div slot="demo">
     <button
       data-automagica11y-toggle="#landing-toggle-panel"
-      data-automagica11y-trigger-class-open="docs-cta-button--active"
-      class="docs-cta-button"
-    >
-      <span>Reveal mission</span>
-    </button>
-    <div id="landing-toggle-panel" hidden class="docs-cta-panel">
-      automagicA11y synchronizes <code>aria-expanded</code>, handles keyboard input, and keeps the DOM tidy.
+      class="sl-link-button not-content primary"
+    >Toggle me, friend.</button>
+    <div id="landing-toggle-panel" class="docs-cta-panel">
+      Automagica11y synchronizes <code>aria-expanded</code>, handles keyboard input, and keeps the DOM tidy.
     </div>
   </div>
   <div slot="code">
-{`<button
-  data-automagica11y-toggle="#landing-toggle-panel"
-  data-automagica11y-trigger-class-open="cta--active"
->
-  Reveal mission
+{`
+<button data-automagica11y-toggle="#landing-toggle-panel">
+  Toggle me, friend.
 </button>
-<div id="landing-toggle-panel" hidden>
-  Accessible by default.
-</div>`}
+<div id="landing-toggle-panel">
+  Automagica11y synchronizes <code>aria-expanded</code>, handles keyboard input, and keeps the DOM tidy.
+</div>
+`}
   </div>
 </Playground>
+
+
+We didn't just toggle [hidden] there either. Automagica11y took that bare bones HTML and also gave it ids, aria-controls, aria-expanded, aria-labelled-by, <em>and</em> aria-hidden. All with a single data-attribute.
+
+<a href="/getting-started/installation/">Get this wizardry for yourself</a>
 
 

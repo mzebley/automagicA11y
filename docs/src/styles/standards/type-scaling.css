@@ -1,0 +1,61 @@
+:root {
+    --ama-viewport-modifier: .475vw;
+    --ama-max-size-modifier: 1.25;
+    
+    --ama-desired-font-size-2xs: 0.825rem;
+    --ama-a11y-font-size-2xs-modifier: 1;
+    --ama-font-size-2xs: clamp(
+        calc(var(--ama-desired-font-size-2xs) * var(--ama-a11y-font-size-2xs-modifier)), 
+        calc((var(--ama-desired-font-size-2xs) + var(--ama-viewport-modifier)) * var(--ama-a11y-font-size-2xs-modifier)),
+        calc(var(--ama-desired-font-size-2xs) * var(--ama-max-size-modifier) * var(--ama-a11y-font-size-2xs-modifier))
+    );
+    
+    --ama-desired-font-size-xs: 0.8725rem;
+    --ama-a11y-font-size-xs-modifier: 1;
+    --ama-font-size-xs: clamp(
+        calc(var(--ama-desired-font-size-xs) * var(--ama-a11y-font-size-xs-modifier)), calc((var(--ama-desired-font-size-xs) + var(--ama-viewport-modifier)) * var(--ama-a11y-font-size-xs-modifier)), 
+        calc(var(--ama-desired-font-size-xs) * var(--ama-max-size-modifier) * var(--ama-a11y-font-size-xs-modifier))
+    );
+    
+    --ama-desired-font-size-sm: 1rem;
+    --ama-a11y-font-size-sm-modifier: 1;
+    --ama-font-size-sm: clamp(
+        calc(var(--ama-desired-font-size-sm) * var(--ama-a11y-font-size-sm-modifier)), calc((var(--ama-desired-font-size-sm) + var(--ama-viewport-modifier)) * var(--ama-a11y-font-size-sm-modifier)), 
+        calc(var(--ama-desired-font-size-sm) * var(--ama-max-size-modifier) * var(--ama-a11y-font-size-sm-modifier))
+    );
+    
+    --ama-desired-font-size-md: 1.125rem;
+    --ama-a11y-font-size-md-modifier: 1;
+    --ama-font-size-md: clamp(
+        calc(var(--ama-desired-font-size-md) * var(--ama-a11y-font-size-md-modifier)), calc((var(--ama-desired-font-size-md) + var(--ama-viewport-modifier)) * var(--ama-a11y-font-size-md-modifier)), 
+        calc(var(--ama-desired-font-size-md) * var(--ama-max-size-modifier) * var(--ama-a11y-font-size-md-modifier))
+    );
+    
+    --ama-desired-font-size-lg: 1.25rem;
+    --ama-a11y-font-size-lg-modifier: 1;
+    --ama-font-size-lg: clamp(
+        calc(var(--ama-desired-font-size-lg) * var(--ama-a11y-font-size-lg-modifier)), calc((var(--ama-desired-font-size-lg) + var(--ama-viewport-modifier)) * var(--ama-a11y-font-size-lg-modifier)), 
+        calc(var(--ama-desired-font-size-lg) * var(--ama-max-size-modifier) * var(--ama-a11y-font-size-lg-modifier))
+    );
+    
+    --ama-desired-font-size-xl: 2rem;
+    --ama-a11y-font-size-xl-modifier: 1;
+    --ama-font-size-xl: clamp(
+        calc(var(--ama-desired-font-size-xl) * var(--ama-a11y-font-size-xl-modifier)), calc((var(--ama-desired-font-size-xl) + var(--ama-viewport-modifier)) * var(--ama-a11y-font-size-xl-modifier)), 
+        calc(var(--ama-desired-font-size-xl) * var(--ama-max-size-modifier) * var(--ama-a11y-font-size-xl-modifier))
+    );
+
+    --ama-desired-font-size-2xl: 2.75rem;
+    --ama-a11y-font-size-2xl-modifier: 1;
+    --ama-font-size-2xl: clamp(
+        calc(var(--ama-desired-font-size-2xl) * var(--ama-a11y-font-size-2xl-modifier)), calc((var(--ama-desired-font-size-2xl) + var(--ama-viewport-modifier)) * var(--ama-a11y-font-size-2xl-modifier)), 
+        calc(var(--ama-desired-font-size-2xl) * var(--ama-max-size-modifier) * var(--ama-a11y-font-size-2xl-modifier))
+    );
+
+    --ama-desired-font-size-3xl: 64px;
+    --ama-a11y-font-size-3xl-modifier: 1;
+    --ama-font-size-3xl: clamp(
+        calc(var(--ama-desired-font-size-3xl) * var(--ama-a11y-font-size-3xl-modifier)), calc((var(--ama-desired-font-size-3xl) + var(--ama-viewport-modifier)) * var(--ama-a11y-font-size-3xl-modifier)), 
+        calc(var(--ama-desired-font-size-3xl) * var(--ama-max-size-modifier) * var(--ama-a11y-font-size-3xl-modifier))
+    );
+}

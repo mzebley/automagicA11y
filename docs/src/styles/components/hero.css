@@ -28,6 +28,10 @@
         font-weight:300;
     }
 
+    .content-panel {
+        padding:0;
+    }
+
     .tagline {
         --sl-line-height: 1.5;
         line-height: var(--sl-line-height);
@@ -86,6 +90,17 @@
         display: grid;
         gap: 1.5rem;
         grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr));
+    }
+
+    .playground__action {
+            color: var(--ama-cream);
+    }
+
+    #landing-toggle-panel code {
+        background-color: var(--ama-deep-blue);
+        color: var(--ama-cream);
+        font-weight:500;
+
     }
 
 

@@ -1,0 +1,37 @@
+:root {
+    --ama-base-spacing-unit: 1rem;
+    --ama-spacing-0: 0px;
+    --ama-spacing-005: calc((var(--ama-base-spacing-unit) * .325) * var(--ama-a11y-spacing-modifier));
+    --ama-spacing-05: calc((var(--ama-base-spacing-unit) * .5) * var(--ama-a11y-spacing-modifier));
+    --ama-spacing-neg-1: calc(var(--ama-base-spacing-unit) * var(--ama-a11y-spacing-modifier) * -1);
+    --ama-spacing-1: calc(var(--ama-base-spacing-unit) * var(--ama-a11y-spacing-modifier));
+    --ama-spacing-105: calc((var(--ama-base-spacing-unit) * 1.5) * var(--ama-a11y-spacing-modifier));
+    --ama-spacing-2: calc((var(--ama-base-spacing-unit) * 2) * var(--ama-a11y-spacing-modifier));
+    --ama-spacing-205: calc((var(--ama-base-spacing-unit) * 2.5) * var(--ama-a11y-spacing-modifier));
+    --ama-spacing-3: calc((var(--ama-base-spacing-unit) * 3) * var(--ama-a11y-spacing-modifier));
+    --ama-spacing-4: calc((var(--ama-base-spacing-unit) * 4) * var(--ama-a11y-spacing-modifier));
+    --ama-spacing-5: calc((var(--ama-base-spacing-unit) * 5) * var(--ama-a11y-spacing-modifier));
+    --ama-spacing-6: calc((var(--ama-base-spacing-unit) * 6) * var(--ama-a11y-spacing-modifier));
+    --ama-spacing-7: calc((var(--ama-base-spacing-unit) * 7) * var(--ama-a11y-spacing-modifier));
+    --ama-spacing-8: calc((var(--ama-base-spacing-unit) * 8) * var(--ama-a11y-spacing-modifier));
+    --ama-spacing-9: calc((var(--ama-base-spacing-unit) * 9) * var(--ama-a11y-spacing-modifier));
+    --ama-spacing-10: calc((var(--ama-base-spacing-unit) * 10) * var(--ama-a11y-spacing-modifier));
+    --ama-spacing-15: calc((var(--ama-base-spacing-unit) * 15) * var(--ama-a11y-spacing-modifier));
+    --ama-spacing-20: calc((var(--ama-base-spacing-unit) * 20) * var(--ama-a11y-spacing-modifier));
+
+    --ama-spacing-card: calc((var(--ama-base-spacing-unit) * 28) * var(--ama-a11y-spacing-modifier));
+
+    --ama-spacing-mobile: calc((var(--ama-base-spacing-unit) * 33) * var(--ama-a11y-spacing-modifier));
+
+    --ama-spacing-mobile-lg: calc((var(--ama-base-spacing-unit) * 38) * var(--ama-a11y-spacing-modifier));
+
+    --ama-spacing-tablet: calc((var(--ama-base-spacing-unit) * 44) * var(--ama-a11y-spacing-modifier));
+
+    --ama-spacing-tablet-lg: calc((var(--ama-base-spacing-unit) * 64) * var(--ama-a11y-spacing-modifier));
+
+    --ama-spacing-desktop: calc((var(--ama-base-spacing-unit) * 88) * var(--ama-a11y-spacing-modifier));
+
+    --ama-spacing-desktop-lg: calc((var(--ama-base-spacing-unit) * 100) * var(--ama-a11y-spacing-modifier));
+
+    --ama-spacing-widescreen: calc((var(--ama-base-spacing-unit) * 166) * var(--ama-a11y-spacing-modifier));
+}

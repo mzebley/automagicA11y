@@ -1,84 +1,216 @@
 ---
-import { randomUUID } from 'node:crypto';
+import { randomUUID } from "node:crypto";
+import { Code } from "@astrojs/starlight/components";
+import { Icon } from "@astrojs/starlight/components";
 
+// Component props for the Playground wrapper.
+// - id: used to group actions + target elements
+// - heading/description: optional UI content
+// - lang: language hint for Expressive Code (defaults to html)
+// - codeMeta: optional Expressive Code meta (e.g., titles, highlights)
 const {
   id = randomUUID(),
   heading,
-  description
+  description,
+  lang = "html",
+  codeMeta = "",
 } = Astro.props as {
   id?: string;
   heading?: string;
   description?: string;
+  lang?: string;
+  codeMeta?: string;
 };
 
-const hasCode = Astro.slots.has('code');
-const hasScript = Astro.slots.has('script');
-const summaryLabel = hasCode ? 'View source' : undefined;
+const hasCode = Astro.slots.has("code");
+const hasScript = Astro.slots.has("script");
+const hasCodeHtml = Astro.slots.has("codeHtml");
+const hasCodeTs = Astro.slots.has("codeTs");
+const hasCodeCss = Astro.slots.has("codeCss");
+const summaryLabel =
+  hasCode || hasCodeHtml || hasCodeTs || hasCodeCss ? "View source" : undefined;
+
+// Read the provided <slot name="code" /> and convert escaped HTML back to raw code
+// so it can be fed into Expressive Code's <Code> component.
+//
+// Expressive Code sometimes prettifies HTML snippets by wrapping multiple
+// top‑level nodes in a bare <div> to ensure a single root. That wrapper is
+// not part of the author-provided example and shows up visually in the
+// "View source" pane. To keep examples faithful, we strip a leading
+// "<div>…</div>" pair when it appears to be a formatting artifact (i.e.,
+// an attribute‑less wrapper around other markup). This affects display only
+// and does not touch the live demo markup.
+const decodeHtml = (input: string) =>
+  input
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&amp;/g, "&")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'");
+
+// Remove an attribute‑less wrapper that some formatters add around
+// multi‑root HTML snippets. Only strips a plain `<div>` at both ends.
+const stripAutoWrapper = (code: string) => {
+  const trimmed = code.trim();
+  if (/^<div>\s*[\s\S]*<\/div>$/.test(trimmed)) {
+    const inner = trimmed.slice(5, -6).trim();
+    // Only strip if inner actually contains markup (to avoid
+    // turning a legitimate wrapper with plain text into bare text)
+    if (/[<][^>]+>/.test(inner)) return inner;
+  }
+  return code;
+};
+
+const rawCodeHtml = hasCode ? ((await Astro.slots.render("code")) ?? "") : "";
+const codeString = rawCodeHtml ? stripAutoWrapper(decodeHtml(rawCodeHtml.trim())) : "";
+
+// Optional multi-source tabs using additional slots. If any of these slots are
+// provided, they will be rendered sequentially to enable Expressive Code's
+// tabbed frames (titles set via `meta`).
+const codeTabs: Array<{ code: string; lang: string; meta: string }> = [];
+if (hasCodeHtml) {
+  const htmlSrc = (await Astro.slots.render("codeHtml")) ?? "";
+  if (htmlSrc.trim())
+    codeTabs.push({
+      code: stripAutoWrapper(decodeHtml(htmlSrc.trim())),
+      lang: "html",
+      meta: "title=HTML",
+    });
+}
+if (hasCodeTs) {
+  const tsSrc = (await Astro.slots.render("codeTs")) ?? "";
+  if (tsSrc.trim())
+    codeTabs.push({
+      code: decodeHtml(tsSrc.trim()),
+      lang: "ts",
+      meta: "title=TS",
+    });
+}
+if (hasCodeCss) {
+  const cssSrc = (await Astro.slots.render("codeCss")) ?? "";
+  if (cssSrc.trim())
+    codeTabs.push({
+      code: decodeHtml(cssSrc.trim()),
+      lang: "css",
+      meta: "title=CSS",
+    });
+}
 ---
-<section class="playground" aria-labelledby={heading ? `${id}-heading` : undefined}>
+
+<section
+  class="playground"
+  aria-labelledby={heading ? `${id}-heading` : undefined}
+>
   <div class="playground__header">
-    {heading && (
-      <div id={`${id}-heading`} class="playground__title">{heading}</div>
-    )}
-    {description && <p class="playground__description">{description}</p>}
-    <div class="playground__actions">
-      {hasCode && (
-        <button
-          type="button"
-          class="playground__action"
-          data-playground-action="code"
-          data-playground-id={id}
-          aria-pressed="false"
-        >
-          {summaryLabel}
-        </button>
-      )}
-      <button type="button" class="playground__action" data-playground-action="reset" data-playground-id={id}>
+    <div class="playground__title">
+      {
+        heading && (
+          <h3 id={`${id}-heading`} class="playground__heading">
+            {heading}
+          </h3>
+        )
+      }
+      {description && <p class="playground__description">{description}</p>}
+    </div>
+
+    <div
+      class="playground__actions"
+      
+    >
+      {
+        hasCode && (
+          <span data-automagica11y-context="tooltip"
+      data-automagica11y-target={`#${id}-code-btn-tooltip`}
+      data-automagica11y-target-class-open="automagic-tooltip-open">
+            <div class="tooltip" id={`${id}-code-btn-tooltip`}>
+              {summaryLabel}
+            </div>
+            <button
+              type="button"
+              class="playground__action"
+              data-playground-action="code"
+              data-automagica11y-toggle={`#${id}-code`}
+            >
+              <Icon name="seti:html" />
+            </button>
+          </span>
+        )
+      }
+      <!-- <button
+        type="button"
+        class="playground__action"
+        data-playground-action="reset"
+        data-playground-id={id}
+      >
         Reset
-      </button>
+      </button> -->
     </div>
   </div>
   <div class="playground__body">
     <div class="playground__preview" data-playground-preview={id}>
       <slot name="demo" />
     </div>
-    {hasCode && (
-      <pre class="playground__code" data-playground-code={id} hidden>
-        <code>
-          <slot name="code" />
-        </code>
-      </pre>
-    )}
+    {
+      (hasCode || codeTabs.length > 0) && (
+        <div
+          class="playground__code"
+          data-playground-code={id}
+          id={`${id}-code`}
+          hidden
+        >
+          {codeTabs.length > 0 ? (
+            // Multiple code tabs: render each block with a title via `meta`
+            <Fragment>
+              {codeTabs.map((b) => (
+                <Code code={b.code} lang={b.lang} meta={b.meta} />
+              ))}
+            </Fragment>
+          ) : (
+            // Single block fallback
+            <Code code={codeString} lang={lang} meta={codeMeta} />
+          )}
+        </div>
+      )
+    }
   </div>
   {hasScript && <slot name="script" />}
   <script is:inline type="module">
     (() => {
-      const sections = Array.from(document.querySelectorAll('section.playground'));
+      const sections = Array.from(
+        document.querySelectorAll("section.playground")
+      );
       if (sections.length === 0) return;
 
       let libraryPromise;
+      // Ensures the automagica11y library is present and returns the global.
       const ensureLibrary = () => {
         const w = window;
         if (w.automagica11y) return Promise.resolve(w.automagica11y);
         if (libraryPromise) return libraryPromise;
         // Fallback: load the prebuilt IIFE from /dist and bridge the global
         libraryPromise = new Promise((resolve, reject) => {
-          const existing = document.querySelector('script[data-a11y-lib]');
+          const existing = document.querySelector("script[data-a11y-lib]");
           if (existing) {
-            existing.addEventListener('load', () => {
-              if (!w.automagica11y && w.automagicA11y) w.automagica11y = w.automagicA11y;
-              resolve(w.automagica11y);
-            }, { once: true });
-            existing.addEventListener('error', reject, { once: true });
+            existing.addEventListener(
+              "load",
+              () => {
+                if (!w.automagica11y && w.automagicA11y)
+                  w.automagica11y = w.automagicA11y;
+                resolve(w.automagica11y);
+              },
+              { once: true }
+            );
+            existing.addEventListener("error", reject, { once: true });
             return;
           }
-          const s = document.createElement('script');
-          s.src = '/dist/automagica11y.min.js';
+          const s = document.createElement("script");
+          s.src = "/dist/automagica11y.min.js";
           s.async = true;
           s.defer = true;
-          s.setAttribute('data-a11y-lib', '');
+          s.setAttribute("data-a11y-lib", "");
           s.onload = () => {
-            if (!w.automagica11y && w.automagicA11y) w.automagica11y = w.automagicA11y;
+            if (!w.automagica11y && w.automagicA11y)
+              w.automagica11y = w.automagicA11y;
             resolve(w.automagica11y);
           };
           s.onerror = reject;
@@ -88,65 +220,72 @@ const summaryLabel = hasCode ? 'View source' : undefined;
       };
 
       for (const section of sections) {
-        const preview = section.querySelector('[data-playground-preview]');
+        const preview = section.querySelector("[data-playground-preview]");
         if (!preview) continue;
-        const id = preview.getAttribute('data-playground-preview') || '';
-        const code = section.querySelector('[data-playground-code]');
-        const actions = section.querySelectorAll('[data-playground-id]');
+        const id = preview.getAttribute("data-playground-preview") || "";
+        const code = section.querySelector("[data-playground-code]");
+        const codeBtn = section.querySelector(
+          '[data-playground-action="code"]'
+        );
+        const codeBtnTooltip = section.querySelector(
+          "#" + `${id}-code-btn-tooltip`
+        );
+        const resetBtn = section.querySelector(
+          '[data-playground-action="reset"]'
+        );
         const initial = preview.innerHTML;
 
+        // Initialize automagica11y on the entire Playground section so that
+        // the header toggle button (outside the preview area) is wired too.
         const dispatchInit = () => {
           ensureLibrary()
             .then(({ initNode }) => {
-              if (typeof initNode === 'function') {
-                initNode(preview);
+              if (typeof initNode === "function") {
+                initNode(section);
               }
-              const event = new CustomEvent('automagica11y:playground:init', {
-                detail: { id, container: preview }
+              const event = new CustomEvent("automagica11y:playground:init", {
+                detail: { id, container: section },
               });
               document.dispatchEvent(event);
             })
             .catch((err) => {
-              console.error('[docs/playground] Failed to load automagica11y', err);
+              console.error(
+                "[docs/playground] Failed to load automagica11y",
+                err
+              );
             });
         };
 
-        const toggleCode = (action) => {
-          if (!code) return;
-          const expanded = !code.hasAttribute('hidden');
-          code.toggleAttribute('hidden', expanded);
-          const nowExpanded = !code.hasAttribute('hidden');
-          action.setAttribute('aria-pressed', nowExpanded ? 'true' : 'false');
-          action.setAttribute('aria-expanded', nowExpanded ? 'true' : 'false');
-          action.textContent = nowExpanded ? 'Hide source' : 'View source';
+        // Update the code toggle button label based on expanded state
+        const updateCodeBtn = (expanded) => {
+          if (!codeBtnTooltip) return;
+          codeBtnTooltip.textContent = expanded ? "Hide source" : "View source";
         };
 
-        actions.forEach((action) => {
-          action.addEventListener('click', () => {
-            const mode = action.getAttribute('data-playground-action');
-            if (mode === 'code') {
-              toggleCode(action);
-              return;
-            }
-
-            if (mode === 'reset') {
-              preview.innerHTML = initial;
-              if (code) {
-                code.setAttribute('hidden', '');
-              }
-              if (code && actions.length > 1) {
-                actions.forEach(btn => {
-                  if (btn.getAttribute('data-playground-action') === 'code') {
-                    btn.setAttribute('aria-pressed', 'false');
-                    btn.setAttribute('aria-expanded', 'false');
-                    btn.textContent = 'View source';
-                  }
-                });
-              }
-              dispatchInit();
-            }
-          });
+        // Listen for automagica11y toggle events and adjust label when this
+        // section's code panel is affected.
+        document.addEventListener("automagica11y:toggle", (ev) => {
+          try {
+            const detail = ev && ev.detail ? ev.detail : {};
+            const { trigger, target, targets, expanded } = detail;
+            if (!code || (!trigger && !target && !targets)) return;
+            const isThisSection =
+              (trigger && codeBtn && trigger === codeBtn) ||
+              (target && target === code) ||
+              (Array.isArray(targets) && targets.includes(code));
+            if (isThisSection) updateCodeBtn(Boolean(expanded));
+          } catch {}
         });
+
+        if (resetBtn) {
+          resetBtn.addEventListener("click", () => {
+            preview.innerHTML = initial;
+            // Collapse the code section on reset; automagica11y will rewrite ARIA
+            if (code) code.setAttribute("hidden", "");
+            updateCodeBtn(false);
+            dispatchInit();
+          });
+        }
 
         dispatchInit();
       }
@@ -154,80 +293,4 @@ const summaryLabel = hasCode ? 'View source' : undefined;
   </script>
 </section>
 
-<style>
-  .playground {
-    border: 1px solid var(--docs-border-soft);
-    border-radius: var(--docs-radius-lg);
-    padding: var(--docs-spacing-lg);
-    margin: var(--docs-spacing-xl) 0;
-    background: var(--docs-bg);
-    box-shadow: var(--docs-shadow-md);
-  }
-
-  .playground__header {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--sl-spacing-md);
-    margin-bottom: var(--sl-spacing-md);
-  }
-
-  .playground__title {
-    font-weight: 600;
-    font-size: var(--sl-text-lg);
-  }
-
-  .playground__description {
-    margin: 0;
-    color: var(--sl-color-text-muted);
-    flex: 1 1 100%;
-  }
-
-  .playground__actions {
-    display: flex;
-    gap: var(--sl-spacing-sm);
-  }
-
-  .playground__action {
-    border: 1px solid var(--docs-border-soft);
-    border-radius: var(--sl-border-radius-sm);
-    padding: 0.35rem 0.75rem;
-    background: var(--sl-color-bg);
-    color: var(--sl-color-text);
-    font-size: var(--sl-text-sm);
-    cursor: pointer;
-  }
-  .playground__action:hover {
-    background: var(--docs-bg-soft);
-  }
-
-  .playground__body {
-    display: grid;
-    gap: var(--sl-spacing-md);
-  }
-
-  .playground__preview {
-    padding: var(--sl-spacing-md);
-    background: var(--docs-code-bg);
-    border-radius: var(--docs-radius-md);
-    border: 1px dashed var(--docs-preview-border);
-  }
-
-  .playground__code {
-    overflow-x: auto;
-    background: var(--docs-bg-soft);
-    border-radius: var(--docs-radius-md);
-    padding: var(--docs-spacing-md);
-  }
-
-  @media (max-width: 720px) {
-    .playground {
-      padding: var(--sl-spacing-md);
-    }
-
-    .playground__preview {
-      padding: var(--sl-spacing-sm);
-    }
-  }
-</style>
+<!-- Styles moved to docs/src/styles/components/playground.css -->
