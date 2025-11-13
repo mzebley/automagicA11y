@@ -218,6 +218,7 @@ function createHoverIntentHandle(trigger: HTMLElement, options: {
   closeDelay: number;
   longPressDelay: number;
   onTouchToggle?: (active: boolean) => void;
+  enableTouchLongPress: boolean;
 }): HoverIntentHandle {
   const elements = new Set<HTMLElement>();
   let pointerActive = false;
@@ -227,7 +228,7 @@ function createHoverIntentHandle(trigger: HTMLElement, options: {
   let hideTimer: number | null = null;
   let longPressTimer: number | null = null;
 
-  const { show, hide, openDelay, closeDelay, longPressDelay, onTouchToggle } = options;
+  const { show, hide, openDelay, closeDelay, longPressDelay, onTouchToggle, enableTouchLongPress } = options;
 
   const resetTouchHold = () => {
     if (!touchHoldActive) return;
@@ -315,6 +316,7 @@ function createHoverIntentHandle(trigger: HTMLElement, options: {
   trigger.addEventListener("pointerdown", (event: PointerEvent) => {
     if (event.pointerType !== "touch") return;
     pointerActive = true;
+    if (!enableTouchLongPress) return;
     clearLongPress();
     longPressTimer = window.setTimeout(() => {
       longPressTimer = null;
@@ -439,6 +441,7 @@ export const helpers = {
     closeDelay?: number;
     longPressDelay?: number;
     onTouchToggle?: (active: boolean) => void;
+    enableTouchLongPress?: boolean;
   }): HoverIntentHandle {
     const handle = createHoverIntentHandle(trigger, {
       show: options.show,
@@ -447,6 +450,7 @@ export const helpers = {
       closeDelay: options.closeDelay ?? 100,
       longPressDelay: options.longPressDelay ?? 550,
       onTouchToggle: options.onTouchToggle,
+      enableTouchLongPress: options.enableTouchLongPress ?? true,
     });
     handle.addElement(target);
     return handle;

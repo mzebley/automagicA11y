@@ -2,6 +2,7 @@ import { getDataAttribute, hasDataAttribute, prefixedSelector } from "../attribu
 import { dispatch } from "../events";
 import { resolveAnchoredPlacement } from "../placement";
 import type { PreferredAnchoredPlacement } from "../placement";
+import { hasFinePointer } from "../../utils/device";
 import type { helpers as HelpersMap } from "./helpers";
 
 export type Capability =
@@ -200,6 +201,7 @@ export const Contexts: Record<string, ContextSpec> = {
       const openDelay = parseDelay(trigger, "tooltip-open-delay", 0);
       const closeDelay = parseDelay(trigger, "tooltip-close-delay", 100);
       const longPressDelay = parseDelay(trigger, "tooltip-long-press", 550);
+      const enableTouchLongPress = !hasFinePointer();
       const preferredPlacement = parsePreferredPlacement(getDataAttribute(trigger, "tooltip-position"));
       const controller = getToggleController(trigger);
       if (!controller) return;
@@ -218,6 +220,15 @@ export const Contexts: Record<string, ContextSpec> = {
         controller(false);
       };
 
+      if (enableTouchLongPress) {
+        const computedUserSelect = typeof window !== "undefined" && typeof window.getComputedStyle === "function"
+          ? window.getComputedStyle(target).userSelect
+          : null;
+        if (!target.style.userSelect && (!computedUserSelect || computedUserSelect === "auto" || computedUserSelect === "text")) {
+          target.style.userSelect = "none";
+        }
+      }
+
       const hoverHandle = h.hoverIntent(trigger, target, {
         show,
         hide,
@@ -227,7 +238,8 @@ export const Contexts: Record<string, ContextSpec> = {
         onTouchToggle(active) {
           if (!active) return;
           show();
-        }
+        },
+        enableTouchLongPress,
       });
       state.hover = hoverHandle;
 

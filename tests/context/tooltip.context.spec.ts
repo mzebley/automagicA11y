@@ -8,6 +8,22 @@ const baseTemplate = `
   <div id="tip" hidden>Tooltip text</div>
 `;
 
+const originalMatchMedia = window.matchMedia;
+
+function mockMatchMedia(matches: boolean) {
+  const mediaQueryList: MediaQueryList = {
+    matches,
+    media: "(any-pointer: fine)",
+    onchange: null,
+    addEventListener: () => undefined,
+    removeEventListener: () => undefined,
+    dispatchEvent: () => false,
+    addListener: () => undefined,
+    removeListener: () => undefined,
+  };
+  window.matchMedia = vi.fn(() => mediaQueryList) as unknown as typeof window.matchMedia;
+}
+
 function pointer(type: string, pointerType = "mouse") {
   const event = new Event(type, { bubbles: true, cancelable: true });
   try {
@@ -26,6 +42,7 @@ describe("tooltip context", () => {
 
   afterEach(() => {
     vi.useRealTimers();
+    window.matchMedia = originalMatchMedia;
   });
 
   it("adds tooltip semantics and aria relationships", () => {
@@ -75,5 +92,35 @@ describe("tooltip context", () => {
     trigger.dispatchEvent(new Event("focus"));
 
     expect(tooltip.hidden).toBe(true);
+  });
+
+  it("skips touch long-press interactions when a fine pointer is available", () => {
+    const trigger = document.getElementById("trigger") as HTMLElement;
+    const tooltip = document.getElementById("tip") as HTMLElement;
+
+    vi.useFakeTimers();
+    mockMatchMedia(true);
+    initToggle(trigger);
+
+    trigger.dispatchEvent(pointer("pointerdown", "touch"));
+    vi.advanceTimersByTime(600);
+
+    expect(tooltip.hidden).toBe(true);
+  });
+
+  it("enables long-press + disables text selection on coarse pointers", () => {
+    const trigger = document.getElementById("trigger") as HTMLElement;
+    const tooltip = document.getElementById("tip") as HTMLElement;
+
+    vi.useFakeTimers();
+    mockMatchMedia(false);
+    initToggle(trigger);
+
+    expect(tooltip.style.userSelect).toBe("none");
+
+    trigger.dispatchEvent(pointer("pointerdown", "touch"));
+    vi.advanceTimersByTime(600);
+
+    expect(tooltip.hidden).toBe(false);
   });
 });
