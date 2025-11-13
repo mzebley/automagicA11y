@@ -34,6 +34,8 @@ describe("popover pattern", () => {
 
     expect(trigger.getAttribute("aria-controls")?.split(/\s+/).includes(panel.id)).toBe(true);
     expect(trigger.getAttribute("aria-expanded")).toBe("false");
+    expect(panel.getAttribute("role")).toBe("dialog");
+    expect(trigger.getAttribute("aria-haspopup")).toBe("dialog");
     expect(panel.hidden).toBe(true);
     expect(panel.getAttribute("aria-hidden")).toBe("true");
 
@@ -45,6 +47,22 @@ describe("popover pattern", () => {
     expect(hiddenListener).toHaveBeenCalledTimes(1);
     const hiddenEvent = hiddenListener.mock.calls[0][0] as CustomEvent;
     expect(hiddenEvent.detail.reason).toBe("initial");
+  });
+
+  it("respects author-provided panel roles without forcing aria-haspopup dialog", () => {
+    document.body.innerHTML = `
+      <button id="trigger" data-automagica11y-popover="#panel" aria-haspopup="dialog">Actions</button>
+      <div id="panel" role="menu"></div>
+    `;
+
+    const trigger = document.getElementById("trigger") as HTMLElement;
+    const panel = document.getElementById("panel") as HTMLElement;
+
+    initPopover(trigger);
+
+    expect(panel.getAttribute("role")).toBe("menu");
+    expect(trigger.hasAttribute("aria-haspopup")).toBe(false);
+    expect(trigger.getAttribute("aria-controls")?.split(/\s+/).includes(panel.id)).toBe(true);
   });
 
   it("toggles visibility on click and emits lifecycle events", () => {

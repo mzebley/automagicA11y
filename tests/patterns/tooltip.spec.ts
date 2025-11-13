@@ -58,12 +58,30 @@ describe("tooltip pattern", () => {
     expect(trigger.getAttribute("aria-describedby")?.split(/\s+/).includes(tooltip.id)).toBe(true);
     expect(tooltip.getAttribute("role")).toBe("tooltip");
     expect(tooltip.getAttribute("aria-hidden")).toBe("true");
+    expect(trigger.hasAttribute("aria-expanded")).toBe(false);
+    expect(trigger.hasAttribute("aria-controls")).toBe(false);
     expect(tooltip.hidden).toBe(true);
     expect(ready).toHaveBeenCalledTimes(1);
     const readyEvent = ready.mock.calls[0][0] as CustomEvent;
     expect(readyEvent.detail.trigger).toBe(trigger);
     expect(readyEvent.detail.target).toBe(tooltip);
     expect(legacyReady).toHaveBeenCalledTimes(1);
+  });
+
+  it("removes expandable semantics in favor of aria-describedby", () => {
+    document.body.innerHTML = `
+      <button id="trigger" data-automagica11y-tooltip="#tip" aria-expanded="false" aria-controls="tip"></button>
+      <div id="tip">Tooltip text</div>
+    `;
+
+    const trigger = document.getElementById("trigger") as HTMLElement;
+    const tooltip = document.getElementById("tip") as HTMLElement;
+
+    initTooltip(trigger);
+
+    expect(trigger.hasAttribute("aria-expanded")).toBe(false);
+    expect(trigger.hasAttribute("aria-controls")).toBe(false);
+    expect(trigger.getAttribute("aria-describedby")?.split(/\s+/).includes(tooltip.id)).toBe(true);
   });
 
   it("shows on focus and hides on blur while emitting lifecycle events", () => {

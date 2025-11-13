@@ -19,9 +19,26 @@ describe("toggle pattern", () => {
 
     expect(trigger.getAttribute("aria-controls")).toBe(target.id);
     expect(trigger.getAttribute("aria-expanded")).toBe("false");
-    expect(target.getAttribute("aria-labelledby")).toBe(trigger.id);
+    const labelledBy = target.getAttribute("aria-labelledby");
+    expect(labelledBy?.split(/\s+/).includes(trigger.id)).toBe(true);
     expect(target.hidden).toBe(true);
     expect(trigger.classList.contains("automagic-toggle-closed")).toBe(true);
+  });
+
+  it("preserves existing aria-labelledby tokens on targets", () => {
+    document.body.innerHTML = `
+      <button id="trigger" data-automagica11y-toggle="#panel"></button>
+      <div id="panel" aria-labelledby="existing"></div>
+    `;
+
+    const trigger = document.getElementById("trigger") as HTMLElement;
+    const target = document.getElementById("panel") as HTMLElement;
+
+    initToggle(trigger);
+
+    const tokens = target.getAttribute("aria-labelledby")?.split(/\s+/).filter(Boolean) ?? [];
+    expect(tokens).toContain("existing");
+    expect(tokens).toContain(trigger.id);
   });
 
   it("toggles state on click and dispatches automagica11y events", () => {

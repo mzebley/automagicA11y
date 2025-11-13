@@ -5,6 +5,7 @@ import {
   getDataAttribute,
   hasDataAttribute,
   prefixedSelector,
+  appendToken,
 } from "../../core/attributes";
 import { setHiddenState } from "../../core/styles";
 import { dispatch } from "../../core/events";
@@ -38,15 +39,57 @@ export function initToggle(trigger: Element) {
     trigger as HTMLElement & { __automagica11yInitialized?: boolean }
   ).__automagica11yInitialized = true;
 
+  const contextAttr = getDataAttribute(trigger, "context");
+  const contextValue = contextAttr ? contextAttr.trim() : null;
+  const canonicalContext = contextValue ? normalizeContext(contextValue) : null;
+  const treatAsTooltip =
+    canonicalContext === "tooltip" || (!contextValue && hasDataAttribute(trigger, "tooltip"));
+
+  let contextMode: ContextMode = "all";
+  const modeAttr = getDataAttribute(trigger, "context-mode");
+  if (modeAttr) {
+    const normalizedMode = modeAttr.trim().toLowerCase();
+    if (
+      normalizedMode === "all" ||
+      normalizedMode === "semantics-only" ||
+      normalizedMode === "behaviors-only"
+    ) {
+      contextMode = normalizedMode as ContextMode;
+    }
+  }
+
   // Ensure both trigger and target have IDs so ARIA relationships can be wired reliably.
   ensureId(trigger, "automagica11y-t");
   targets.forEach((t) => ensureId(t, `automagica11y-p`));
 
   // Establish the baseline ARIA contract and initial collapsed state (supports multiple targets).
-  trigger.setAttribute("aria-controls", targets.map(t => t.id).join(" "));
-  setAriaExpanded(trigger, false);
+  const managedTargetIds = targets.map((t) => t.id);
+  const manageAriaControls = !treatAsTooltip;
+  if (manageAriaControls) {
+    trigger.setAttribute("aria-controls", managedTargetIds.join(" "));
+  } else {
+    const existingControls = trigger.getAttribute("aria-controls");
+    if (existingControls) {
+      const existingTokens = existingControls.split(/\s+/).filter(Boolean);
+      if (
+        existingTokens.length === managedTargetIds.length &&
+        existingTokens.every((token) => managedTargetIds.includes(token))
+      ) {
+        trigger.removeAttribute("aria-controls");
+      }
+    }
+  }
+  const manageAriaExpanded = !treatAsTooltip;
+  if (manageAriaExpanded) {
+    setAriaExpanded(trigger, false);
+  } else {
+    const currentExpanded = trigger.getAttribute("aria-expanded");
+    if (currentExpanded === "false" || currentExpanded === "true" || currentExpanded === "") {
+      trigger.removeAttribute("aria-expanded");
+    }
+  }
   targets.forEach((t) => {
-    t.setAttribute("aria-labelledby", trigger.id);
+    appendToken(t, "aria-labelledby", trigger.id);
     setHiddenState(t, true);
   });
 
@@ -64,6 +107,8 @@ export function initToggle(trigger: Element) {
   const applyClasses = createClassToggler(trigger);
   targets.forEach((t) => applyClasses(false, t));
 
+  let expanded = false;
+  (trigger as HTMLElement & { __automagica11yExpanded?: boolean }).__automagica11yExpanded = expanded;
   let cancelPendingOpenFrame: (() => void) | null = null;
   const clearPendingOpenFrame = () => {
     cancelPendingOpenFrame?.();
@@ -110,7 +155,11 @@ export function initToggle(trigger: Element) {
 
   // Centralized state setter keeps ARIA, classes, DOM visibility, and events in sync.
   const setState = (open: boolean) => {
-    setAriaExpanded(trigger, open);
+    expanded = open;
+    (trigger as HTMLElement & { __automagica11yExpanded?: boolean }).__automagica11yExpanded = open;
+    if (manageAriaExpanded) {
+      setAriaExpanded(trigger, open);
+    }
     clearPendingOpenFrame();
 
     if (!open) {
@@ -149,7 +198,12 @@ export function initToggle(trigger: Element) {
       others.forEach((other) => {
         const controller = (other as HTMLElement & { __automagica11ySetState?: (open: boolean) => void })
           .__automagica11ySetState;
-        if (controller && other.getAttribute("aria-expanded") === "true") {
+        const otherState =
+          (other as HTMLElement & { __automagica11yExpanded?: boolean }).__automagica11yExpanded;
+        const isOpen = typeof otherState === "boolean"
+          ? otherState
+          : other.getAttribute("aria-expanded") === "true";
+        if (controller && isOpen) {
           controller(false);
         }
       });
@@ -157,8 +211,7 @@ export function initToggle(trigger: Element) {
   };
 
   // Basic toggle helper reads existing ARIA state and flips it.
-  const toggle = () =>
-    setState(trigger.getAttribute("aria-expanded") !== "true");
+  const toggle = () => setState(!expanded);
 
   // Click activates the toggle for mouse and touch interactions.
   trigger.addEventListener("click", toggle);
@@ -178,23 +231,8 @@ export function initToggle(trigger: Element) {
   // Expose a minimal controller for grouped interactions
   (trigger as HTMLElement & { __automagica11ySetState?: (open: boolean) => void }).__automagica11ySetState = setState;
 
-  const contextAttr = getDataAttribute(trigger, "context");
-  const contextValue = contextAttr ? contextAttr.trim() : null;
-  let contextMode: ContextMode = "all";
-  const modeAttr = getDataAttribute(trigger, "context-mode");
-  if (modeAttr) {
-    const normalizedMode = modeAttr.trim().toLowerCase();
-    if (
-      normalizedMode === "all" ||
-      normalizedMode === "semantics-only" ||
-      normalizedMode === "behaviors-only"
-    ) {
-      contextMode = normalizedMode as ContextMode;
-    }
-  }
-
   if (contextValue) {
-    const canonical = normalizeContext(contextValue);
+    const canonical = canonicalContext ?? contextValue.toLowerCase();
     const warnDuplicate = (alias: string) => {
       const key = `context-${alias}`;
       const registryHolder = trigger as HTMLElement & { __automagica11yWarnings?: Set<string> };
@@ -230,12 +268,17 @@ export function initToggle(trigger: Element) {
       trigger as HTMLElement & { __automagica11yInitialized?: boolean }
     ).__automagica11yInitialized = false;
     delete (trigger as HTMLElement & { __automagica11ySetState?: (open: boolean) => void }).__automagica11ySetState;
+    delete (trigger as HTMLElement & { __automagica11yExpanded?: boolean }).__automagica11yExpanded;
   };
 }
 
 /** Return whether a hydrated toggle trigger is currently expanded. */
 export function isToggleOpen(trigger: HTMLElement): boolean {
-  return trigger.getAttribute("aria-expanded") === "true";
+  const aria = trigger.getAttribute("aria-expanded");
+  if (aria === "true") return true;
+  if (aria === "false") return false;
+  const marker = (trigger as HTMLElement & { __automagica11yExpanded?: boolean }).__automagica11yExpanded;
+  return marker ?? false;
 }
 
 /** Resolve the target element controlled by a toggle trigger. */

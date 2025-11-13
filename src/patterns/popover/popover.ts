@@ -131,9 +131,21 @@ export function initPopover(node: Element) {
   const panel = target as HTMLElement;
 
   ensureId(panel, "automagica11y-popover");
+  const existingRole = panel.getAttribute("role");
+  const normalizedRole = existingRole ? existingRole.trim().toLowerCase() : "";
+  if (!normalizedRole) {
+    panel.setAttribute("role", "dialog");
+  }
+  const effectiveRole = (panel.getAttribute("role") ?? "").trim().toLowerCase();
+  const hasDialogRole = effectiveRole === "dialog";
+
   appendToken(trigger, "aria-controls", panel.id);
   if (!trigger.hasAttribute("aria-haspopup")) {
-    trigger.setAttribute("aria-haspopup", "dialog");
+    if (hasDialogRole) {
+      trigger.setAttribute("aria-haspopup", "dialog");
+    }
+  } else if (!hasDialogRole && trigger.getAttribute("aria-haspopup") === "dialog") {
+    trigger.removeAttribute("aria-haspopup");
   }
 
   setHiddenState(panel, true);
