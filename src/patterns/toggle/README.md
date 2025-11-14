@@ -2,8 +2,37 @@
 
 > _Drop an attribute. Get the ARIA._
 
-The **Toggle Pattern** (sometimes called “Disclosure”) is the foundational pattern in **automagicA11y**.  
+The **Toggle Pattern** (sometimes called “Disclosure”) is the foundational pattern in **automagicA11y**.
 It provides accessible, keyboard-operable toggling behavior for showing and hiding content — no extra JavaScript authoring required.
+
+👉 New to the library? Start with the [root README](../../README.md#getting-started) for installation commands and registry initialization.
+
+## Quick start
+
+1. Add the package to your project: `npm install automagica11y`
+2. Author semantic HTML with a trigger and target connected by `data-automagica11y-toggle`.
+3. Import the library once (for example in your layout entry point) so the registry can initialize the pattern.
+
+```html
+<button data-automagica11y-toggle="#details">More details</button>
+<section id="details" hidden>
+  AutomagicA11y wires aria-expanded/aria-controls and toggles visibility for you.
+</section>
+<script type="module">
+  import "automagica11y";
+</script>
+```
+
+Need to hydrate toggles inside dynamically rendered islands or partials? Scope initialization with `initNode`:
+
+```ts
+import { initNode } from "automagica11y";
+
+const drawer = document.querySelector("#my-fragment");
+if (drawer) {
+  initNode(drawer);
+}
+```
 
 ---
 
@@ -204,14 +233,14 @@ This structure makes it simple to integrate with frameworks, custom logic, or an
 
 ---
 
-## Related Docs
+## Learn more
 
 | Document | Description |
 |-----------|-------------|
-| [Attribute Grammar](../../../docs/attributes.md) | How data-automagica11y attributes are structured |
-| [Truthiness Mapping](../../../docs/truthiness.md) | Synonym mapping for state terms |
-| [Extensions](../../../docs/plugins.md) | Extend functionality (persist roadmap, announce, animate lifecycle, etc.) |
-| [Architecture](../../../docs/ARCHITECTURE.md) | Internal registry and helper system overview |
+| [Root README](../../README.md#getting-started) | Installation commands and pattern index |
+| [Toggle pattern docs](../../../docs/src/content/docs/patterns/toggle.mdx) | Live playground and expanded context coverage |
+| [Attribute reference](../../../docs/src/content/docs/reference/attributes.mdx) | Grammar for `data-automagica11y-*` attributes |
+| [Announce plugin](../../../src/plugins/announce/README.md) | Layer screen reader messaging on top of toggles |
 
 ---
 

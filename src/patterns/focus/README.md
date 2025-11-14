@@ -6,6 +6,25 @@ automagicA11y ships two focus-oriented patterns plus shared utilities that other
 
 ---
 
+Looking for install commands? See the [root README](../../README.md#getting-started). Once the package is installed, the snippets below show how to enable each focus helper.
+
+## Quick start
+
+```ts
+import "automagica11y"; // auto-initializes focus helpers on the current document
+
+// or initialize a specific subtree if the markup is injected later
+import { initPattern } from "automagica11y";
+const shell = document.querySelector("#modal-shell");
+if (shell) {
+  initPattern("focus", shell);
+}
+```
+
+Focus utilities piggyback on the same registry as other patterns, so importing the package once hydrates them everywhere.
+
+---
+
 ## Initial Focus (`data-automagica11y-focus-initial`)
 
 Guarantees an element receives focus once after hydration.
@@ -120,6 +139,17 @@ Located in `src/core/focus.ts`:
 - `applyFocusOrder(elements)` – applies sequential `tabindex` values and returns a controller that can restore originals.
 
 These helpers keep focus behavior predictable across patterns while letting authors opt into higher-level behaviors via declarative attributes.
+
+---
+
+## Learn more
+
+| Document | Description |
+|-----------|-------------|
+| [Root README](../../README.md#getting-started) | Install instructions and pattern overview |
+| [Focus docs](../../../docs/src/content/docs/patterns/focus.mdx) | Playground walkthrough of initial focus, maps, and traps |
+| [Dialog pattern](../../../src/patterns/dialog/README.md) | Real-world consumer of focus utilities |
+| [Core focus trap](../../../src/core/focus-trap.ts) | Implementation details for advanced customization |
 
 ---
 

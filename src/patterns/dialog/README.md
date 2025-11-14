@@ -6,6 +6,43 @@ The **Dialog Pattern** turns any trigger into a fully-managed modal. Declare `da
 
 ---
 
+👉 Installation and registry setup live in the [root README](../../README.md#getting-started). Come back here once the package is installed.
+
+## Quick start
+
+1. Ensure `automagica11y` is installed: `npm install automagica11y`
+2. Mark up your dialog trigger and container.
+3. Import the library (or call `initPattern('dialog', container)`) to wire the modal behavior.
+
+```html
+<button data-automagica11y-dialog="#session-dialog">Extend session</button>
+
+<div id="session-dialog" hidden data-automagica11y-dialog-dismissable>
+  <div role="document">
+    <h2 id="dialog-title">Stay signed in?</h2>
+    <p id="dialog-desc">Your session will expire soon.</p>
+    <button data-automagica11y-dialog-close>Stay signed in</button>
+  </div>
+</div>
+
+<script type="module">
+  import "automagica11y";
+</script>
+```
+
+Need to hydrate a newly rendered modal? Scope initialization to that node:
+
+```ts
+import { initPattern } from "automagica11y";
+
+const dialog = document.querySelector("#session-dialog");
+if (dialog) {
+  initPattern("dialog", dialog);
+}
+```
+
+---
+
 ## Overview
 
 A dialog requires:
@@ -83,6 +120,17 @@ Triggers can share the same truthiness-aware class mapping used by other pattern
 - [ ] Non-modal “popover” variant that omits scroll locking but retains focus management.
 - [ ] Configurable focus return target for cases where the trigger should not regain focus.
 - [ ] Nested dialog coordination so child modals temporarily pause parent traps without breaking background state snapshots.
+
+---
+
+## Learn more
+
+| Document | Description |
+|-----------|-------------|
+| [Root README](../../README.md#getting-started) | Installation and pattern directory |
+| [Dialog docs](../../../docs/src/content/docs/patterns/dialog.mdx) | Live examples of context-driven modals |
+| [Focus utilities](../../../src/patterns/focus/README.md) | Supporting helpers for initial focus and tab order |
+| [Announce plugin](../../../src/plugins/announce/README.md) | Announce open/close events to assistive tech |
 
 ---
 

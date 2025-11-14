@@ -2,6 +2,36 @@
 
 The popover pattern turns any control into a trigger for a floating action panel. Developers configure the relationship entirely through declarative data attributes, while the library handles accessibility wiring, viewport-aware placement, and graceful dismissal behavior.
 
+📦 First-time setup lives in the [root README](../../README.md#getting-started). Once the package is installed, wire a popover by following the steps below.
+
+## Quick start
+
+1. Install the dependency: `npm install automagica11y`
+2. Create a trigger element with `data-automagica11y-popover` pointing at the popover panel
+3. Import the library globally or call `initPattern('popover', trigger)`
+
+```html
+<button data-automagica11y-popover="#profile-popover">Manage profile</button>
+<div id="profile-popover" hidden>
+  <button data-automagica11y-popover-dismiss>Done</button>
+</div>
+
+<script type="module">
+  import "automagica11y";
+</script>
+```
+
+To re-initialize a specific subtree (for example after fetching HTML), use:
+
+```ts
+import { initNode } from "automagica11y";
+
+const menu = document.querySelector("#actions");
+if (menu) {
+  initNode(menu);
+}
+```
+
 ## Key Features
 
 - Declarative `data-automagica11y-popover` attribute that references the floating panel.
@@ -104,3 +134,14 @@ All event detail objects include `{ trigger, target }` so hooks can react withou
   <!-- Example: data-automagica11y-popover-placement="right" -->
 </div>
 ```
+
+---
+
+## Learn more
+
+| Document | Description |
+|-----------|-------------|
+| [Root README](../../README.md#getting-started) | Install instructions and pattern overview |
+| [Popover docs](../../../docs/src/content/docs/patterns/popover.mdx) | Live demos with placement diagrams |
+| [Tooltip pattern](../../../src/patterns/tooltip/README.md) | Lightweight descriptions that share placement helpers |
+| [Announce plugin](../../../src/plugins/announce/README.md) | Add spoken feedback for popover state changes |

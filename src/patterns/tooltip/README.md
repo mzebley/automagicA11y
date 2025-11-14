@@ -9,6 +9,36 @@ appropriate interactions, and emit lifecycle events for analytics or plugins.
 
 ---
 
+Need installation help? Review the [project README](../../README.md#getting-started) first, then follow the quick steps below.
+
+## Quick start
+
+1. Install the package: `npm install automagica11y`
+2. Add a trigger and tooltip element linked by `data-automagica11y-tooltip`
+3. Import the library (or initialize via `initPattern('tooltip', root)`)
+
+```html
+<button data-automagica11y-tooltip="#tip-weather">Forecast</button>
+<span id="tip-weather" hidden>Showers expected this afternoon.</span>
+
+<script type="module">
+  import "automagica11y";
+</script>
+```
+
+To target a specific container after dynamic rendering, use `initNode`:
+
+```ts
+import { initNode } from "automagica11y";
+
+const card = document.querySelector(".profile-card");
+if (card) {
+  initNode(card);
+}
+```
+
+---
+
 ## Overview
 
 A tooltip pair consists of:
@@ -153,6 +183,17 @@ Set `data-automagica11y-tooltip-position` to a preferred side. The pattern will 
 - [x] Touch-specific affordances (long-press support and dismiss buttons).
 - [ ] Investigate collision detection with nested scroll containers.
 - [ ] Author guidance for pairing tooltips with form validation hints.
+
+---
+
+## Learn more
+
+| Document | Description |
+|-----------|-------------|
+| [Root README](../../README.md#getting-started) | Installation guidance and pattern index |
+| [Tooltip docs](../../../docs/src/content/docs/patterns/tooltip.mdx) | Playground-driven breakdown of tooltip behavior |
+| [Popover pattern](../../../src/patterns/popover/README.md) | Floating panels that build on tooltip positioning |
+| [Announce plugin](../../../src/plugins/announce/README.md) | Announce tooltip open/close changes |
 
 ---
 

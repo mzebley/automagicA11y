@@ -20,13 +20,68 @@ Built for simplicity and scalability, it uses a consistent declarative syntax vi
 
 ---
 
-## Documentation
+## Getting started
 
-- **Live site:** _Coming soon_ – deploy the Starlight docs with the provided GitHub Pages workflow or Vercel project.
+### Install the package
+
+```bash
+npm install automagica11y
+```
+
+The published package ships ESM, CJS, and browser-ready bundles alongside TypeScript definitions. Use whichever entry point fits
+your bundler – Vite, Astro, Next, Remix, Angular, and plain script tags all work out of the box.
+
+### Initialize the registry
+
+```html
+<script type="module">
+  import "automagica11y";
+  // Auto-initializes every supported pattern on the current document.
+</script>
+```
+
+Prefer to hydrate specific sections? Import the helpers and scope initialization manually:
+
+```ts
+import { initNode, initPattern } from "automagica11y";
+
+const drawer = document.querySelector("#offcanvas");
+if (drawer) {
+  initNode(drawer);
+}
+
+// Or target a specific pattern factory
+initPattern("toggle", document.body);
+```
+
+Every readme in this repository includes an end-to-end usage example. If you are exploring a particular pattern or plugin, jump
+straight to it via the table below.
+
+> ℹ️ **First time cloning the repo?** Run `npm install` in the project root to grab dependencies, then `npm run build` to generate
+> the dist bundle before launching any demos.
+
+### Documentation
+
+- **Starlight site:** _Coming soon_ – deploy the docs with the provided GitHub Pages workflow or Vercel project.
 - **Run locally:**
   1. `npm run build` (ensures the docs import the latest local bundle).
   2. `npm run docs:dev`
   3. Open the dev server URL printed in the terminal.
+- **Docs workspace README:** [`docs/README.md`](docs/README.md) covers Astro-specific commands and troubleshooting tips.
+
+### Pattern & plugin quick links
+
+| Scope | Feature | README |
+| ----- | ------- | ------ |
+| Core patterns | Toggle / Disclosure | [`src/patterns/toggle/README.md`](src/patterns/toggle/README.md) |
+| Core patterns | Tooltip | [`src/patterns/tooltip/README.md`](src/patterns/tooltip/README.md) |
+| Core patterns | Popover | [`src/patterns/popover/README.md`](src/patterns/popover/README.md) |
+| Core patterns | Dialog | [`src/patterns/dialog/README.md`](src/patterns/dialog/README.md) |
+| Utilities | Focus helpers | [`src/patterns/focus/README.md`](src/patterns/focus/README.md) |
+| Plugins | Announce live region | [`src/plugins/announce/README.md`](src/plugins/announce/README.md) |
+
+Each pattern README links back here for install steps and into the canonical Astro docs for live playgrounds. Start with the
+toggle pattern if you are brand new – every other pattern composes on top of it.
 
 ## Angular integration
 
