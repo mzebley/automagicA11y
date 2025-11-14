@@ -1,6 +1,10 @@
 /**
  * Re-export the public registry helpers so consumers can import from the package root
  * without relying on build-time path aliases.
+ *
+ * Quick install + init instructions live in README.md#getting-started and are mirrored in
+ * docs/src/content/docs/getting-started/installation.mdx so code comments, READMEs, and
+ * the Astro docs stay in sync for first-time users.
  */
 export {
   initAllPatterns,

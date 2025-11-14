@@ -6,6 +6,8 @@ The **Announce Pattern** centralizes screen reader updates across all automagicA
 
 ---
 
+📘 First, follow the [root README](../../README.md#getting-started) to install and initialize the library. Then layer the announce plugin on top using the steps below.
+
 ## When to Use
 
 - You need consistent spoken feedback when toggles, dialogs, or future patterns change state.
@@ -16,7 +18,8 @@ The **Announce Pattern** centralizes screen reader updates across all automagicA
 
 ## Quick Start
 
-1. Import and register the announce plugin once during boot:
+1. Confirm the package is installed: `npm install automagica11y`
+2. Import and register the announce plugin once during boot:
 
 ```ts
 import { registerAnnouncePlugin } from "automagica11y";
@@ -24,7 +27,7 @@ import { registerAnnouncePlugin } from "automagica11y";
 registerAnnouncePlugin();
 ```
 
-2. Opt individual triggers into announcements:
+3. Opt individual triggers into announcements:
 
 ```html
 <button
@@ -82,14 +85,14 @@ Any pattern that dispatches `automagica11y:toggle` automatically integrates with
 
 ---
 
-## Related Docs
+## Learn more
 
 | Document | Description |
 |-----------|-------------|
-| [Attribute Grammar](../../../docs/attributes.md) | How data-automagica11y attributes are structured |
-| [Truthiness Mapping](../../../docs/truthiness.md) | Synonym mapping for state terms |
-| [Plugins](../../../docs/plugins.md) | Extend functionality (persist, announce, animate, etc.) |
-| [Architecture](../../../docs/ARCHITECTURE.md) | Internal registry and helper system overview |
+| [Root README](../../README.md#getting-started) | Install instructions and pattern overview |
+| [Announce docs](../../../docs/src/content/docs/plugins/announce.mdx) | Live demos with suggested copy guidelines |
+| [Toggle pattern](../../../src/patterns/toggle/README.md) | Emits the events announce listens for |
+| [Events reference](../../../docs/src/content/docs/reference/events.mdx) | Namespaced event catalog for advanced integrations |
 
 ---
 

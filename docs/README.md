@@ -11,6 +11,11 @@ This docs site demonstrates AutomagicA11y patterns using lightweight, inline-enh
 
 Root package build (optional during dev): `npm run build`
 
+### Cross-repo references
+
+- Need the package install snippet? Head back to the [root README](../README.md#getting-started).
+- Each pattern README (for example [`src/patterns/dialog/README.md`](../src/patterns/dialog/README.md)) links into the matching Starlight page under `docs/src/content/docs/patterns/` so you can bounce between markdown and live playgrounds quickly.
+
 ## How Interactivity Works
 
 - Global auto‑init: `docs/src/scripts/auto-init.ts` imports `automagica11y` once per page. The library auto‑initializes all supported patterns on import (`initAllPatterns(document)`). The script is injected in `docs/starlight.config.mjs` via a module `<script>` in `head`.
